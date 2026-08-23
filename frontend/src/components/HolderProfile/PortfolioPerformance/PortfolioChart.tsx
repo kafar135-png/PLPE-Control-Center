@@ -3,10 +3,10 @@ import {
   createChart,
   ColorType,
   LineSeries,
+  LineStyle,
 } from "lightweight-charts";
 
 import { usePortfolioPerformance } from "./usePortfolioPerformance";
-import { LineStyle } from "lightweight-charts";
 
 interface Props {
   range: "7D" | "30D" | "90D" | "ALL";
@@ -14,7 +14,6 @@ interface Props {
 
 function PortfolioChart({ range }: Props) {
   const chartRef = useRef<HTMLDivElement>(null);
-  const tooltipRef = useRef<HTMLDivElement | null>(null);
 
   const { chartData } = usePortfolioPerformance(range);
 
@@ -22,7 +21,6 @@ function PortfolioChart({ range }: Props) {
     if (!chartRef.current) return;
 
     const chart = createChart(chartRef.current, {
-      
       width: chartRef.current.clientWidth,
       height: 260,
 
@@ -52,20 +50,22 @@ function PortfolioChart({ range }: Props) {
       timeScale: {
         borderColor: "#2f3b56",
       },
+
       crosshair: {
-  vertLine: {
-    color: "#00ff8c",
-    width: 1,
-    style: 2,
-    labelBackgroundColor: "#00ff8c",
-  },
-  horzLine: {
-    color: "#00ff8c",
-    width: 1,
-    style: 2,
-    labelBackgroundColor: "#00ff8c",
-  },
-},
+        vertLine: {
+          color: "#00ff8c",
+          width: 1,
+          style: 2,
+          labelBackgroundColor: "#00ff8c",
+        },
+
+        horzLine: {
+          color: "#00ff8c",
+          width: 1,
+          style: 2,
+          labelBackgroundColor: "#00ff8c",
+        },
+      },
     });
 
     const series = chart.addSeries(LineSeries, {
@@ -74,29 +74,34 @@ function PortfolioChart({ range }: Props) {
     });
 
     series.setData(chartData);
+
     const lastPoint = chartData[chartData.length - 1];
 
-series.createPriceLine({
-  price: lastPoint.value,
-  color: "#00ff8c",
-  lineWidth: 2,
-  lineStyle: LineStyle.Dashed,
-  axisLabelVisible: true,
-  title: "PLPE",
-});
+    if (lastPoint) {
+      series.createPriceLine({
+        price: lastPoint.value,
+        color: "#00ff8c",
+        lineWidth: 2,
+        lineStyle: LineStyle.Dashed,
+        axisLabelVisible: true,
+        title: "PLPE",
+      });
+    }
+
     series.applyOptions({
-  lastValueVisible: true,
-  priceLineVisible: true,
-  priceLineColor: "#00ff8c",
-  priceLineWidth: 2,
-});
+      lastValueVisible: true,
+      priceLineVisible: true,
+      priceLineColor: "#00ff8c",
+      priceLineWidth: 2,
+    });
 
     chart.timeScale().fitContent();
+
     chart.applyOptions({
-  localization: {
-    priceFormatter: (price: number) => `$${price.toFixed(2)}`,
-  },
-});
+      localization: {
+        priceFormatter: (price: number) => `$${price.toFixed(2)}`,
+      },
+    });
 
     const resize = () => {
       if (!chartRef.current) return;
@@ -114,12 +119,7 @@ series.createPriceLine({
     };
   }, [chartData]);
 
-  return (
-    <div
-      ref={chartRef}
-      className="portfolio-chart"
-    />
-  );
+  return <div ref={chartRef} className="portfolio-chart" />;
 }
 
 export default PortfolioChart;
