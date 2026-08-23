@@ -1,6 +1,4 @@
-const API =
-  import.meta.env.VITE_API_URL ??
-  "https://plpe-control-center.vercel.app";
+const API = import.meta.env.VITE_API_URL ?? "";
 
 export interface MarketData {
   price: number;

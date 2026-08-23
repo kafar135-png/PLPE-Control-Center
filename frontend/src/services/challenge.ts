@@ -1,6 +1,4 @@
-const API =
-  import.meta.env.VITE_API_URL ??
-  "https://plpe-control-center.vercel.app";
+const API = import.meta.env.VITE_API_URL ?? "";
 
 export interface ChallengeParticipant {
   rank: number;
@@ -60,23 +58,16 @@ export interface ChallengeData {
 }
 
 export async function getChallengeLeaderboard(): Promise<ChallengeData> {
-  const response = await fetch(
-    `${API}/api/challenge`
-  );
+  const response = await fetch(`${API}/api/challenge`);
 
   if (!response.ok) {
-    throw new Error(
-      `Challenge API error (${response.status})`
-    );
+    throw new Error(`Challenge API error (${response.status})`);
   }
 
   const json = await response.json();
 
   if (json.status !== "1") {
-    throw new Error(
-      json.error ||
-        "Challenge API error"
-    );
+    throw new Error(json.error || "Challenge API error");
   }
 
   return json;
