@@ -1,0 +1,136 @@
+.ai-widget {
+  flex: 2;
+  background: linear-gradient(180deg, #1a2233 0%, #161d2d 100%);
+  border: 1px solid #2b3650;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 460px;
+}
+
+.ai-widget h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.ai-widget p {
+  margin: 12px 0;
+  color: #9ca7b8;
+  line-height: 1.5;
+}
+
+.ai-message {
+  background: #121826;
+  border: 1px solid #2b3650;
+  border-left: 4px solid #45d483;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 18px 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.ai-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #2b3650;
+}
+
+.ai-section:last-child {
+  border-bottom: none;
+}
+
+.ai-label {
+  color: #93a1bd;
+  font-size: 14px;
+}
+
+.ai-value {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.ai-positive {
+  color: #22c55e;
+}
+
+.ai-warning {
+  color: #facc15;
+}
+
+.ai-negative {
+  color: #ef4444;
+}
+
+.ai-progress {
+  width: 100%;
+  height: 8px;
+  background: #111827;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.ai-progress-fill {
+  height: 100%;
+  width: 82%;
+  background: linear-gradient(90deg, #22c55e, #45d483);
+  border-radius: 20px;
+}
+
+.ai-notes {
+  margin-top: auto;
+  background: #121826;
+  border: 1px solid #2b3650;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ai-notes h3 {
+  margin: 0 0 12px;
+  font-size: 15px;
+}
+
+.ai-notes ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.ai-notes li {
+  margin-bottom: 8px;
+  color: #c7d0e0;
+  font-size: 14px;
+}
+
+.ai-button {
+  margin-top: 18px;
+  width: 100%;
+  background: linear-gradient(90deg, #22c55e, #45d483);
+  color: #0f111a;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  transition: all .2s ease;
+}
+
+.ai-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(69, 212, 131, .35);
+}
+
+@media (max-width:1200px) {
+
+  .ai-widget {
+    min-height: auto;
+  }
+
+}
