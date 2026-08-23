@@ -1,6 +1,6 @@
 const API =
   import.meta.env.VITE_API_URL ??
-  "http://localhost:3001";
+  "https://plpe-control-center.vercel.app";
 
 export async function getWalletHistory(
   address: string

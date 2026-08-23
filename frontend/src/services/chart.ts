@@ -8,7 +8,7 @@ export interface Candle {
 
 const API =
   import.meta.env.VITE_API_URL ??
-  "http://localhost:3001";
+  "https://plpe-control-center.vercel.app";
 
 export async function getChartData(
   timeframe = "1D"
