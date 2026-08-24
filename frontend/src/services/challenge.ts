@@ -1,4 +1,4 @@
-const API = import.meta.env.VITE_API_URL ?? "";
+const API = import.meta.env.VITE_API_URL || "";
 
 export interface ChallengeParticipant {
   rank: number;
@@ -58,17 +58,27 @@ export interface ChallengeData {
 }
 
 export async function getChallengeLeaderboard(): Promise<ChallengeData> {
-  const response = await fetch(`${API}/api/challenge`);
+  const response = await fetch(`${API}/api/challenge`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+    cache: "no-store",
+  });
 
   if (!response.ok) {
-    throw new Error(`Challenge API error (${response.status})`);
+    throw new Error(
+      `Challenge API error (${response.status})`
+    );
   }
 
   const json = await response.json();
 
-  if (json.status !== "1") {
-    throw new Error(json.error || "Challenge API error");
+  if (json?.status !== "1") {
+    throw new Error(
+      json?.error || "Challenge API error"
+    );
   }
 
-  return json;
+  return json as ChallengeData;
 }

@@ -1,31 +1,49 @@
-import { useEffect, useState } from "react";
-import { getLiveTrades } from "../services/liveTrades";
+import { useCallback, useEffect, useState } from "react";
+import {
+  getLiveTrades,
+  type LiveTrade,
+} from "../services/liveTrades";
 
 export function useLiveTrades() {
-  const [trades, setTrades] = useState<any[]>([]);
+  const [trades, setTrades] = useState<LiveTrade[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  async function load() {
+  const load = useCallback(async () => {
     try {
-      const data = await getLiveTrades();
-      setTrades(data);
-    } catch (err) {
-      console.error(err);
-    }
+      setError(null);
 
-    setLoading(false);
-  }
+      const data = await getLiveTrades();
+
+      setTrades(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Live Trades:", err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Live Trades API Error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     load();
 
-    const interval = setInterval(load, 10000);
+    const interval = window.setInterval(() => {
+      load();
+    }, 10000);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [load]);
 
   return {
     trades,
     loading,
+    error,
+    reload: load,
   };
 }

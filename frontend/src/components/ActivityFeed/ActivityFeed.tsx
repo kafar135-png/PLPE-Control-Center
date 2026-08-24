@@ -4,25 +4,42 @@ import { useLiveTrades } from "../../hooks/useLiveTrades";
 import { useLanguage } from "../../hooks/useLanguage";
 
 function ActivityFeed() {
-  const { trades, loading } = useLiveTrades();
+  const { trades, loading, error } = useLiveTrades();
   const { t } = useLanguage();
 
   function timeAgo(timestamp: number) {
-    const seconds = Math.floor(Date.now() / 1000 - timestamp);
+    const seconds = Math.max(
+      0,
+      Math.floor(Date.now() / 1000 - timestamp)
+    );
 
-    if (seconds < 60) return `${seconds}${t.activity.secondsAgo}`;
+    if (seconds < 60) {
+      return `${seconds}${t.activity.secondsAgo}`;
+    }
 
     const minutes = Math.floor(seconds / 60);
 
-    if (minutes < 60) return `${minutes}${t.activity.minutesAgo}`;
+    if (minutes < 60) {
+      return `${minutes}${t.activity.minutesAgo}`;
+    }
 
     const hours = Math.floor(minutes / 60);
 
-    if (hours < 24) return `${hours}${t.activity.hoursAgo}`;
+    if (hours < 24) {
+      return `${hours}${t.activity.hoursAgo}`;
+    }
 
     const days = Math.floor(hours / 24);
 
     return `${days}${t.activity.daysAgo}`;
+  }
+
+  function formatAmount(amount: number) {
+    if (!Number.isFinite(amount)) {
+      return "0";
+    }
+
+    return Math.round(amount).toLocaleString();
   }
 
   return (
@@ -36,10 +53,17 @@ function ActivityFeed() {
           </div>
         )}
 
+        {!loading && error && (
+          <div className="activity-item">
+            Live Trades API error
+          </div>
+        )}
+
         {!loading &&
+          !error &&
           trades.map((trade, index) => (
             <div
-              key={trade.hash ?? index}
+              key={trade.hash || index}
               className="activity-item"
             >
               <div
@@ -47,6 +71,7 @@ function ActivityFeed() {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
+                  gap: "16px",
                 }}
               >
                 <div>
@@ -69,20 +94,24 @@ function ActivityFeed() {
                   </div>
 
                   <small>
-                    {Math.round(trade.amount).toLocaleString()} PLPE
+                    {formatAmount(trade.amount)} PLPE
                   </small>
                 </div>
 
-                <small>{timeAgo(trade.timestamp)}</small>
+                <small>
+                  {timeAgo(trade.timestamp)}
+                </small>
               </div>
             </div>
           ))}
 
-        {!loading && trades.length === 0 && (
-          <div className="activity-item">
-            {t.activity.noActivity}
-          </div>
-        )}
+        {!loading &&
+          !error &&
+          trades.length === 0 && (
+            <div className="activity-item">
+              {t.activity.noActivity}
+            </div>
+          )}
       </div>
     </div>
   );

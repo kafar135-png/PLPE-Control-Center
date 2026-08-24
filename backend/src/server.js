@@ -2,6 +2,10 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+// ============================================
+// ROUTES
+// ============================================
+
 const statusRoute = require("./routes/status");
 const marketRoute = require("./routes/market");
 const chartRoute = require("./routes/chart");
@@ -11,22 +15,20 @@ const liveTradesRoute = require("./routes/liveTrades");
 const walletRoute = require("./routes/wallet");
 const challengeRoute = require("./routes/challenge");
 
+// ============================================
+// APP
+// ============================================
+
 const app = express();
 
 const PORT = process.env.PORT || 3001;
 
-// ========================================
+// ============================================
 // CORS
-// ========================================
-//
-// Pozwalamy frontendowi lokalnemu oraz Vercel.
-// Backend API jest publiczne, więc nie potrzebujemy
-// credentials/cookies cross-origin.
-//
+// ============================================
 
 const allowedOrigins = (
-  process.env.CORS_ORIGIN ||
-  "http://localhost:5173,https://plpe-control-center.vercel.app"
+  process.env.CORS_ORIGIN || "http://localhost:5173"
 )
   .split(",")
   .map((origin) => origin.trim())
@@ -35,7 +37,7 @@ const allowedOrigins = (
 app.use(
   cors({
     origin(origin, callback) {
-      // curl / Postman / server-to-server
+      // Pozwala np. Postmanowi / curl / server-side requests
       if (!origin) {
         return callback(null, true);
       }
@@ -45,15 +47,15 @@ app.use(
         return callback(null, true);
       }
 
-      // Wszystkie deploymenty Vercel projektu
+      // Produkcyjny frontend PLPE OS
       if (
-        origin.endsWith(".vercel.app")
+        origin === "https://plpe-control-center.vercel.app"
       ) {
         return callback(null, true);
       }
 
       console.warn(
-        `CORS blocked origin: ${origin}`
+        `[CORS] Blocked origin: ${origin}`
       );
 
       return callback(
@@ -61,100 +63,196 @@ app.use(
       );
     },
 
-    credentials: false,
+    credentials: true,
   })
 );
 
+// ============================================
+// BODY PARSER
+// ============================================
+
 app.use(express.json());
 
-// ========================================
-// ROOT
-// ========================================
+app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (_, res) => {
+// ============================================
+// REQUEST LOGGER
+// ============================================
+
+app.use((req, res, next) => {
+  console.log(
+    `[API] ${req.method} ${req.originalUrl}`
+  );
+
+  next();
+});
+
+// ============================================
+// ROOT
+// ============================================
+
+app.get("/", (req, res) => {
   res.json({
     application: "PLPE OS Backend",
     version: "0.1.0-beta",
     status: "online",
-    time: new Date().toISOString(),
+    environment:
+      process.env.NODE_ENV || "development",
+    timestamp: new Date().toISOString(),
   });
 });
 
-// ========================================
-// API ROUTES
-// ========================================
+// ============================================
+// HEALTH CHECK
+// ============================================
 
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    service: "PLPE OS Backend",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// ============================================
+// API ROUTES
+// ============================================
+
+// STATUS
 app.use(
   "/api/status",
   statusRoute
 );
 
+// MARKET
 app.use(
   "/api/market",
   marketRoute
 );
 
+// CHART
 app.use(
   "/api/chart",
   chartRoute
 );
 
+// TRADES
 app.use(
   "/api/trades",
   tradesRoute
 );
 
+// HOLDERS
 app.use(
   "/api/holders",
   holdersRoute
 );
 
+// LIVE TRADES
 app.use(
   "/api/live-trades",
   liveTradesRoute
 );
 
+// WALLET
 app.use(
   "/api/wallet",
   walletRoute
 );
+
+// ============================================
+// MONTHLY TRADING CHALLENGE
+// ============================================
 
 app.use(
   "/api/challenge",
   challengeRoute
 );
 
-// ========================================
+// ============================================
 // 404
-// ========================================
+// ============================================
 
 app.use((req, res) => {
+  console.warn(
+    `[404] Endpoint not found: ${req.method} ${req.originalUrl}`
+  );
+
   res.status(404).json({
     error: "Endpoint not found",
+    method: req.method,
     path: req.originalUrl,
   });
 });
 
-// ========================================
+// ============================================
 // ERROR HANDLER
-// ========================================
+// ============================================
 
 app.use((err, req, res, next) => {
+  console.error("");
   console.error(
-    "API ERROR:",
-    err
+    "=========================================="
+  );
+  console.error(
+    "🔥 PLPE BACKEND ERROR"
+  );
+  console.error(
+    "=========================================="
   );
 
+  console.error(
+    "Method:",
+    req.method
+  );
+
+  console.error(
+    "URL:",
+    req.originalUrl
+  );
+
+  console.error(
+    "Message:",
+    err?.message
+  );
+
+  console.error(
+    "Stack:"
+  );
+
+  console.error(
+    err?.stack || err
+  );
+
+  console.error(
+    "=========================================="
+  );
+  console.error("");
+
+  // Nie wysyłamy odpowiedzi ponownie,
+  // jeśli nagłówki zostały już wysłane.
+  if (res.headersSent) {
+    return next(err);
+  }
+
   res.status(500).json({
-    error:
-      err.message ||
-      "Internal Server Error",
+    error: "Internal Server Error",
+
+    message:
+      err?.message ||
+      "Unknown backend error",
+
+    endpoint:
+      req.originalUrl,
+
+    timestamp:
+      new Date().toISOString(),
   });
 });
 
-// ========================================
+// ============================================
 // SERVER
-// ========================================
+// ============================================
 
 const server = app.listen(
   PORT,
@@ -167,96 +265,177 @@ const server = app.listen(
       "🚀 PLPE Backend Started"
     );
     console.log(
+      "=================================="
+    );
+
+    console.log(
       `🌍 Port: ${PORT}`
     );
+
     console.log(
       `📡 Environment: ${
         process.env.NODE_ENV ||
         "development"
       }`
     );
+
     console.log(
-      "🏆 Challenge API: /api/challenge"
+      `🔗 Root: http://localhost:${PORT}/`
     );
+
     console.log(
-      "📊 Market API: /api/market"
+      `❤️ Health: http://localhost:${PORT}/health`
     );
+
     console.log(
-      "📈 Chart API: /api/chart"
+      `📊 Status: /api/status`
     );
+
     console.log(
-      "💱 Trades API: /api/trades"
+      `💰 Market: /api/market`
     );
+
     console.log(
-      "🔥 Live Trades API: /api/live-trades"
+      `📈 Chart: /api/chart`
     );
+
     console.log(
-      "👛 Wallet API: /api/wallet"
+      `💱 Trades: /api/trades`
     );
+
+    console.log(
+      `👥 Holders: /api/holders`
+    );
+
+    console.log(
+      `⚡ Live Trades: /api/live-trades`
+    );
+
+    console.log(
+      `👛 Wallet: /api/wallet`
+    );
+
+    console.log(
+      `🏆 Challenge: /api/challenge`
+    );
+
     console.log(
       "=================================="
     );
+
     console.log("");
   }
 );
 
-// ========================================
+// ============================================
 // SERVER CLOSE
-// ========================================
+// ============================================
 
 server.on(
   "close",
   () => {
     console.log(
-      "SERVER CLOSED"
+      "🛑 PLPE Backend Server Closed"
     );
   }
 );
 
-// ========================================
-// PROCESS HANDLERS
-// ========================================
+// ============================================
+// SIGINT
+// ============================================
 
 process.on(
   "SIGINT",
   () => {
-    console.log("SIGINT");
+    console.log("");
+    console.log(
+      "🛑 SIGINT received"
+    );
 
-    server.close(() => {
-      process.exit(0);
-    });
+    server.close(
+      () => {
+        console.log(
+          "Server closed."
+        );
+
+        process.exit(0);
+      }
+    );
   }
 );
+
+// ============================================
+// SIGTERM
+// ============================================
 
 process.on(
   "SIGTERM",
   () => {
-    console.log("SIGTERM");
+    console.log("");
+    console.log(
+      "🛑 SIGTERM received"
+    );
 
-    server.close(() => {
-      process.exit(0);
-    });
+    server.close(
+      () => {
+        console.log(
+          "Server closed."
+        );
+
+        process.exit(0);
+      }
+    );
   }
 );
+
+// ============================================
+// UNCAUGHT EXCEPTION
+// ============================================
 
 process.on(
   "uncaughtException",
   (err) => {
+    console.error("");
     console.error(
-      "UNCAUGHT EXCEPTION"
+      "=========================================="
     );
-
-    console.error(err);
+    console.error(
+      "🔥 UNCAUGHT EXCEPTION"
+    );
+    console.error(
+      "=========================================="
+    );
+    console.error(
+      err
+    );
+    console.error(
+      "=========================================="
+    );
   }
 );
 
+// ============================================
+// UNHANDLED REJECTION
+// ============================================
+
 process.on(
   "unhandledRejection",
-  (err) => {
+  (reason) => {
+    console.error("");
     console.error(
-      "UNHANDLED REJECTION"
+      "=========================================="
     );
-
-    console.error(err);
+    console.error(
+      "🔥 UNHANDLED REJECTION"
+    );
+    console.error(
+      "=========================================="
+    );
+    console.error(
+      reason
+    );
+    console.error(
+      "=========================================="
+    );
   }
 );
