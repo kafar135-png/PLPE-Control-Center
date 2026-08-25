@@ -1,14 +1,31 @@
-const API = import.meta.env.VITE_API_URL || "";
+const API =
+  import.meta.env.VITE_API_URL ?? "";
 
 export interface ChallengeParticipant {
   rank: number;
   wallet: string;
+
   volume: number;
+  buyVolume?: number;
+  sellVolume?: number;
+
   trades: number;
   buys: number;
   sells: number;
+
+  qualifyingBuys?: number;
   entries: number;
+
   qualified: boolean;
+
+  entryDetails?: {
+    hash: string;
+    type: string;
+    volume: number;
+    source?: string;
+    entry: number;
+    entriesTotal: number;
+  }[];
 }
 
 export interface ChallengeData {
@@ -21,7 +38,16 @@ export interface ChallengeData {
     end: string;
   };
 
-  rewardPool: {
+  rules?: {
+    minimumVolume: number;
+    minimumBuyForEntry?: number;
+    pair: string;
+    maximumEntries: number;
+    qualification?: string;
+    entries?: string;
+  };
+
+  rewardPool?: {
     total: number;
     currency: string;
     payoutCurrency: string;
@@ -31,14 +57,14 @@ export interface ChallengeData {
     }[];
   };
 
-  qualification: {
+  qualification?: {
     minimumVolume: number;
     pair: string;
     currency: string;
     maximumEntries: number;
   };
 
-  entries: {
+  entries?: {
     min: number;
     max: number | null;
     entries: number;
@@ -46,8 +72,15 @@ export interface ChallengeData {
 
   stats: {
     plpeTransfers: number;
-    wethTransfers: number;
+    wethTransfers?: number | string;
+
     verifiedTrades: number;
+    verifiedBuys?: number;
+    verifiedSells?: number;
+
+    totalEntries?: number;
+    totalVolume?: number;
+
     qualifiedWallets: number;
   };
 
@@ -58,13 +91,13 @@ export interface ChallengeData {
 }
 
 export async function getChallengeLeaderboard(): Promise<ChallengeData> {
-  const response = await fetch(`${API}/api/challenge`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-    },
-    cache: "no-store",
-  });
+  const response =
+    await fetch(
+      `${API}/api/challenge`,
+      {
+        cache: "no-store",
+      }
+    );
 
   if (!response.ok) {
     throw new Error(
@@ -72,11 +105,15 @@ export async function getChallengeLeaderboard(): Promise<ChallengeData> {
     );
   }
 
-  const json = await response.json();
+  const json =
+    await response.json();
 
-  if (json?.status !== "1") {
+  if (
+    json?.status !== "1"
+  ) {
     throw new Error(
-      json?.error || "Challenge API error"
+      json?.error ||
+      "Challenge API error"
     );
   }
 

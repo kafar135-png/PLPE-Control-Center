@@ -85,7 +85,7 @@ const PHASE = {
   id: "01",
   name: "LAUNCH PHASE",
   start: "2026-08-15T00:00:00Z",
-  end: "2026-08-25T00:00:00Z",
+  end: "2026-08-26T00:00:00Z",
 };
 
 const MINIMUM_BUY_FOR_ENTRY = 2;
