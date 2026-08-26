@@ -1834,3 +1834,4 @@ async function buildTrades(
           usdValue.usd;
 
         trade.volumeSource =
+         usdValue.source;
