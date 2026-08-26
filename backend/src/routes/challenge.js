@@ -3,24 +3,97 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  challenge,
-  refreshChallenge,
-  challengeDiagnostics,
-} = require("../controllers/challengeController");
+  getChallenge,
+  getChallengeLeaderboard,
+  getChallengeDiagnostics,
+} = require("../services/challenge");
+
+// ============================================
+// GET /api/challenge
+// ============================================
+
+router.get("/", async (req, res) => {
+  try {
+    const result =
+      await getChallenge();
+
+    res.json(result);
+  } catch (error) {
+    console.error(
+      "[CHALLENGE ROUTE] GET /:",
+      error
+    );
+
+    res.status(500).json({
+      status: "0",
+
+      error:
+        error?.message ||
+        "Challenge calculation failed",
+    });
+  }
+});
+
+// ============================================
+// GET /api/challenge/leaderboard
+// ============================================
 
 router.get(
-  "/",
-  challenge
+  "/leaderboard",
+  async (req, res) => {
+    try {
+      const result =
+        await getChallengeLeaderboard();
+
+      res.json(result);
+    } catch (error) {
+      console.error(
+        "[CHALLENGE ROUTE] GET /leaderboard:",
+        error
+      );
+
+      res.status(500).json({
+        status: "0",
+
+        error:
+          error?.message ||
+          "Challenge leaderboard failed",
+      });
+    }
+  }
 );
 
-router.get(
-  "/refresh",
-  refreshChallenge
-);
+// ============================================
+// GET /api/challenge/diagnostics
+// ============================================
 
 router.get(
   "/diagnostics",
-  challengeDiagnostics
+  async (req, res) => {
+    try {
+      const result =
+        await getChallengeDiagnostics();
+
+      res.json(result);
+    } catch (error) {
+      console.error(
+        "[CHALLENGE ROUTE] GET /diagnostics:",
+        error
+      );
+
+      res.status(500).json({
+        status: "0",
+
+        error:
+          error?.message ||
+          "Challenge diagnostics failed",
+      });
+    }
+  }
 );
+
+// ============================================
+// EXPORT
+// ============================================
 
 module.exports = router;
