@@ -283,7 +283,7 @@ walletPlaceholder: "Paste Ethereum wallet address...",
     portfolioNotQualifiedDescription:
       "Generate at least $2 in PLPE/WETH volume to receive your first entry.",
     live: "LIVE",
-    maxEntries: "Max. 4 entries / wallet",
+    maxEntries: "Max. 6 entries / wallet",
     onChainVerified: "On-chain verified",
     loading: "Loading challenge...",
     error: "Unable to load challenge.",
