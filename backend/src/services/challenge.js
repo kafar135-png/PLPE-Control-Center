@@ -37,13 +37,6 @@ PHASE #02
 =========================================================
 */
 
-
-/*
-=========================================================
-ENVIRONMENT
-=========================================================
-*/
-
 const ETHERSCAN_API_KEY =
   process.env.ETHERSCAN_API_KEY;
 
@@ -56,10 +49,6 @@ const RPC_URL =
 
 const GECKO_BASE_URL =
   "https://api.geckoterminal.com/api/v2";
-
-const COINBASE_BASE_URL =
-  "https://api.exchange.coinbase.com";
-
 
 /*
 =========================================================
@@ -79,7 +68,6 @@ const POOL =
   "0xb4ffb01c89ffa24e6d01de95d3d780bc3e835390"
     .toLowerCase();
 
-
 /*
 =========================================================
 PHASES
@@ -89,21 +77,21 @@ PHASES
 /*
 IMPORTANT:
 
-end is EXCLUSIVE.
+end jest granicą EXCLUSIVE.
 
 Phase #01:
-2026-08-15 00:00:00
-through
-2026-08-25 23:59:59.999...
+15.08 00:00 UTC
+-
+26.08 00:00 UTC
 
-=> end = 2026-08-26 00:00:00
+czyli obejmuje cały 25.08.
 
 Phase #02:
-2026-08-26 00:00:00
-through
-2026-09-25 23:59:59.999...
+26.08 00:00 UTC
+-
+26.09 00:00 UTC
 
-=> end = 2026-09-26 00:00:00
+czyli obejmuje cały 25.09.
 */
 
 const PHASE_01 = {
@@ -111,38 +99,27 @@ const PHASE_01 = {
   name: "LAUNCH PHASE",
   status: "COMPLETED",
 
-  start:
-    "2026-08-15T00:00:00Z",
+  start: "2026-08-15T00:00:00Z",
+  end: "2026-08-26T00:00:00Z",
 
-  end:
-    "2026-08-26T00:00:00Z",
-
-  displayEnd:
-    "2026-08-26T00:00:00Z",
+  displayEnd: "2026-08-26T00:00:00Z",
 };
-
 
 const PHASE_02 = {
   id: "02",
   name: "MONTHLY CHALLENGE",
   status: "ACTIVE",
 
-  start:
-    "2026-08-26T00:00:00Z",
+  start: "2026-08-26T00:00:00Z",
+  end: "2026-09-26T00:00:00Z",
 
-  end:
-    "2026-09-26T00:00:00Z",
-
-  displayEnd:
-    "2026-09-26T00:00:00Z",
+  displayEnd: "2026-09-26T00:00:00Z",
 };
-
 
 const PHASES = [
   PHASE_01,
   PHASE_02,
 ];
-
 
 /*
 =========================================================
@@ -156,18 +133,6 @@ const MAXIMUM_ENTRIES = 6;
 
 const MINIMUM_VOLUME = 2;
 
-
-/*
-=========================================================
-TOKEN SETTINGS
-=========================================================
-*/
-
-const PLPE_DECIMALS = 18;
-
-const WETH_DECIMALS = 18;
-
-
 /*
 =========================================================
 ERC20 TRANSFER EVENT
@@ -176,7 +141,6 @@ ERC20 TRANSFER EVENT
 
 const TRANSFER_TOPIC =
   "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
-
 
 /*
 =========================================================
@@ -196,15 +160,8 @@ const GECKO_TRADES_CACHE_TIME =
 const HISTORICAL_WETH_CACHE_TIME =
   5 * 60 * 1000;
 
-const COINBASE_PRICE_CACHE_TIME =
-  5 * 60 * 1000;
-
 const WETH_PRICE_CACHE_TIME =
   60 * 1000;
-
-const BLOCK_RANGE_CACHE_TIME =
-  10 * 60 * 1000;
-
 
 /*
 =========================================================
@@ -215,32 +172,23 @@ CACHES
 const challengeCache =
   new Map();
 
+const plpeTransfersCache = {
+  data: null,
+  time: 0,
+};
 
-const plpeTransfersCache =
-  new Map();
-
-
-const geckoTradesCache =
-  new Map();
-
+const geckoTradesCache = {
+  data: null,
+  time: 0,
+};
 
 const historicalWethCache =
   new Map();
-
-
-const coinbaseHistoricalCache =
-  new Map();
-
 
 const wethPriceCache = {
   value: 0,
   time: 0,
 };
-
-
-const blockRangeCache =
-  new Map();
-
 
 /*
 =========================================================
@@ -253,20 +201,16 @@ function normalizeAddress(value) {
     return "";
   }
 
-  return String(value)
-    .toLowerCase();
+  return String(value).toLowerCase();
 }
-
 
 function normalizeHash(value) {
   if (!value) {
     return "";
   }
 
-  return String(value)
-    .toLowerCase();
+  return String(value).toLowerCase();
 }
-
 
 function topicAddress(topic) {
   if (!topic) {
@@ -275,18 +219,12 @@ function topicAddress(topic) {
 
   return (
     "0x" +
-    String(topic)
-      .slice(-40)
+    String(topic).slice(-40)
   ).toLowerCase();
 }
 
-
 function hexToBigInt(value) {
-  if (
-    value === undefined ||
-    value === null ||
-    value === ""
-  ) {
+  if (!value) {
     return 0n;
   }
 
@@ -297,32 +235,23 @@ function hexToBigInt(value) {
   }
 }
 
-
 function tokenAmount(
   value,
   decimals = 18
 ) {
-  if (
-    value === undefined ||
-    value === null ||
-    value === ""
-  ) {
+  if (!value) {
     return 0;
   }
 
   try {
-    const bigint =
-      BigInt(value);
-
     return (
-      Number(bigint) /
+      Number(BigInt(value)) /
       10 ** decimals
     );
   } catch {
     return 0;
   }
 }
-
 
 function sleep(ms) {
   return new Promise(
@@ -331,29 +260,13 @@ function sleep(ms) {
   );
 }
 
-
-function round(value, decimals = 4) {
-  if (
-    !Number.isFinite(value)
-  ) {
-    return 0;
-  }
-
-  return Number(
-    value.toFixed(decimals)
-  );
-}
-
-
 /*
 =========================================================
 PHASE HELPERS
 =========================================================
 */
 
-function phaseStartTimestamp(
-  phase
-) {
+function phaseStartTimestamp(phase) {
   return Math.floor(
     new Date(
       phase.start
@@ -361,17 +274,13 @@ function phaseStartTimestamp(
   );
 }
 
-
-function phaseEndTimestamp(
-  phase
-) {
+function phaseEndTimestamp(phase) {
   return Math.floor(
     new Date(
       phase.end
     ).getTime() / 1000
   );
 }
-
 
 function isInPhase(
   timestamp,
@@ -380,39 +289,29 @@ function isInPhase(
   const time =
     Number(timestamp);
 
-  if (
-    !Number.isFinite(time)
-  ) {
+  if (!Number.isFinite(time)) {
     return false;
   }
 
   return (
     time >=
-      phaseStartTimestamp(
-        phase
-      ) &&
+      phaseStartTimestamp(phase) &&
     time <
-      phaseEndTimestamp(
-        phase
-      )
+      phaseEndTimestamp(phase)
   );
 }
-
 
 function getPhaseById(id) {
   return (
     PHASES.find(
       (phase) =>
-        phase.id ===
-        String(id)
+        phase.id === String(id)
     ) || null
   );
 }
 
-
 function getActivePhase() {
-  const now =
-    Date.now();
+  const now = Date.now();
 
   const active =
     PHASES.find(
@@ -438,6 +337,11 @@ function getActivePhase() {
     return active;
   }
 
+  /*
+  After Phase #02:
+  return Phase #02 instead of Phase #01.
+  */
+
   if (
     now >=
     new Date(
@@ -450,25 +354,18 @@ function getActivePhase() {
   return PHASE_01;
 }
 
-
 /*
 =========================================================
 ETHERSCAN REQUEST
 =========================================================
 */
 
-async function etherscanRequest(
-  params,
-  options = {}
-) {
+async function etherscanRequest(params) {
   if (!ETHERSCAN_API_KEY) {
     throw new Error(
       "ETHERSCAN_API_KEY is missing"
     );
   }
-
-  const allowEmpty =
-    options.allowEmpty === true;
 
   let lastError = null;
 
@@ -485,8 +382,7 @@ async function etherscanRequest(
             params: {
               ...params,
 
-              chainid:
-                "1",
+              chainid: "1",
 
               apikey:
                 ETHERSCAN_API_KEY,
@@ -506,35 +402,22 @@ async function etherscanRequest(
       }
 
       /*
-      Etherscan can return:
-      status 0 + "No transactions found"
+      Etherscan can return status 0
+      with a message.
       */
 
       if (
         data.status === "0" &&
-        typeof data.result ===
-          "string"
+        typeof data.result === "string"
       ) {
-        const text =
-          `${data.message || ""} ${data.result}`
-            .trim();
-
-        if (
-          allowEmpty &&
-          /no transactions found/i.test(
-            text
-          )
-        ) {
-          return data;
-        }
-
         throw new Error(
-          `Etherscan API: ${text}`
+          `Etherscan API: ${
+            data.message || ""
+          } ${data.result}`.trim()
         );
       }
 
       return data;
-
     } catch (error) {
       lastError = error;
 
@@ -543,9 +426,7 @@ async function etherscanRequest(
         error.message
       );
 
-      if (
-        attempt < 3
-      ) {
+      if (attempt < 3) {
         await sleep(
           1000 * attempt
         );
@@ -561,6 +442,178 @@ async function etherscanRequest(
   );
 }
 
+/*
+=========================================================
+GET ALL PLPE TRANSFERS
+=========================================================
+*/
+
+async function getPLPETransfers() {
+  const now = Date.now();
+
+  if (
+    Array.isArray(
+      plpeTransfersCache.data
+    ) &&
+    now -
+      plpeTransfersCache.time <
+      PLPE_TRANSFERS_CACHE_TIME
+  ) {
+    return (
+      plpeTransfersCache.data
+    );
+  }
+
+  const allTransfers = [];
+
+  try {
+    for (
+      let page = 1;
+      page <= 20;
+      page++
+    ) {
+      const data =
+        await etherscanRequest({
+          module: "account",
+
+          action: "tokentx",
+
+          contractaddress:
+            PLPE,
+
+          page,
+
+          offset: 1000,
+
+          sort: "asc",
+        });
+
+      if (
+        !Array.isArray(
+          data.result
+        )
+      ) {
+        throw new Error(
+          "Etherscan result is not an array"
+        );
+      }
+
+      if (
+        data.result.length === 0
+      ) {
+        break;
+      }
+
+      allTransfers.push(
+        ...data.result
+      );
+
+      const last =
+        data.result[
+          data.result.length - 1
+        ];
+
+      if (
+        last &&
+        Number(
+          last.timeStamp
+        ) >=
+          phaseEndTimestamp(
+            PHASE_02
+          )
+      ) {
+        break;
+      }
+
+      if (
+        data.result.length < 1000
+      ) {
+        break;
+      }
+
+      await sleep(250);
+    }
+
+    plpeTransfersCache.data =
+      allTransfers;
+
+    plpeTransfersCache.time =
+      now;
+
+    console.log(
+      "[CHALLENGE] PLPE transfers loaded:",
+      allTransfers.length
+    );
+
+    return allTransfers;
+  } catch (error) {
+    console.error(
+      "[CHALLENGE] Etherscan failed:",
+      error.message
+    );
+
+    /*
+    Never return fake zero data.
+    */
+
+    if (
+      Array.isArray(
+        plpeTransfersCache.data
+      ) &&
+      plpeTransfersCache.data.length > 0
+    ) {
+      console.warn(
+        "[CHALLENGE] Using last successful PLPE transfer cache"
+      );
+
+      return (
+        plpeTransfersCache.data
+      );
+    }
+
+    throw new Error(
+      `Unable to load PLPE transfers: ${error.message}`
+    );
+  }
+}
+
+/*
+=========================================================
+INTERNAL TRANSACTIONS
+=========================================================
+*/
+
+async function getInternalTransactions(hash) {
+  try {
+    const data =
+      await etherscanRequest({
+        module: "account",
+
+        action:
+          "txlistinternal",
+
+        txhash: hash,
+      });
+
+    if (
+      !Array.isArray(
+        data.result
+      )
+    ) {
+      return [];
+    }
+
+    return data.result;
+  } catch (error) {
+    console.warn(
+      "[CHALLENGE] Internal TX error:",
+      hash,
+      error.message
+    );
+
+    return [];
+  }
+}
 
 /*
 =========================================================
@@ -576,19 +629,16 @@ async function rpc(
     await axios.post(
       RPC_URL,
       {
-        jsonrpc:
-          "2.0",
+        jsonrpc: "2.0",
 
-        id:
-          Date.now(),
+        id: Date.now(),
 
         method,
 
         params,
       },
       {
-        timeout:
-          15000,
+        timeout: 15000,
 
         headers: {
           "Content-Type":
@@ -603,7 +653,7 @@ async function rpc(
     throw new Error(
       response.data.error
         .message ||
-      "Ethereum RPC error"
+        "Ethereum RPC error"
     );
   }
 
@@ -612,498 +662,18 @@ async function rpc(
   );
 }
 
-
-/*
-=========================================================
-GET LATEST BLOCK
-=========================================================
-*/
-
-async function getLatestBlockNumber() {
-  const result =
-    await rpc(
-      "eth_blockNumber"
-    );
-
-  return Number(
-    BigInt(result)
-  );
-}
-
-
-/*
-=========================================================
-GET BLOCK TIMESTAMP
-=========================================================
-*/
-
-async function getBlockTimestamp(
-  blockNumber
-) {
-  const hexBlock =
-    "0x" +
-    Number(
-      blockNumber
-    ).toString(16);
-
-  const block =
-    await rpc(
-      "eth_getBlockByNumber",
-      [
-        hexBlock,
-        false,
-      ]
-    );
-
-  if (
-    !block ||
-    !block.timestamp
-  ) {
-    return 0;
-  }
-
-  return Number(
-    BigInt(
-      block.timestamp
-    )
-  );
-}
-
-
-/*
-=========================================================
-FIND FIRST BLOCK AT / AFTER TIMESTAMP
-=========================================================
-*/
-
-async function findFirstBlockAtOrAfterTimestamp(
-  targetTimestamp,
-  latestBlock
-) {
-  const latestTimestamp =
-    await getBlockTimestamp(
-      latestBlock
-    );
-
-  /*
-  Target is in the future.
-  Return latest block.
-  */
-  if (
-    targetTimestamp >
-    latestTimestamp
-  ) {
-    return latestBlock;
-  }
-
-  let low = 0;
-
-  let high =
-    latestBlock;
-
-  let answer =
-    latestBlock;
-
-  while (
-    low <= high
-  ) {
-    const middle =
-      Math.floor(
-        (low + high) / 2
-      );
-
-    const timestamp =
-      await getBlockTimestamp(
-        middle
-      );
-
-    if (
-      timestamp >=
-      targetTimestamp
-    ) {
-      answer =
-        middle;
-
-      high =
-        middle - 1;
-    } else {
-      low =
-        middle + 1;
-    }
-  }
-
-  return answer;
-}
-
-
-/*
-=========================================================
-PHASE BLOCK RANGE
-=========================================================
-*/
-
-async function getPhaseBlockRange(
-  phase
-) {
-  const cached =
-    blockRangeCache.get(
-      phase.id
-    );
-
-  const now =
-    Date.now();
-
-  if (
-    cached &&
-    now -
-      cached.time <
-      BLOCK_RANGE_CACHE_TIME
-  ) {
-    return cached.data;
-  }
-
-  const latestBlock =
-    await getLatestBlockNumber();
-
-  const startTimestamp =
-    phaseStartTimestamp(
-      phase
-    );
-
-  const endTimestamp =
-    phaseEndTimestamp(
-      phase
-    );
-
-  const startBlock =
-    await findFirstBlockAtOrAfterTimestamp(
-      startTimestamp,
-      latestBlock
-    );
-
-  let endBlock;
-
-  /*
-  We want blocks whose timestamp
-  is strictly before phase.end.
-
-  Find first block >= end timestamp,
-  then use previous block.
-  */
-
-  const firstEndBlock =
-    await findFirstBlockAtOrAfterTimestamp(
-      endTimestamp,
-      latestBlock
-    );
-
-  endBlock =
-    Math.max(
-      startBlock,
-      firstEndBlock - 1
-    );
-
-  /*
-  If phase end is in the future,
-  firstEndBlock is latestBlock.
-  We should include latest block.
-  */
-
-  const latestTimestamp =
-    await getBlockTimestamp(
-      latestBlock
-    );
-
-  if (
-    latestTimestamp <
-    endTimestamp
-  ) {
-    endBlock =
-      latestBlock;
-  }
-
-  const data = {
-    startBlock,
-    endBlock,
-    latestBlock,
-  };
-
-  blockRangeCache.set(
-    phase.id,
-    {
-      data,
-      time: now,
-    }
-  );
-
-  console.log(
-    `[CHALLENGE] Phase #${phase.id} block range:`,
-    data
-  );
-
-  return data;
-}
-
-
-/*
-=========================================================
-GET ALL PLPE TRANSFERS FOR PHASE
-=========================================================
-*/
-
-async function getPLPETransfers(
-  phase
-) {
-  const cached =
-    plpeTransfersCache.get(
-      phase.id
-    );
-
-  const now =
-    Date.now();
-
-  if (
-    cached &&
-    now -
-      cached.time <
-      PLPE_TRANSFERS_CACHE_TIME
-  ) {
-    return cached.data;
-  }
-
-  const {
-    startBlock,
-    endBlock,
-  } =
-    await getPhaseBlockRange(
-      phase
-    );
-
-  const allTransfers =
-    [];
-
-  try {
-    for (
-      let page = 1;
-      page <= 100;
-      page++
-    ) {
-      const data =
-        await etherscanRequest(
-          {
-            module:
-              "account",
-
-            action:
-              "tokentx",
-
-            contractaddress:
-              PLPE,
-
-            startblock:
-              startBlock,
-
-            endblock:
-              endBlock,
-
-            page,
-
-            offset:
-              1000,
-
-            sort:
-              "asc",
-          },
-          {
-            allowEmpty:
-              true,
-          }
-        );
-
-      if (
-        !Array.isArray(
-          data.result
-        )
-      ) {
-        break;
-      }
-
-      if (
-        data.result.length ===
-        0
-      ) {
-        break;
-      }
-
-      allTransfers.push(
-        ...data.result
-      );
-
-      console.log(
-        `[CHALLENGE] Phase #${phase.id} PLPE page ${page}: ${data.result.length}`
-      );
-
-      if (
-        data.result.length <
-        1000
-      ) {
-        break;
-      }
-
-      await sleep(250);
-    }
-
-    /*
-    Safety:
-    remove duplicates.
-    */
-
-    const unique =
-      new Map();
-
-    for (
-      const transfer of
-        allTransfers
-    ) {
-      const key =
-        [
-          normalizeHash(
-            transfer.hash
-          ),
-
-          transfer.transactionIndex ||
-            "",
-
-          transfer.logIndex ||
-            "",
-
-          transfer.from ||
-            "",
-
-          transfer.to ||
-            "",
-
-          transfer.value ||
-            "",
-        ].join(":");
-
-      unique.set(
-        key,
-        transfer
-      );
-    }
-
-    const result =
-      Array.from(
-        unique.values()
-      )
-        .filter(
-          (tx) =>
-            isInPhase(
-              tx.timeStamp,
-              phase
-            )
-        );
-
-    plpeTransfersCache.set(
-      phase.id,
-      {
-        data: result,
-        time: now,
-      }
-    );
-
-    console.log(
-      `[CHALLENGE] Phase #${phase.id} PLPE transfers loaded:`,
-      result.length
-    );
-
-    return result;
-
-  } catch (error) {
-    console.error(
-      `[CHALLENGE] Phase #${phase.id} Etherscan PLPE failed:`,
-      error.message
-    );
-
-    if (
-      cached?.data
-    ) {
-      console.warn(
-        `[CHALLENGE] Using last successful Phase #${phase.id} transfer cache`
-      );
-
-      return cached.data;
-    }
-
-    throw new Error(
-      `Unable to load Phase #${phase.id} PLPE transfers: ${error.message}`
-    );
-  }
-}
-
-
-/*
-=========================================================
-INTERNAL TRANSACTIONS
-=========================================================
-*/
-
-async function getInternalTransactions(
-  hash
-) {
-  try {
-    const data =
-      await etherscanRequest(
-        {
-          module:
-            "account",
-
-          action:
-            "txlistinternal",
-
-          txhash:
-            hash,
-        }
-      );
-
-    if (
-      !Array.isArray(
-        data.result
-      )
-    ) {
-      return [];
-    }
-
-    return data.result;
-
-  } catch (error) {
-    console.warn(
-      "[CHALLENGE] Internal TX error:",
-      hash,
-      error.message
-    );
-
-    return [];
-  }
-}
-
-
 /*
 =========================================================
 RECEIPT
 =========================================================
 */
 
-async function getReceipt(
-  hash
-) {
+async function getReceipt(hash) {
   try {
     return await rpc(
       "eth_getTransactionReceipt",
       [hash]
     );
-
   } catch (error) {
     console.error(
       "[CHALLENGE] Receipt error:",
@@ -1115,22 +685,18 @@ async function getReceipt(
   }
 }
 
-
 /*
 =========================================================
 TRANSACTION
 =========================================================
 */
 
-async function getTransaction(
-  hash
-) {
+async function getTransaction(hash) {
   try {
     return await rpc(
       "eth_getTransactionByHash",
       [hash]
     );
-
   } catch (error) {
     console.error(
       "[CHALLENGE] Transaction error:",
@@ -1142,16 +708,13 @@ async function getTransaction(
   }
 }
 
-
 /*
 =========================================================
 PARSE ERC20 TRANSFER
 =========================================================
 */
 
-function parseTransferLog(
-  log
-) {
+function parseTransferLog(log) {
   if (!log) {
     return null;
   }
@@ -1159,9 +722,7 @@ function parseTransferLog(
   const topics =
     log.topics || [];
 
-  if (
-    topics.length < 3
-  ) {
+  if (topics.length < 3) {
     return null;
   }
 
@@ -1197,16 +758,13 @@ function parseTransferLog(
   };
 }
 
-
 /*
 =========================================================
 RECEIPT TRANSFERS
 =========================================================
 */
 
-function getReceiptTransfers(
-  receipt
-) {
+function getReceiptTransfers(receipt) {
   const result = {
     plpe: [],
     weth: [],
@@ -1222,8 +780,7 @@ function getReceiptTransfers(
   }
 
   for (
-    const log of
-      receipt.logs
+    const log of receipt.logs
   ) {
     const transfer =
       parseTransferLog(
@@ -1256,46 +813,6 @@ function getReceiptTransfers(
   return result;
 }
 
-
-/*
-=========================================================
-GET PARTICIPANT
-=========================================================
-*/
-
-function getParticipant(
-  transaction,
-  geckoTrade
-) {
-  /*
-  Ethereum transaction sender is
-  the safest primary participant.
-
-  Gecko tx_from is secondary.
-  */
-
-  const txFrom =
-    normalizeAddress(
-      transaction?.from
-    );
-
-  if (txFrom) {
-    return txFrom;
-  }
-
-  const geckoFrom =
-    normalizeAddress(
-      geckoTrade?.txFrom
-    );
-
-  if (geckoFrom) {
-    return geckoFrom;
-  }
-
-  return "";
-}
-
-
 /*
 =========================================================
 FIND BUY
@@ -1304,8 +821,7 @@ FIND BUY
 
 function findBuy(
   receipt,
-  transaction,
-  geckoTrade
+  transaction
 ) {
   const transfers =
     getReceiptTransfers(
@@ -1315,14 +831,11 @@ function findBuy(
   /*
   BUY:
 
-  PLPE moves FROM POOL
-  to another address.
+  PLPE:
+  POOL -> PARTICIPANT
 
-  We do NOT use the recipient
-  as participant because a router
-  can be the immediate recipient.
-
-  Participant = transaction.from.
+  This is the authoritative
+  direction check.
   */
 
   const buyTransfers =
@@ -1335,141 +848,113 @@ function findBuy(
     );
 
   if (
-    buyTransfers.length ===
-    0
+    buyTransfers.length === 0
   ) {
     return null;
   }
 
-  const participant =
-    getParticipant(
-      transaction,
-      geckoTrade
-    );
-
-  if (!participant) {
-    return null;
-  }
-
   /*
-  PLPE amount leaving pool.
+  Participant is the wallet
+  receiving PLPE.
   */
 
-  const plpeAmount =
-    buyTransfers.reduce(
-      (
-        sum,
-        transfer
-      ) =>
-        sum +
-        tokenAmount(
-          transfer.value,
-          PLPE_DECIMALS
-        ),
-      0
-    );
+  const participant =
+    buyTransfers[0].to;
 
   /*
-  WETH PAYMENT:
+  WETH payment:
 
-  For a direct WETH pair,
-  the swap should result in WETH
-  moving INTO the pool.
+  PARTICIPANT -> POOL
 
-  We therefore inspect WETH transfers
-  involving the POOL.
-
-  This is much safer than:
-
-  "all WETH sent by participant"
+  Do NOT count every WETH transfer
+  leaving the participant.
   */
 
   let wethAmount = 0;
 
   for (
-    const weth of
-      transfers.weth
+    const weth of transfers.weth
   ) {
     if (
-      weth.to === POOL &&
-      weth.from !== POOL
+      weth.from === participant &&
+      weth.to === POOL
     ) {
       wethAmount +=
         tokenAmount(
-          weth.value,
-          WETH_DECIMALS
+          weth.value
         );
     }
   }
 
   /*
-  Native ETH BUY fallback.
+  Native ETH swap.
 
-  If ETH was sent directly in the
-  transaction, transaction.value
-  is the native ETH amount.
-
-  This is especially useful when
-  router unwrap/payment logic means
-  there is no WETH transfer into the
-  pool visible in this receipt.
+  For ETH -> PLPE the transaction
+  value is the amount sent by the
+  participant into the swap.
   */
 
   let nativeEthAmount = 0;
 
   if (
-    wethAmount <= 0 &&
-    transaction
+    transaction &&
+    normalizeAddress(
+      transaction.from
+    ) === participant
   ) {
-    const txFrom =
-      normalizeAddress(
-        transaction.from
+    nativeEthAmount =
+      tokenAmount(
+        transaction.value
       );
-
-    if (
-      txFrom ===
-      participant
-    ) {
-      nativeEthAmount =
-        tokenAmount(
-          transaction.value,
-          WETH_DECIMALS
-        );
-    }
   }
+
+  /*
+  Prefer WETH if directly visible.
+  Otherwise native ETH.
+  */
 
   const payment =
     wethAmount > 0
       ? wethAmount
       : nativeEthAmount;
 
+  if (payment <= 0) {
+    return null;
+  }
+
   /*
-  We allow the trade to exist even
-  if payment is unknown.
-
-  GeckoTerminal can still give us
-  exact USD volume.
-
-  If both are unavailable,
-  the USD calculation will try
-  historical prices.
+  Total PLPE received.
   */
+
+  const plpeAmount =
+    buyTransfers.reduce(
+      (sum, transfer) =>
+        sum +
+        tokenAmount(
+          transfer.value
+        ),
+      0
+    );
+
+  if (plpeAmount <= 0) {
+    return null;
+  }
 
   return {
     participant,
 
     plpeAmount,
 
-    wethAmount:
-      payment,
+    wethAmount: payment,
 
-    nativeEthAmount,
+    plpeDirection: "BUY",
 
-    plpeDirection:
-      "BUY",
+    paymentType:
+      wethAmount > 0
+        ? "WETH"
+        : "NATIVE_ETH",
   };
 }
-
 
 /*
 =========================================================
@@ -1479,8 +964,7 @@ FIND SELL
 
 function findSell(
   receipt,
-  transaction,
-  geckoTrade
+  internalTransactions
 ) {
   const transfers =
     getReceiptTransfers(
@@ -1490,131 +974,100 @@ function findSell(
   /*
   SELL:
 
-  PLPE moves INTO POOL.
+  PLPE:
+  PARTICIPANT -> POOL
   */
 
   const sellTransfers =
     transfers.plpe.filter(
       (transfer) =>
-        transfer.to ===
-          POOL &&
-        transfer.from !==
-          POOL
+        transfer.to === POOL &&
+        transfer.from !== POOL
     );
 
   if (
-    sellTransfers.length ===
-    0
+    sellTransfers.length === 0
   ) {
     return null;
   }
 
+  /*
+  Participant is the wallet
+  sending PLPE.
+  */
+
   const participant =
-    getParticipant(
-      transaction,
-      geckoTrade
-    );
-
-  if (!participant) {
-    return null;
-  }
-
-  const plpeAmount =
-    sellTransfers.reduce(
-      (
-        sum,
-        transfer
-      ) =>
-        sum +
-        tokenAmount(
-          transfer.value,
-          PLPE_DECIMALS
-        ),
-      0
-    );
+    sellTransfers[0].from;
 
   /*
-  WETH OUTPUT:
+  WETH output:
 
-  For SELL the pool sends WETH
-  OUT of the pool.
+  POOL/router -> PARTICIPANT
+
+  We primarily accept direct
+  WETH -> participant transfers.
   */
 
   let wethAmount = 0;
 
   for (
-    const weth of
-      transfers.weth
+    const weth of transfers.weth
   ) {
     if (
-      weth.from === POOL &&
-      weth.to !== POOL
+      weth.to === participant &&
+      weth.from !== participant
     ) {
       wethAmount +=
         tokenAmount(
-          weth.value,
-          WETH_DECIMALS
+          weth.value
         );
     }
   }
 
   /*
-  Native ETH fallback.
+  Native ETH output.
 
-  If WETH was unwrapped,
-  inspect internal ETH transfers
-  going to the participant.
+  When WETH is unwrapped,
+  Etherscan internal transactions
+  normally show ETH going to
+  the participant.
   */
 
   let nativeEthAmount = 0;
 
   if (
-    wethAmount <= 0
+    Array.isArray(
+      internalTransactions
+    )
   ) {
-    const internalTransactions =
-      arguments.length >= 4
-        ? arguments[3]
-        : [];
-
-    if (
-      Array.isArray(
+    for (
+      const internal of
         internalTransactions
-      )
     ) {
-      for (
-        const internal of
-          internalTransactions
+      if (
+        normalizeAddress(
+          internal.to
+        ) !== participant
       ) {
-        if (
-          normalizeAddress(
-            internal.to
-          ) !==
-          participant
-        ) {
-          continue;
-        }
+        continue;
+      }
 
-        if (
-          String(
-            internal.isError ??
-              "0"
-          ) === "1"
-        ) {
-          continue;
-        }
+      if (
+        String(
+          internal.isError ?? "0"
+        ) === "1"
+      ) {
+        continue;
+      }
 
-        const value =
-          tokenAmount(
-            internal.value,
-            WETH_DECIMALS
-          );
+      const value =
+        tokenAmount(
+          internal.value
+        );
 
-        if (
-          value > 0
-        ) {
-          nativeEthAmount +=
-            value;
-        }
+      if (value > 0) {
+        nativeEthAmount +=
+          value;
       }
     }
   }
@@ -1624,28 +1077,43 @@ function findSell(
       ? wethAmount
       : nativeEthAmount;
 
+  if (output <= 0) {
+    return null;
+  }
+
+  /*
+  Total PLPE sold.
+  */
+
+  const plpeAmount =
+    sellTransfers.reduce(
+      (sum, transfer) =>
+        sum +
+        tokenAmount(
+          transfer.value
+        ),
+      0
+    );
+
+  if (plpeAmount <= 0) {
+    return null;
+  }
+
   return {
     participant,
 
     plpeAmount,
 
-    wethAmount:
-      output,
+    wethAmount: output,
 
-    nativeEthAmount,
-
-    plpeDirection:
-      "SELL",
+    plpeDirection: "SELL",
 
     outputType:
       wethAmount > 0
         ? "WETH"
-        : nativeEthAmount > 0
-          ? "NATIVE_ETH"
-          : "UNKNOWN",
+        : "NATIVE_ETH",
   };
 }
-
 
 /*
 =========================================================
@@ -1653,44 +1121,24 @@ GECKOTERMINAL TRADES
 =========================================================
 */
 
-/*
-GeckoTerminal trades endpoint is primarily
-recent trade data.
-
-We still use it when an exact TX hash is available.
-
-It is NOT the source of truth for BUY/SELL.
-*/
-
-async function getGeckoTrades(
-  phase
-) {
-  const cached =
-    geckoTradesCache.get(
-      phase.id
-    );
-
-  const now =
-    Date.now();
+async function getGeckoTrades() {
+  const now = Date.now();
 
   if (
-    cached &&
+    geckoTradesCache.data instanceof
+      Map &&
     now -
-      cached.time <
+      geckoTradesCache.time <
       GECKO_TRADES_CACHE_TIME
   ) {
-    return cached.data;
+    return (
+      geckoTradesCache.data
+    );
   }
 
   try {
     const map =
       new Map();
-
-    /*
-    Current Gecko API exposes recent
-    trades. We deliberately keep the
-    number of pages controlled.
-    */
 
     for (
       let page = 1;
@@ -1705,8 +1153,7 @@ async function getGeckoTrades(
               page,
             },
 
-            timeout:
-              15000,
+            timeout: 15000,
 
             headers: {
               Accept:
@@ -1725,12 +1172,8 @@ async function getGeckoTrades(
         break;
       }
 
-      let reachedOlderThanPhase =
-        false;
-
       for (
-        const row of
-          rows
+        const row of rows
       ) {
         const attributes =
           row?.attributes;
@@ -1749,27 +1192,6 @@ async function getGeckoTrades(
             attributes.volume_in_usd
           );
 
-        const timestamp =
-          attributes.block_timestamp
-            ? Math.floor(
-                new Date(
-                  attributes.block_timestamp
-                ).getTime() /
-                  1000
-              )
-            : 0;
-
-        if (
-          timestamp > 0 &&
-          timestamp <
-            phaseStartTimestamp(
-              phase
-            )
-        ) {
-          reachedOlderThanPhase =
-            true;
-        }
-
         if (
           !hash ||
           !Number.isFinite(
@@ -1780,6 +1202,14 @@ async function getGeckoTrades(
           continue;
         }
 
+        /*
+        One TX hash = one verified
+        challenge trade.
+
+        The receipt decides BUY/SELL.
+        Gecko only provides USD value.
+        */
+
         map.set(
           hash,
           {
@@ -1789,11 +1219,17 @@ async function getGeckoTrades(
 
             kind:
               String(
-                attributes.kind ||
-                  ""
+                attributes.kind || ""
               ).toLowerCase(),
 
-            timestamp,
+            timestamp:
+              attributes.block_timestamp
+                ? Math.floor(
+                    new Date(
+                      attributes.block_timestamp
+                    ).getTime() / 1000
+                  )
+                : 0,
 
             txFrom:
               normalizeAddress(
@@ -1803,59 +1239,41 @@ async function getGeckoTrades(
         );
       }
 
-      /*
-      If Gecko is returning older trades
-      than our phase, there is no reason
-      to continue.
-      */
-
-      if (
-        reachedOlderThanPhase
-      ) {
-        break;
-      }
-
       if (
         rows.length < 100
       ) {
         break;
       }
 
-      /*
-      Public Gecko API rate limit protection.
-      */
-
-      await sleep(2500);
+      await sleep(150);
     }
 
-    geckoTradesCache.set(
-      phase.id,
-      {
-        data: map,
-        time: now,
-      }
+    if (map.size > 0) {
+      geckoTradesCache.data =
+        map;
+
+      geckoTradesCache.time =
+        now;
+    }
+
+    return (
+      map.size > 0
+        ? map
+        : geckoTradesCache.data ||
+          new Map()
     );
-
-    console.log(
-      `[CHALLENGE] Gecko trades cached for Phase #${phase.id}:`,
-      map.size
-    );
-
-    return map;
-
   } catch (error) {
     console.warn(
-      `[CHALLENGE] GeckoTerminal trades unavailable for Phase #${phase.id}:`,
+      "[CHALLENGE] GeckoTerminal trades unavailable:",
       error.message
     );
 
     return (
-      cached?.data ||
+      geckoTradesCache.data ||
       new Map()
     );
   }
 }
-
 
 /*
 =========================================================
@@ -1871,8 +1289,7 @@ async function getHistoricalWethCandles(
       phase.id
     );
 
-  const now =
-    Date.now();
+  const now = Date.now();
 
   if (
     cached &&
@@ -1884,35 +1301,26 @@ async function getHistoricalWethCandles(
   }
 
   try {
-    /*
-    Gecko OHLCV endpoint.
-    */
-
     const response =
       await axios.get(
         `${GECKO_BASE_URL}/networks/eth/pools/${POOL}/ohlcv/hour`,
         {
           params: {
-            aggregate:
-              1,
+            aggregate: 1,
 
             before_timestamp:
               phaseEndTimestamp(
                 phase
               ),
 
-            limit:
-              1000,
+            limit: 1000,
 
-            currency:
-              "usd",
+            currency: "usd",
 
-            token:
-              WETH,
+            token: WETH,
           },
 
-          timeout:
-            15000,
+          timeout: 15000,
 
           headers: {
             Accept:
@@ -1930,88 +1338,70 @@ async function getHistoricalWethCandles(
       !Array.isArray(list)
     ) {
       return (
-        cached?.data ||
-        []
+        cached?.data || []
       );
     }
 
     const candles =
       list
-        .map(
-          (row) => {
-            if (
-              !Array.isArray(row) ||
-              row.length < 5
-            ) {
-              return null;
-            }
-
-            const timestamp =
-              Number(row[0]);
-
-            const open =
-              Number(row[1]);
-
-            const high =
-              Number(row[2]);
-
-            const low =
-              Number(row[3]);
-
-            const close =
-              Number(row[4]);
-
-            if (
-              !Number.isFinite(
-                timestamp
-              )
-            ) {
-              return null;
-            }
-
-            const price =
-              Number.isFinite(
-                close
-              ) &&
-              close > 0
-                ? close
-                : open > 0
-                  ? open
-                  : 0;
-
-            if (
-              price <= 0
-            ) {
-              return null;
-            }
-
-            return {
-              timestamp,
-
-              open,
-
-              high,
-
-              low,
-
-              close,
-
-              price,
-            };
+        .map((row) => {
+          if (
+            !Array.isArray(row) ||
+            row.length < 5
+          ) {
+            return null;
           }
-        )
+
+          const timestamp =
+            Number(row[0]);
+
+          const open =
+            Number(row[1]);
+
+          const high =
+            Number(row[2]);
+
+          const low =
+            Number(row[3]);
+
+          const close =
+            Number(row[4]);
+
+          if (
+            !Number.isFinite(
+              timestamp
+            )
+          ) {
+            return null;
+          }
+
+          const price =
+            Number.isFinite(close) &&
+            close > 0
+              ? close
+              : open > 0
+                ? open
+                : 0;
+
+          if (price <= 0) {
+            return null;
+          }
+
+          return {
+            timestamp,
+
+            open,
+
+            high,
+
+            low,
+
+            close,
+
+            price,
+          };
+        })
         .filter(Boolean)
-        .filter(
-          (candle) =>
-            candle.timestamp >=
-              phaseStartTimestamp(
-                phase
-              ) &&
-            candle.timestamp <
-              phaseEndTimestamp(
-                phase
-              )
-        )
         .sort(
           (a, b) =>
             a.timestamp -
@@ -2024,30 +1414,28 @@ async function getHistoricalWethCandles(
       historicalWethCache.set(
         phase.id,
         {
-          data:
-            candles,
-
-          time:
-            now,
+          data: candles,
+          time: now,
         }
       );
     }
 
-    return candles;
-
+    return (
+      candles.length > 0
+        ? candles
+        : cached?.data || []
+    );
   } catch (error) {
     console.warn(
-      `[CHALLENGE] Phase #${phase.id} Gecko historical WETH unavailable:`,
+      `[CHALLENGE] Phase #${phase.id} historical WETH unavailable:`,
       error.message
     );
 
     return (
-      cached?.data ||
-      []
+      cached?.data || []
     );
   }
 }
-
 
 /*
 =========================================================
@@ -2088,8 +1476,7 @@ function findHistoricalWethPrice(
       candle.timestamp <=
       timestamp
     ) {
-      best =
-        candle;
+      best = candle;
 
       left =
         middle + 1;
@@ -2104,233 +1491,6 @@ function findHistoricalWethPrice(
     : 0;
 }
 
-
-/*
-=========================================================
-COINBASE HISTORICAL ETH/USD
-=========================================================
-*/
-
-/*
-Fallback only.
-
-Gecko pool OHLCV remains primary.
-
-Coinbase public candles are used if
-Gecko historical WETH/USD is unavailable.
-*/
-
-async function getCoinbaseHistoricalCandles(
-  phase
-) {
-  const cached =
-    coinbaseHistoricalCache.get(
-      phase.id
-    );
-
-  const now =
-    Date.now();
-
-  if (
-    cached &&
-    now -
-      cached.time <
-      COINBASE_PRICE_CACHE_TIME
-  ) {
-    return cached.data;
-  }
-
-  try {
-    const start =
-      phaseStartTimestamp(
-        phase
-      );
-
-    const end =
-      Math.min(
-        phaseEndTimestamp(
-          phase
-        ),
-        Math.floor(
-          Date.now() / 1000
-        )
-      );
-
-    if (
-      end <= start
-    ) {
-      return [];
-    }
-
-    const maxSecondsPerRequest =
-      300 * 3600;
-
-    const candles = [];
-
-    let cursor =
-      start;
-
-    while (
-      cursor < end
-    ) {
-      const chunkEnd =
-        Math.min(
-          cursor +
-            maxSecondsPerRequest,
-          end
-        );
-
-      const response =
-        await axios.get(
-          `${COINBASE_BASE_URL}/products/ETH-USD/candles`,
-          {
-            params: {
-              start:
-                new Date(
-                  cursor * 1000
-                ).toISOString(),
-
-              end:
-                new Date(
-                  chunkEnd * 1000
-                ).toISOString(),
-
-              granularity:
-                3600,
-            },
-
-            timeout:
-              15000,
-          }
-        );
-
-      const rows =
-        response.data;
-
-      if (
-        Array.isArray(rows)
-      ) {
-        for (
-          const row of
-            rows
-        ) {
-          if (
-            !Array.isArray(row) ||
-            row.length < 5
-          ) {
-            continue;
-          }
-
-          /*
-          Coinbase schema:
-
-          [timestamp, low, high, open, close]
-          */
-
-          const timestamp =
-            Number(row[0]);
-
-          const low =
-            Number(row[1]);
-
-          const high =
-            Number(row[2]);
-
-          const open =
-            Number(row[3]);
-
-          const close =
-            Number(row[4]);
-
-          const price =
-            close > 0
-              ? close
-              : open > 0
-                ? open
-                : 0;
-
-          if (
-            timestamp >= start &&
-            timestamp < end &&
-            price > 0
-          ) {
-            candles.push({
-              timestamp,
-
-              open,
-
-              high,
-
-              low,
-
-              close,
-
-              price,
-            });
-          }
-        }
-      }
-
-      cursor =
-        chunkEnd;
-
-      await sleep(250);
-    }
-
-    const unique =
-      new Map();
-
-    for (
-      const candle of
-        candles
-    ) {
-      unique.set(
-        candle.timestamp,
-        candle
-      );
-    }
-
-    const result =
-      Array.from(
-        unique.values()
-      ).sort(
-        (a, b) =>
-          a.timestamp -
-          b.timestamp
-      );
-
-    coinbaseHistoricalCache.set(
-      phase.id,
-      {
-        data:
-          result,
-
-        time:
-          now,
-      }
-    );
-
-    console.log(
-      `[CHALLENGE] Coinbase historical ETH/USD candles Phase #${phase.id}:`,
-      result.length
-    );
-
-    return result;
-
-  } catch (error) {
-    console.warn(
-      `[CHALLENGE] Coinbase historical ETH/USD unavailable:`,
-      error.message
-    );
-
-    return (
-      cached?.data ||
-      []
-    );
-  }
-}
-
-
 /*
 =========================================================
 CURRENT WETH PRICE
@@ -2338,12 +1498,10 @@ CURRENT WETH PRICE
 */
 
 async function getWethPrice() {
-  const now =
-    Date.now();
+  const now = Date.now();
 
   if (
-    wethPriceCache.value >
-      0 &&
+    wethPriceCache.value > 0 &&
     now -
       wethPriceCache.time <
       WETH_PRICE_CACHE_TIME
@@ -2360,8 +1518,7 @@ async function getWethPrice() {
       await axios.get(
         `${GECKO_BASE_URL}/networks/eth/pools/${POOL}`,
         {
-          timeout:
-            10000,
+          timeout: 10000,
 
           headers: {
             Accept:
@@ -2386,38 +1543,16 @@ async function getWethPrice() {
           ?.base_token_price_usd
       );
 
-    /*
-    For PLPE/WETH the WETH side
-    is normally quote token.
-
-    We only use a price if it looks
-    like an ETH price, not PLPE price.
-    */
-
-    let price = 0;
-
-    if (
+    const price =
       Number.isFinite(
         quotePrice
       ) &&
-      quotePrice > 100
-    ) {
-      price =
-        quotePrice;
-    }
+      quotePrice > 0
+        ? quotePrice
+        : basePrice;
 
     if (
-      price <= 0 &&
-      Number.isFinite(
-        basePrice
-      ) &&
-      basePrice > 100
-    ) {
-      price =
-        basePrice;
-    }
-
-    if (
+      Number.isFinite(price) &&
       price > 0
     ) {
       wethPriceCache.value =
@@ -2428,7 +1563,6 @@ async function getWethPrice() {
 
       return price;
     }
-
   } catch (error) {
     console.warn(
       "[CHALLENGE] Gecko WETH price unavailable:",
@@ -2437,42 +1571,62 @@ async function getWethPrice() {
   }
 
   /*
-  2. Coinbase current ETH/USD
+  2. DexScreener
   */
 
   try {
     const response =
       await axios.get(
-        `${COINBASE_BASE_URL}/products/ETH-USD/ticker`,
+        `https://api.dexscreener.com/latest/dex/pairs/ethereum/${POOL}`,
         {
-          timeout:
-            10000,
+          timeout: 10000,
         }
       );
 
-    const price =
+    const pair =
+      response.data?.pair ||
+      response.data?.pairs?.[0];
+
+    const priceUsd =
       Number(
-        response.data?.price
+        pair?.priceUsd
+      );
+
+    const priceNative =
+      Number(
+        pair?.priceNative
       );
 
     if (
       Number.isFinite(
-        price
+        priceUsd
       ) &&
-      price > 0
+      priceUsd > 0 &&
+      Number.isFinite(
+        priceNative
+      ) &&
+      priceNative > 0
     ) {
-      wethPriceCache.value =
-        price;
+      const price =
+        priceUsd /
+        priceNative;
 
-      wethPriceCache.time =
-        now;
+      if (
+        Number.isFinite(price) &&
+        price > 0
+      ) {
+        wethPriceCache.value =
+          price;
 
-      return price;
+        wethPriceCache.time =
+          now;
+
+        return price;
+      }
     }
-
   } catch (error) {
     console.warn(
-      "[CHALLENGE] Coinbase WETH price unavailable:",
+      "[CHALLENGE] DexScreener WETH price unavailable:",
       error.message
     );
   }
@@ -2487,7 +1641,6 @@ async function getWethPrice() {
   );
 }
 
-
 /*
 =========================================================
 TRADE USD VALUE
@@ -2498,13 +1651,10 @@ function getTradeUsdValue(
   trade,
   geckoTrade,
   historicalCandles,
-  coinbaseCandles,
   fallbackWethPrice
 ) {
   /*
-  =======================================================
   #1 EXACT GECKOTERMINAL TRADE
-  =======================================================
   */
 
   if (
@@ -2524,125 +1674,62 @@ function getTradeUsdValue(
   }
 
   /*
-  =======================================================
-  #2 GECKOTERMINAL HISTORICAL WETH/USD
-  =======================================================
+  #2 HISTORICAL WETH/USD
   */
 
-  if (
-    trade.wethAmount > 0
-  ) {
-    const historicalPrice =
-      findHistoricalWethPrice(
-        trade.timestamp,
-        historicalCandles
-      );
-
-    if (
-      historicalPrice > 0
-    ) {
-      const usd =
-        trade.wethAmount *
-        historicalPrice;
-
-      if (
-        Number.isFinite(
-          usd
-        ) &&
-        usd > 0
-      ) {
-        return {
-          usd,
-
-          source:
-            "GECKOTERMINAL_OHLCV",
-        };
-      }
-    }
-  }
-
-  /*
-  =======================================================
-  #3 COINBASE HISTORICAL ETH/USD
-  =======================================================
-  */
+  const historicalPrice =
+    findHistoricalWethPrice(
+      trade.timestamp,
+      historicalCandles
+    );
 
   if (
-    trade.wethAmount > 0
-  ) {
-    const coinbasePrice =
-      findHistoricalWethPrice(
-        trade.timestamp,
-        coinbaseCandles
-      );
-
-    if (
-      coinbasePrice > 0
-    ) {
-      const usd =
-        trade.wethAmount *
-        coinbasePrice;
-
-      if (
-        Number.isFinite(
-          usd
-        ) &&
-        usd > 0
-      ) {
-        return {
-          usd,
-
-          source:
-            "COINBASE_HISTORICAL_ETH_USD",
-        };
-      }
-    }
-  }
-
-  /*
-  =======================================================
-  #4 CURRENT PRICE FALLBACK
-  =======================================================
-  */
-
-  if (
-    trade.wethAmount > 0 &&
-    fallbackWethPrice > 0
+    historicalPrice > 0
   ) {
     const usd =
       trade.wethAmount *
-      fallbackWethPrice;
+      historicalPrice;
 
     if (
-      Number.isFinite(
-        usd
-      ) &&
+      Number.isFinite(usd) &&
       usd > 0
     ) {
       return {
         usd,
 
         source:
-          "CURRENT_WETH_FALLBACK",
+          "GECKOTERMINAL_OHLCV",
       };
     }
   }
 
   /*
-  =======================================================
-  UNKNOWN
-  =======================================================
+  #3 CURRENT FALLBACK
   */
 
+  const fallback =
+    trade.wethAmount *
+    fallbackWethPrice;
+
+  if (
+    Number.isFinite(fallback) &&
+    fallback > 0
+  ) {
+    return {
+      usd: fallback,
+
+      source:
+        "WETH_FALLBACK",
+    };
+  }
+
   return {
-    usd:
-      0,
+    usd: 0,
 
     source:
       "UNKNOWN",
   };
 }
-
 
 /*
 =========================================================
@@ -2657,13 +1744,10 @@ async function buildTrades(
   const byHash =
     new Map();
 
-  const trades =
-    [];
+  const trades = [];
 
   /*
-  =======================================================
-  GROUP PLPE TRANSFERS BY TX HASH
-  =======================================================
+  GROUP BY TX HASH
   */
 
   for (
@@ -2702,43 +1786,17 @@ async function buildTrades(
       .push(transfer);
   }
 
-  console.log(
-    `[CHALLENGE] Phase #${phase.id} unique TX hashes:`,
-    byHash.size
-  );
-
   /*
-  =======================================================
   MARKET DATA
-  =======================================================
   */
 
   const geckoTrades =
-    await getGeckoTrades(
-      phase
-    );
+    await getGeckoTrades();
 
   const historicalCandles =
     await getHistoricalWethCandles(
       phase
     );
-
-  /*
-  Only fetch Coinbase if needed.
-  */
-
-  let coinbaseCandles =
-    [];
-
-  if (
-    historicalCandles.length ===
-    0
-  ) {
-    coinbaseCandles =
-      await getCoinbaseHistoricalCandles(
-        phase
-      );
-  }
 
   const fallbackWethPrice =
     await getWethPrice();
@@ -2749,13 +1807,8 @@ async function buildTrades(
   );
 
   /*
-  =======================================================
   PROCESS TRANSACTIONS
-  =======================================================
   */
-
-  let processed =
-    0;
 
   for (
     const [
@@ -2763,8 +1816,6 @@ async function buildTrades(
       txTransfers,
     ] of byHash
   ) {
-    processed++;
-
     try {
       const receipt =
         await getReceipt(
@@ -2794,10 +1845,6 @@ async function buildTrades(
           hash
         );
 
-      if (!transaction) {
-        continue;
-      }
-
       const geckoTrade =
         geckoTrades.get(
           hash
@@ -2806,78 +1853,22 @@ async function buildTrades(
       const timestamp =
         Number(
           txTransfers[0]
-            ?.timeStamp ||
-            0
+            ?.timeStamp || 0
         );
 
       /*
-      =====================================================
-      DETERMINE BUY / SELL FROM PLPE POOL FLOW
-      =====================================================
-      */
-
-      const transfers =
-        getReceiptTransfers(
-          receipt
-        );
-
-      const buyTransfers =
-        transfers.plpe.filter(
-          (transfer) =>
-            transfer.from ===
-              POOL &&
-            transfer.to !==
-              POOL
-        );
-
-      const sellTransfers =
-        transfers.plpe.filter(
-          (transfer) =>
-            transfer.to ===
-              POOL &&
-            transfer.from !==
-              POOL
-        );
-
-      /*
-      A valid swap should have exactly
-      one direction relative to this pool.
-
-      If both directions exist in one TX,
-      we don't blindly classify it.
-      */
-
-      if (
-        buyTransfers.length > 0 &&
-        sellTransfers.length > 0
-      ) {
-        console.warn(
-          `[CHALLENGE] Ambiguous TX skipped: ${hash}`
-        );
-
-        continue;
-      }
-
-      /*
-      =====================================================
+      ==========================================
       BUY
-      =====================================================
+      ==========================================
       */
 
-      if (
-        buyTransfers.length > 0
-      ) {
-        const buy =
-          findBuy(
-            receipt,
-            transaction,
-            geckoTrade
-          );
+      const buy =
+        findBuy(
+          receipt,
+          transaction
+        );
 
-        if (!buy) {
-          continue;
-        }
-
+      if (buy) {
         const trade = {
           hash,
 
@@ -2895,11 +1886,10 @@ async function buildTrades(
           wethAmount:
             buy.wethAmount,
 
-          nativeEthAmount:
-            buy.nativeEthAmount,
+          paymentType:
+            buy.paymentType,
 
-          verified:
-            true,
+          verified: true,
         };
 
         const usd =
@@ -2910,8 +1900,6 @@ async function buildTrades(
 
             historicalCandles,
 
-            coinbaseCandles,
-
             fallbackWethPrice
           );
 
@@ -2920,11 +1908,6 @@ async function buildTrades(
 
         trade.volumeSource =
           usd.source;
-
-        /*
-        A verified trade with no USD value
-        cannot be used for leaderboard volume.
-        */
 
         if (
           trade.volumeUsd > 0
@@ -2938,56 +1921,24 @@ async function buildTrades(
       }
 
       /*
-      =====================================================
+      ==========================================
       SELL
-      =====================================================
+      ==========================================
       */
 
-      if (
-        sellTransfers.length > 0
-      ) {
-        /*
-        Only fetch internal TX data
-        when native ETH fallback may
-        actually be necessary.
-        */
+      const internalTransactions =
+        await getInternalTransactions(
+          hash
+        );
 
-        let internalTransactions =
-          [];
+      const sell =
+        findSell(
+          receipt,
 
-        const hasWethOut =
-          transfers.weth.some(
-            (weth) =>
-              weth.from ===
-                POOL &&
-              weth.to !==
-                POOL
-          );
+          internalTransactions
+        );
 
-        if (
-          !hasWethOut
-        ) {
-          internalTransactions =
-            await getInternalTransactions(
-              hash
-            );
-        }
-
-        const sell =
-          findSell(
-            receipt,
-
-            transaction,
-
-            geckoTrade,
-
-            internalTransactions
-          );
-
-        if (!sell) {
-          continue;
-        }
-
+      if (sell) {
         const trade = {
           hash,
 
@@ -3005,14 +1956,10 @@ async function buildTrades(
           wethAmount:
             sell.wethAmount,
 
-          nativeEthAmount:
-            sell.nativeEthAmount,
-
           outputType:
             sell.outputType,
 
-          verified:
-            true,
+          verified: true,
         };
 
         const usd =
@@ -3022,8 +1969,6 @@ async function buildTrades(
             geckoTrade,
 
             historicalCandles,
-
-            coinbaseCandles,
 
             fallbackWethPrice
           );
@@ -3042,20 +1987,6 @@ async function buildTrades(
           );
         }
       }
-
-      /*
-      Progress logging.
-      */
-
-      if (
-        processed % 100 ===
-        0
-      ) {
-        console.log(
-          `[CHALLENGE] Phase #${phase.id}: processed ${processed}/${byHash.size}`
-        );
-      }
-
     } catch (error) {
       console.error(
         "[CHALLENGE] TX processing error:",
@@ -3066,42 +1997,17 @@ async function buildTrades(
   }
 
   /*
-  =======================================================
-  REMOVE DUPLICATE TXS
-  =======================================================
+  SORT CHRONOLOGICALLY
   */
 
-  const uniqueTrades =
-    new Map();
-
-  for (
-    const trade of
-      trades
-  ) {
-    uniqueTrades.set(
-      trade.hash,
-      trade
-    );
-  }
-
-  const result =
-    Array.from(
-      uniqueTrades.values()
-    )
-      .sort(
-        (a, b) =>
-          a.timestamp -
-          b.timestamp
-      );
-
-  console.log(
-    `[CHALLENGE] Phase #${phase.id} verified trades:`,
-    result.length
+  trades.sort(
+    (a, b) =>
+      a.timestamp -
+      b.timestamp
   );
 
-  return result;
+  return trades;
 }
-
 
 /*
 =========================================================
@@ -3116,8 +2022,7 @@ function buildLeaderboard(
     new Map();
 
   for (
-    const trade of
-      trades
+    const trade of trades
   ) {
     const wallet =
       normalizeAddress(
@@ -3140,41 +2045,30 @@ function buildLeaderboard(
     }
 
     if (
-      !wallets.has(
-        wallet
-      )
+      !wallets.has(wallet)
     ) {
       wallets.set(
         wallet,
         {
           wallet,
 
-          volume:
-            0,
+          volume: 0,
 
-          buyVolume:
-            0,
+          buyVolume: 0,
 
-          sellVolume:
-            0,
+          sellVolume: 0,
 
-          trades:
-            0,
+          trades: 0,
 
-          buys:
-            0,
+          buys: 0,
 
-          sells:
-            0,
+          sells: 0,
 
-          qualifyingBuys:
-            0,
+          qualifyingBuys: 0,
 
-          entries:
-            0,
+          entries: 0,
 
-          entryDetails:
-            [],
+          entryDetails: [],
         }
       );
     }
@@ -3185,29 +2079,25 @@ function buildLeaderboard(
       );
 
     /*
-    =====================================================
     TOTAL VOLUME
-    =====================================================
     */
 
     item.volume +=
       tradeVolume;
 
-    item.trades +=
-      1;
+    item.trades += 1;
 
     /*
-    =====================================================
+    ==========================================
     BUY
-    =====================================================
+    ==========================================
     */
 
     if (
       trade.plpeDirection ===
       "BUY"
     ) {
-      item.buys +=
-        1;
+      item.buys += 1;
 
       item.buyVolume +=
         tradeVolume;
@@ -3215,14 +2105,13 @@ function buildLeaderboard(
       /*
       ENTRY:
 
-      Every individual BUY >= $2
-      gives exactly 1 ENTRY.
+      BUY >= $2
+      = exactly 1 ENTRY
 
-      BUY < $2 = 0.
+      BUY < $2
+      = 0 ENTRY
 
-      SELL = 0.
-
-      Max 6.
+      MAX = 6
       */
 
       if (
@@ -3248,16 +2137,14 @@ function buildLeaderboard(
                 "BUY",
 
               volume:
-                round(
-                  tradeVolume,
-                  4
+                Number(
+                  tradeVolume.toFixed(
+                    4
+                  )
                 ),
 
               source:
                 trade.volumeSource,
-
-              timestamp:
-                trade.timestamp,
 
               entry:
                 item.entries,
@@ -3271,17 +2158,16 @@ function buildLeaderboard(
     }
 
     /*
-    =====================================================
+    ==========================================
     SELL
-    =====================================================
+    ==========================================
     */
 
     else if (
       trade.plpeDirection ===
       "SELL"
     ) {
-      item.sells +=
-        1;
+      item.sells += 1;
 
       item.sellVolume +=
         tradeVolume;
@@ -3293,9 +2179,9 @@ function buildLeaderboard(
   }
 
   /*
-  =======================================================
+  ==========================================
   BUILD RESULT
-  =======================================================
+  ==========================================
   */
 
   const leaderboard =
@@ -3304,28 +2190,30 @@ function buildLeaderboard(
     )
       .map(
         (item) => ({
-          rank:
-            0,
+          rank: 0,
 
           wallet:
             item.wallet,
 
           volume:
-            round(
-              item.volume,
-              4
+            Number(
+              item.volume.toFixed(
+                4
+              )
             ),
 
           buyVolume:
-            round(
-              item.buyVolume,
-              4
+            Number(
+              item.buyVolume.toFixed(
+                4
+              )
             ),
 
           sellVolume:
-            round(
-              item.sellVolume,
-              4
+            Number(
+              item.sellVolume.toFixed(
+                4
+              )
             ),
 
           trades:
@@ -3360,13 +2248,6 @@ function buildLeaderboard(
       )
       .sort(
         (a, b) =>
-          /*
-          PRIMARY:
-          total volume
-
-          SECONDARY:
-          entries
-          */
           b.volume -
             a.volume ||
           b.entries -
@@ -3374,9 +2255,9 @@ function buildLeaderboard(
       );
 
   /*
-  =======================================================
+  ==========================================
   RANKING
-  =======================================================
+  ==========================================
   */
 
   leaderboard.forEach(
@@ -3391,7 +2272,6 @@ function buildLeaderboard(
 
   return leaderboard;
 }
-
 
 /*
 =========================================================
@@ -3425,20 +2305,14 @@ async function calculateChallenge(
   );
 
   /*
-  =======================================================
   LOAD TRANSFERS
-  =======================================================
   */
 
   const allPLPE =
-    await getPLPETransfers(
-      phase
-    );
+    await getPLPETransfers();
 
   /*
-  =======================================================
   PHASE FILTER
-  =======================================================
   */
 
   const phasePLPE =
@@ -3451,9 +2325,7 @@ async function calculateChallenge(
     );
 
   /*
-  =======================================================
   VERIFY TRADES
-  =======================================================
   */
 
   const verifiedTrades =
@@ -3463,9 +2335,7 @@ async function calculateChallenge(
     );
 
   /*
-  =======================================================
   LEADERBOARD
-  =======================================================
   */
 
   const leaderboard =
@@ -3474,9 +2344,7 @@ async function calculateChallenge(
     );
 
   /*
-  =======================================================
   STATS
-  =======================================================
   */
 
   const verifiedBuys =
@@ -3495,38 +2363,30 @@ async function calculateChallenge(
 
   const totalEntries =
     leaderboard.reduce(
-      (
-        sum,
-        wallet
-      ) =>
+      (sum, wallet) =>
         sum +
         wallet.entries,
+
       0
     );
 
   const totalVolume =
     verifiedTrades.reduce(
-      (
-        sum,
-        trade
-      ) =>
+      (sum, trade) =>
         sum +
         Number(
-          trade.volumeUsd ||
-            0
+          trade.volumeUsd || 0
         ),
+
       0
     );
 
   /*
-  =======================================================
   FINAL RESULT
-  =======================================================
   */
 
   return {
-    status:
-      "1",
+    status: "1",
 
     phase: {
       id:
@@ -3565,7 +2425,7 @@ async function calculateChallenge(
         "BUY + SELL",
 
       entries:
-        "Each individual BUY >= $2 gives exactly 1 ENTRY. SELL gives 0 ENTRY.",
+        "Each individual BUY >= $2 gives exactly 1 ENTRY. BUY < $2 gives 0 ENTRY. SELL gives 0 ENTRY.",
     },
 
     entries: {
@@ -3599,9 +2459,10 @@ async function calculateChallenge(
       totalEntries,
 
       totalVolume:
-        round(
-          totalVolume,
-          4
+        Number(
+          totalVolume.toFixed(
+            4
+          )
         ),
 
       qualifiedWallets:
@@ -3611,7 +2472,6 @@ async function calculateChallenge(
     leaderboard,
   };
 }
-
 
 /*
 =========================================================
@@ -3647,9 +2507,7 @@ async function getChallenge(
     Date.now();
 
   /*
-  =======================================================
   CACHE
-  =======================================================
   */
 
   if (
@@ -3673,23 +2531,19 @@ async function getChallenge(
 
     if (
       result &&
-      result.status ===
-        "1"
+      result.status === "1"
     ) {
       challengeCache.set(
         key,
         {
-          data:
-            result,
+          data: result,
 
-          time:
-            Date.now(),
+          time: Date.now(),
         }
       );
     }
 
     return result;
-
   } catch (error) {
     console.error(
       "[CHALLENGE ERROR]",
@@ -3697,7 +2551,7 @@ async function getChallenge(
     );
 
     /*
-    NEVER RETURN FAKE ZERO.
+    NEVER RETURN FAKE ZERO
     */
 
     if (
@@ -3713,7 +2567,6 @@ async function getChallenge(
     throw error;
   }
 }
-
 
 /*
 =========================================================
@@ -3740,7 +2593,6 @@ async function getChallengeLeaderboard(
       result.leaderboard,
   };
 }
-
 
 /*
 =========================================================
@@ -3779,7 +2631,6 @@ async function getChallengeDiagnostics(
       generatedAt:
         Date.now(),
     };
-
   } catch (error) {
     const cached =
       challengeCache.get(
@@ -3807,7 +2658,6 @@ async function getChallengeDiagnostics(
   }
 }
 
-
 /*
 =========================================================
 CLEAR CACHE
@@ -3818,57 +2668,32 @@ function clearChallengeCache(
   phaseId
 ) {
   if (phaseId) {
-    const id =
-      String(
-        phaseId
-      );
-
     challengeCache.delete(
-      id
-    );
-
-    plpeTransfersCache.delete(
-      id
-    );
-
-    geckoTradesCache.delete(
-      id
-    );
-
-    historicalWethCache.delete(
-      id
-    );
-
-    coinbaseHistoricalCache.delete(
-      id
-    );
-
-    blockRangeCache.delete(
-      id
+      String(phaseId)
     );
 
     console.log(
-      `[CHALLENGE] Phase #${id} cache cleared.`
+      `[CHALLENGE] Phase #${phaseId} cache cleared.`
     );
 
     return;
   }
 
-  /*
-  ALL CACHE
-  */
-
   challengeCache.clear();
 
-  plpeTransfersCache.clear();
+  plpeTransfersCache.data =
+    null;
 
-  geckoTradesCache.clear();
+  plpeTransfersCache.time =
+    0;
+
+  geckoTradesCache.data =
+    null;
+
+  geckoTradesCache.time =
+    0;
 
   historicalWethCache.clear();
-
-  coinbaseHistoricalCache.clear();
-
-  blockRangeCache.clear();
 
   wethPriceCache.value =
     0;
@@ -3880,7 +2705,6 @@ function clearChallengeCache(
     "[CHALLENGE] All challenge caches cleared."
   );
 }
-
 
 /*
 =========================================================
@@ -3902,7 +2726,6 @@ function getChallengePhases() {
     })
   );
 }
-
 
 /*
 =========================================================
