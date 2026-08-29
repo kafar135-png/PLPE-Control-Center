@@ -291,7 +291,7 @@ walletPlaceholder:
     portfolioNotQualifiedDescription:
       "Wygeneruj minimum $2 wolumenu PLPE/WETH, aby otrzymać pierwszy los.",
     live: "NA ŻYWO",
-    maxEntries: "Maks. 4 losy / portfel",
+    maxEntries: "Maks. 6 losów / portfel",
     onChainVerified: "Zweryfikowano on-chain",
     loading: "Ładowanie challenge...",
     error: "Nie można załadować challenge.",
@@ -307,3 +307,4 @@ nextPhaseDescription:
 };
 
 export default pl;
+
