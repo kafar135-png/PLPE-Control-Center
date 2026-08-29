@@ -76,7 +76,7 @@ function getSafeEntries(
   return Math.max(
     0,
     Math.min(
-      4,
+      6,
       Math.floor(
         backendEntries
       )
@@ -91,7 +91,7 @@ function getEntriesLabel(
     Math.max(
       0,
       Math.min(
-        4,
+        6,
         Math.floor(
           Number(entries) || 0
         )
