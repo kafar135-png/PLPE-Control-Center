@@ -42,20 +42,20 @@ function formatVolume(volume: number) {
 /* =========================================================
    ENTRIES
    =========================================================
-   
+
    Backend liczy:
-   
+
    BUY >= $2 -> +1 ENTRY
    BUY < $2  -> +0 ENTRY
    SELL      -> +0 ENTRY
-   
-   Maksymalnie 4 ENTRIES.
-   
+
+   Maksymalnie 6 ENTRIES na portfel / fazę.
+
    BUY $2   -> 1 ENTRY
    BUY $5   -> 1 ENTRY
    BUY $10  -> 1 ENTRY
    BUY $100 -> 1 ENTRY
-   
+
    SELL nigdy nie daje ENTRY.
    ========================================================= */
 
@@ -148,12 +148,39 @@ function getPhaseName(
   }
 
   /*
+   * PHASE #02
+   *
+   * Backend:
+   * id = "02"
+   * name = "MONTHLY CHALLENGE"
+   *
+   * Jeżeli tłumaczenie dla fazy miesięcznej
+   * istnieje w locale, używamy go.
+   */
+
+  if (
+    phaseId === "02" ||
+    phaseId === "2" ||
+    backendName.toUpperCase() ===
+      "MONTHLY CHALLENGE"
+  ) {
+    return (
+      t.challenge.monthlyChallenge ||
+      backendName ||
+      t.challenge.launchPhase
+    );
+  }
+
+  /*
    * Fallback:
    * jeżeli backend kiedyś zwróci inną fazę,
    * pokazujemy jej nazwę.
    */
 
-  return backendName || t.challenge.launchPhase;
+  return (
+    backendName ||
+    t.challenge.launchPhase
+  );
 }
 
 /* =========================================================
@@ -522,7 +549,10 @@ function ChallengeLeaderboard() {
         Przy entries i volume równych
         więcej transakcji = wyższa pozycja.
 
-     Dzięki temu:
+     4. WALLET
+        Stabilny tie-breaker.
+
+     Przykład:
 
      Wallet A:
        volume $4
