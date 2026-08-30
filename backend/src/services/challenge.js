@@ -1049,66 +1049,51 @@ value to a transaction when available.
 */
 
 async function getGeckoTrades() {
-  const now =
-    Date.now();
+  const now = Date.now();
 
   if (
-    geckoTradesCache.data instanceof
-      Map &&
-    now -
-      geckoTradesCache.time <
-        GECKO_TRADES_CACHE_TIME
+    geckoTradesCache.data instanceof Map &&
+    now - geckoTradesCache.time < GECKO_TRADES_CACHE_TIME
   ) {
-    return (
-      geckoTradesCache.data
-    );
+    return geckoTradesCache.data;
   }
 
-  try {
-    const map =
-      new Map();
+  const map = new Map();
 
-    /*
-     * Try several pages.
-     *
-     * Duplicate pages are harmless.
-     */
+  const phaseStart =
+    phaseStartTimestamp(PHASE_02);
 
-    for (
-      let page = 1;
-      page <= 10;
-      page++
-    ) {
-      const response =
-        await axios.get(
-          `${GECKO_BASE_URL}/networks/eth/pools/${POOL}/trades`,
-          {
-            params: {
-              page,
-            },
+  let pagesLoaded = 0;
 
-            timeout: 15000,
+  for (let page = 1; page <= 100; page++) {
+    try {
+      console.log(
+        `[CHALLENGE] Loading Gecko page ${page}...`
+      );
 
-            headers: {
-              Accept:
-                "application/json;version=20230203",
-            },
-          }
-        );
+      const data =
+        await getGeckoPage(page);
 
       const rows =
-        response.data?.data;
+        data?.data;
 
       if (
         !Array.isArray(rows) ||
         rows.length === 0
       ) {
+        console.log(
+          `[CHALLENGE] Gecko page ${page}: empty response`
+        );
+
         break;
       }
 
-      for (
-        const row of rows
-      ) {
+      pagesLoaded += 1;
+
+      let oldestTimestamp =
+        Number.MAX_SAFE_INTEGER;
+
+      for (const row of rows) {
         const attributes =
           row?.attributes;
 
@@ -1121,17 +1106,51 @@ async function getGeckoTrades() {
             attributes.tx_hash
           );
 
+        const wallet =
+          normalizeAddress(
+            attributes.tx_from_address
+          );
+
         const volumeUsd =
           Number(
             attributes.volume_in_usd
           );
 
+        const timestamp =
+          attributes.block_timestamp
+            ? Math.floor(
+                new Date(
+                  attributes.block_timestamp
+                ).getTime() / 1000
+              )
+            : 0;
+
+        const kind =
+          String(
+            attributes.kind || ""
+          ).toLowerCase();
+
+        if (
+          timestamp > 0 &&
+          timestamp < oldestTimestamp
+        ) {
+          oldestTimestamp =
+            timestamp;
+        }
+
         if (
           !hash ||
-          !Number.isFinite(
-            volumeUsd
-          ) ||
-          volumeUsd <= 0
+          !wallet ||
+          !Number.isFinite(volumeUsd) ||
+          volumeUsd <= 0 ||
+          !timestamp
+        ) {
+          continue;
+        }
+
+        if (
+          kind !== "buy" &&
+          kind !== "sell"
         ) {
           continue;
         }
@@ -1140,78 +1159,119 @@ async function getGeckoTrades() {
           hash,
           {
             hash,
-
+            participant: wallet,
             volumeUsd,
-
-            kind:
-              String(
-                attributes.kind ||
-                  ""
-              ).toLowerCase(),
-
-            timestamp:
-              attributes
-                .block_timestamp
-                ? Math.floor(
-                    new Date(
-                      attributes.block_timestamp
-                    ).getTime() /
-                      1000
-                  )
-                : 0,
+            kind,
+            timestamp,
+            txFrom: wallet,
           }
         );
       }
 
+      console.log(
+        `[CHALLENGE] Gecko page ${page}: ${rows.length} rows`
+      );
+
+      console.log(
+        `[CHALLENGE] Gecko page ${page}: total unique trades = ${map.size}`
+      );
+
       /*
-       * Gecko sometimes returns
-       * the same page repeatedly.
+       * IMPORTANT:
        *
-       * Do NOT use page length as
-       * the challenge transaction count.
+       * NIE kończymy tutaj na podstawie:
+       *
+       * rows.length < 100
+       *
+       * ponieważ GeckoTerminal może zwrócić mniej
+       * rekordów na stronie mimo że istnieją kolejne.
+       *
+       * Kończymy dopiero kiedy rzeczywiście
+       * przejdziemy przed początek fazy.
        */
 
       if (
-        rows.length < 100
+        oldestTimestamp < phaseStart
       ) {
+        console.log(
+          "[CHALLENGE] Reached before Phase #02."
+        );
+
         break;
       }
 
       await sleep(150);
+
+    } catch (error) {
+      console.error(
+        `[CHALLENGE] Gecko page ${page} failed:`,
+        error.message
+      );
+
+      break;
     }
+  }
 
-    if (
-      map.size > 0
-    ) {
-      geckoTradesCache.data =
-        map;
-
-      geckoTradesCache.time =
-        now;
-    }
-
-    console.log(
-      "[CHALLENGE] Gecko price matches:",
-      map.size
+  const sorted =
+    Array.from(
+      map.values()
+    ).sort(
+      (a, b) =>
+        a.timestamp -
+        b.timestamp
     );
 
-    return (
-      map.size > 0
-        ? map
-        : geckoTradesCache.data ||
-          new Map()
-    );
-  } catch (error) {
-    console.warn(
-      "[CHALLENGE] Gecko trades unavailable:",
-      error.message
-    );
+  const finalMap =
+    new Map();
 
-    return (
-      geckoTradesCache.data ||
-      new Map()
+  for (const trade of sorted) {
+    finalMap.set(
+      trade.hash,
+      trade
     );
   }
+
+  if (finalMap.size > 0) {
+    geckoTradesCache.data =
+      finalMap;
+
+    geckoTradesCache.time =
+      now;
+  }
+
+  console.log(
+    "================================================="
+  );
+
+  console.log(
+    "[CHALLENGE] GECKO DATA LOADED"
+  );
+
+  console.log(
+    "[CHALLENGE] Phase: #02"
+  );
+
+  console.log(
+    "[CHALLENGE] Pages:",
+    pagesLoaded
+  );
+
+  console.log(
+    "[CHALLENGE] Unique trades:",
+    finalMap.size
+  );
+
+  console.log(
+    "================================================="
+  );
+
+  return (
+    finalMap.size > 0
+      ? finalMap
+      : geckoTradesCache.data ||
+        new Map()
+  );
+}
 }
 
 /*
