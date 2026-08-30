@@ -43,33 +43,29 @@ function formatVolume(volume: number) {
    ENTRIES
    =========================================================
 
-   Backend liczy:
+   REGULAMIN FAZY 02:
 
-   BUY >= $2 -> +1 ENTRY
-   BUY < $2  -> +0 ENTRY
-   SELL      -> +0 ENTRY
+   BUY >= $2  = 1 ENTRY
+   BUY < $2   = 0 ENTRY
+   SELL       = 0 ENTRY
 
-   Maksymalnie 6 ENTRIES na portfel / fazę.
+   Maksymalnie:
+   6 ENTRIES / WALLET / FAZA
 
-   BUY $2   -> 1 ENTRY
-   BUY $5   -> 1 ENTRY
-   BUY $10  -> 1 ENTRY
-   BUY $100 -> 1 ENTRY
+   Ważne:
+   $2, $5, $10, $100 BUY
+   = zawsze 1 ENTRY.
 
-   SELL nigdy nie daje ENTRY.
+   ENTRY nie zależy od wielkości BUY.
    ========================================================= */
 
 function getSafeEntries(
   participant: ChallengeParticipant
 ) {
-  const backendEntries =
+  const entries =
     Number(participant.entries);
 
-  if (
-    !Number.isFinite(
-      backendEntries
-    )
-  ) {
+  if (!Number.isFinite(entries)) {
     return 0;
   }
 
@@ -77,16 +73,12 @@ function getSafeEntries(
     0,
     Math.min(
       6,
-      Math.floor(
-        backendEntries
-      )
+      Math.floor(entries)
     )
   );
 }
 
-function getEntriesLabel(
-  entries: number
-) {
+function getEntriesLabel(entries: number) {
   const safeEntries =
     Math.max(
       0,
@@ -98,7 +90,7 @@ function getEntriesLabel(
       )
     );
 
-  return `🎟️ ${safeEntries}`;
+  return `🎟️ ${safeEntries}/6`;
 }
 
 function getMedal(rank: number) {
@@ -110,81 +102,45 @@ function getMedal(rank: number) {
 }
 
 /* =========================================================
-   PHASE NAME
+   PHASE
    ========================================================= */
 
 function getPhaseName(
-  phase: ChallengeData["phase"],
-  t: any
+  phase: ChallengeData["phase"]
 ) {
-  const phaseId =
-    String(
-      phase?.id ?? ""
-    ).trim();
-
-  const backendName =
-    String(
-      phase?.name ?? ""
-    ).trim();
-
   /*
-   * PHASE #01
+   * FAZA 02 jest jedyną aktywną fazą.
    *
-   * Backend:
-   * id = "01"
-   * name = "LAUNCH PHASE"
+   * Backend powinien zwracać:
    *
-   * Frontend:
-   * FAZA STARTOWA
-   */
-
-  if (
-    phaseId === "01" ||
-    phaseId === "1" ||
-    backendName.toUpperCase() ===
-      "LAUNCH PHASE"
-  ) {
-    return t.challenge.launchPhase;
-  }
-
-  /*
-   * PHASE #02
-   *
-   * Backend:
-   * id = "02"
+   * id   = "02"
    * name = "MONTHLY CHALLENGE"
-   *
-   * Jeżeli tłumaczenie dla fazy miesięcznej
-   * istnieje w locale, używamy go.
    */
 
   if (
-    phaseId === "02" ||
-    phaseId === "2" ||
-    backendName.toUpperCase() ===
-      "MONTHLY CHALLENGE"
+    String(phase?.id) === "02" ||
+    String(phase?.id) === "2"
   ) {
-    return (
-      t.challenge.monthlyChallenge ||
-      backendName ||
-      t.challenge.launchPhase
-    );
+    return "MONTHLY CHALLENGE";
   }
 
   /*
-   * Fallback:
-   * jeżeli backend kiedyś zwróci inną fazę,
-   * pokazujemy jej nazwę.
+   * Nie tworzymy tutaj FAZY 01.
+   *
+   * Jeżeli backend zwróci coś nieoczekiwanego,
+   * pokazujemy nazwę z backendu.
    */
 
   return (
-    backendName ||
-    t.challenge.launchPhase
+    String(
+      phase?.name || ""
+    ).trim() ||
+    "MONTHLY CHALLENGE"
   );
 }
 
 /* =========================================================
-   DATE HELPERS
+   DATE
    ========================================================= */
 
 function formatPhaseDate(
@@ -215,39 +171,6 @@ function formatPhaseDate(
     date.getUTCFullYear();
 
   return `${day}.${month}.${year}`;
-}
-
-function getNextPhaseEnd(
-  phaseEnd: string
-) {
-  const currentEnd =
-    new Date(phaseEnd);
-
-  if (
-    Number.isNaN(
-      currentEnd.getTime()
-    )
-  ) {
-    return "";
-  }
-
-  /*
-   * Następna faza:
-   *
-   * start = koniec obecnej fazy
-   * end   = ten sam dzień kolejnego miesiąca
-   */
-
-  const nextEnd =
-    new Date(
-      currentEnd
-    );
-
-  nextEnd.setUTCMonth(
-    nextEnd.getUTCMonth() + 1
-  );
-
-  return nextEnd.toISOString();
 }
 
 /* =========================================================
@@ -329,29 +252,27 @@ function ChallengeLeaderboard() {
       async () => {
         try {
           const ethereum =
-            (window as any)
-              .ethereum;
+            (window as any).ethereum;
 
           if (!ethereum) {
+            setWalletAddress("");
             return;
           }
 
           const accounts =
-            await ethereum.request(
-              {
-                method:
-                  "eth_accounts",
-              }
-            );
+            await ethereum.request({
+              method:
+                "eth_accounts",
+            });
 
           if (
-            Array.isArray(
-              accounts
-            ) &&
+            Array.isArray(accounts) &&
             accounts.length > 0
           ) {
             setWalletAddress(
-              accounts[0].toLowerCase()
+              String(
+                accounts[0]
+              ).toLowerCase()
             );
           } else {
             setWalletAddress("");
@@ -375,13 +296,10 @@ function ChallengeLeaderboard() {
     detectWallet();
 
     const interval =
-      window.setInterval(
-        () => {
-          loadChallenge(false);
-          detectWallet();
-        },
-        REFRESH_INTERVAL
-      );
+      window.setInterval(() => {
+        loadChallenge(false);
+        detectWallet();
+      }, REFRESH_INTERVAL);
 
     const onFocus =
       () => {
@@ -411,21 +329,20 @@ function ChallengeLeaderboard() {
     );
 
     const ethereum =
-      (window as any)
-        .ethereum;
+      (window as any).ethereum;
 
     const onAccountsChanged =
       (
         accounts: string[]
       ) => {
         if (
-          Array.isArray(
-            accounts
-          ) &&
+          Array.isArray(accounts) &&
           accounts.length > 0
         ) {
           setWalletAddress(
-            accounts[0].toLowerCase()
+            String(
+              accounts[0]
+            ).toLowerCase()
           );
         } else {
           setWalletAddress("");
@@ -442,7 +359,7 @@ function ChallengeLeaderboard() {
     }
 
     return () => {
-      clearInterval(
+      window.clearInterval(
         interval
       );
 
@@ -477,11 +394,9 @@ function ChallengeLeaderboard() {
   if (loading) {
     return (
       <section className="challenge-card">
-
         <div className="challenge-loading">
           {t.challenge.loading}
         </div>
-
       </section>
     );
   }
@@ -496,15 +411,19 @@ function ChallengeLeaderboard() {
 
         <div className="challenge-header">
 
-          <div>
+          <div className="challenge-title-block">
 
             <div className="challenge-kicker">
               {t.challenge.title}
             </div>
 
             <h2>
-              {t.challenge.launchPhase}
+              MONTHLY CHALLENGE
             </h2>
+
+            <p>
+              PLPE/WETH · $2 minimum volume
+            </p>
 
           </div>
 
@@ -523,65 +442,50 @@ function ChallengeLeaderboard() {
   }
 
   /* =======================================================
-     PHASE NAME
+     PHASE
      ======================================================= */
 
   const phaseName =
     getPhaseName(
-      challenge.phase,
-      t
+      challenge.phase
     );
 
   /* =======================================================
-     RANKING
+     LEADERBOARD SORT
      =======================================================
 
-     PRIORYTET:
+     Kolejność:
 
-     1. ENTRIES
-        Więcej entries = wyższa pozycja.
-
-     2. VOLUME
-        Przy tej samej liczbie entries
-        większy volume = wyższa pozycja.
-
-     3. TRANSACTIONS
-        Przy entries i volume równych
-        więcej transakcji = wyższa pozycja.
-
-     4. WALLET
-        Stabilny tie-breaker.
+     1. ENTRIES — więcej = wyżej
+     2. VOLUME — więcej = wyżej
+     3. TRANSACTIONS — więcej = wyżej
+     4. WALLET — stabilny tie-breaker
 
      Przykład:
 
-     Wallet A:
-       volume $4
-       entries 2
-
-     Wallet B:
-       volume $10
-       entries 0
+     A = $4 volume / 2 entries
+     B = $10 volume / 0 entries
 
      A jest wyżej.
-
      ======================================================= */
 
   const leaderboard =
-    [...(challenge.leaderboard || [])]
+    [
+      ...(challenge.leaderboard || [])
+    ]
       .sort((a, b) => {
+
+        /* 1. ENTRIES */
+
         const entriesA =
           getSafeEntries(a);
 
         const entriesB =
           getSafeEntries(b);
 
-        /*
-         * 1. ENTRIES
-         */
-
         if (
-          entriesB !==
-          entriesA
+          entriesA !==
+          entriesB
         ) {
           return (
             entriesB -
@@ -589,9 +493,7 @@ function ChallengeLeaderboard() {
           );
         }
 
-        /*
-         * 2. VOLUME
-         */
+        /* 2. VOLUME */
 
         const volumeA =
           Number(a.volume) || 0;
@@ -600,8 +502,8 @@ function ChallengeLeaderboard() {
           Number(b.volume) || 0;
 
         if (
-          volumeB !==
-          volumeA
+          volumeA !==
+          volumeB
         ) {
           return (
             volumeB -
@@ -609,9 +511,7 @@ function ChallengeLeaderboard() {
           );
         }
 
-        /*
-         * 3. TRANSACTIONS
-         */
+        /* 3. TRANSACTIONS */
 
         const tradesA =
           Number(a.trades) || 0;
@@ -620,8 +520,8 @@ function ChallengeLeaderboard() {
           Number(b.trades) || 0;
 
         if (
-          tradesB !==
-          tradesA
+          tradesA !==
+          tradesB
         ) {
           return (
             tradesB -
@@ -629,13 +529,14 @@ function ChallengeLeaderboard() {
           );
         }
 
-        /*
-         * 4. WALLET
-         * Stabilny tie-breaker.
-         */
+        /* 4. WALLET */
 
-        return a.wallet.localeCompare(
-          b.wallet
+        return String(
+          a.wallet || ""
+        ).localeCompare(
+          String(
+            b.wallet || ""
+          )
         );
       })
       .map(
@@ -660,11 +561,10 @@ function ChallengeLeaderboard() {
     | ChallengeParticipant
     | undefined =
     leaderboard.find(
-      (
-        participant
-      ) =>
-        participant.wallet
-          .toLowerCase() ===
+      (participant) =>
+        String(
+          participant.wallet || ""
+        ).toLowerCase() ===
         normalizedWallet
     );
 
@@ -677,14 +577,6 @@ function ChallengeLeaderboard() {
 
   const phaseEnd =
     challenge.phase.end;
-
-  const nextPhaseStart =
-    phaseEnd;
-
-  const nextPhaseEnd =
-    getNextPhaseEnd(
-      phaseEnd
-    );
 
   /* =======================================================
      RENDER
@@ -712,8 +604,6 @@ function ChallengeLeaderboard() {
           <p>
             PLPE/WETH · $2 minimum volume
           </p>
-
-          {/* CURRENT PHASE */}
 
           <div
             className="challenge-phase-dates"
@@ -773,7 +663,7 @@ function ChallengeLeaderboard() {
           </span>
 
           <strong>
-            #{challenge.phase.id}
+            #02
           </strong>
         </div>
 
@@ -783,7 +673,10 @@ function ChallengeLeaderboard() {
           </span>
 
           <strong>
-            {challenge.stats.verifiedTrades}
+            {
+              challenge.stats
+                .verifiedTrades
+            }
           </strong>
         </div>
 
@@ -793,7 +686,10 @@ function ChallengeLeaderboard() {
           </span>
 
           <strong>
-            {challenge.stats.qualifiedWallets}
+            {
+              challenge.stats
+                .qualifiedWallets
+            }
           </strong>
         </div>
 
@@ -810,7 +706,7 @@ function ChallengeLeaderboard() {
       </div>
 
       {/* ===================================================
-          NEXT PHASE
+          CHALLENGE RULES
           =================================================== */}
 
       <div
@@ -828,27 +724,23 @@ function ChallengeLeaderboard() {
           lineHeight: "1.6",
         }}
       >
-        🚀{" "}
+
+        🎟️{" "}
         <strong>
-          NASTĘPNA FAZA
-        </strong>{" "}
-        {formatPhaseDate(
-          nextPhaseStart
-        )}{" "}
-        →{" "}
-        {formatPhaseDate(
-          nextPhaseEnd
-        )}
+          ZASADY ENTRY
+        </strong>
 
         <div
           style={{
-            opacity: 0.65,
-            marginTop: "2px",
+            opacity: 0.8,
+            marginTop: "4px",
           }}
         >
-          Po rozpoczęciu następnej fazy wolumen, transakcje i losy
-          zostaną wyzerowane. Każdy portfel zaczyna od zera.
+          BUY ≥ $2 = 1 ENTRY · BUY &lt; $2 = 0
+          ENTRY · SELL = 0 ENTRY · MAX 6 ENTRY
+          / WALLET
         </div>
+
       </div>
 
       {/* ===================================================
@@ -906,11 +798,16 @@ function ChallengeLeaderboard() {
               participant
             ) => {
 
+              const participantWallet =
+                String(
+                  participant.wallet ||
+                    ""
+                ).toLowerCase();
+
               const isMe =
                 Boolean(
                   normalizedWallet &&
-                  participant.wallet
-                    .toLowerCase() ===
+                  participantWallet ===
                     normalizedWallet
                 );
 
@@ -973,11 +870,13 @@ function ChallengeLeaderboard() {
 
                   </div>
 
-                  {/* TRANSACTIONS */}
+                  {/* TRADES */}
 
                   <div className="challenge-trades">
 
-                    {participant.trades}
+                    {
+                      participant.trades
+                    }
 
                   </div>
 
@@ -1009,8 +908,10 @@ function ChallengeLeaderboard() {
         <div className="challenge-my-result">
 
           <div className="my-result-title">
+
             🎯{" "}
             {t.challenge.qualifiedStatus}
+
           </div>
 
           <div className="my-result-grid">
@@ -1096,7 +997,7 @@ function ChallengeLeaderboard() {
         </span>
 
         <span>
-          {t.challenge.maxEntries}
+          MAX 6 ENTRIES
         </span>
 
         <span>
