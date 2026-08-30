@@ -6,6 +6,9 @@ require("dotenv").config();
 PLPE MONTHLY TRADING CHALLENGE
 =========================================================
 
+ACTIVE PHASE:
+PHASE #02
+
 SOURCE:
 GeckoTerminal pool trades
 
@@ -17,19 +20,28 @@ RULES:
 - MAX 6 ENTRIES / WALLET / PHASE
 - MINIMUM TOTAL VOLUME = $2
 
-ONLY ACTIVE PHASE:
-PHASE #02
+RANKING:
+1. ENTRIES
+2. VOLUME
+3. TRANSACTIONS
+4. WALLET
 =========================================================
 */
 
 /*
 =========================================================
-GECKO
+GECKOTERMINAL
 =========================================================
 */
 
 const GECKO_BASE_URL =
   "https://api.geckoterminal.com/api/v2";
+
+/*
+=========================================================
+POOL
+=========================================================
+*/
 
 const NETWORK = "eth";
 
@@ -38,7 +50,7 @@ const POOL =
 
 /*
 =========================================================
-PHASE #02
+ACTIVE PHASE
 =========================================================
 */
 
@@ -55,7 +67,7 @@ const PHASE_02 = {
 
 /*
 =========================================================
-ONLY PHASE
+ONLY ACTIVE PHASE
 =========================================================
 */
 
@@ -72,33 +84,6 @@ RULES
 const MINIMUM_BUY_FOR_ENTRY = 2;
 const MAXIMUM_ENTRIES = 6;
 const MINIMUM_VOLUME = 2;
-
-/*
-=========================================================
-REWARD
-=========================================================
-*/
-
-const REWARD_POOL = {
-  total: 100,
-  currency: "USD",
-  payoutCurrency: "ETH",
-
-  prizes: [
-    {
-      place: 1,
-      amount: 50,
-    },
-    {
-      place: 2,
-      amount: 30,
-    },
-    {
-      place: 3,
-      amount: 20,
-    },
-  ],
-};
 
 /*
 =========================================================
@@ -144,8 +129,7 @@ function normalizeHash(value) {
 
 function sleep(ms) {
   return new Promise(
-    (resolve) =>
-      setTimeout(resolve, ms)
+    (resolve) => setTimeout(resolve, ms)
   );
 }
 
@@ -157,42 +141,26 @@ PHASE HELPERS
 
 function phaseStartTimestamp(phase) {
   return Math.floor(
-    new Date(
-      phase.start
-    ).getTime() / 1000
+    new Date(phase.start).getTime() / 1000
   );
 }
 
 function phaseEndTimestamp(phase) {
   return Math.floor(
-    new Date(
-      phase.end
-    ).getTime() / 1000
+    new Date(phase.end).getTime() / 1000
   );
 }
 
-function isInPhase(
-  timestamp,
-  phase
-) {
-  const time =
-    Number(timestamp);
+function isInPhase(timestamp, phase) {
+  const time = Number(timestamp);
 
-  if (
-    !Number.isFinite(time)
-  ) {
+  if (!Number.isFinite(time)) {
     return false;
   }
 
   return (
-    time >=
-      phaseStartTimestamp(
-        phase
-      ) &&
-    time <
-      phaseEndTimestamp(
-        phase
-      )
+    time >= phaseStartTimestamp(phase) &&
+    time < phaseEndTimestamp(phase)
   );
 }
 
@@ -200,8 +168,7 @@ function getPhaseById(id) {
   return (
     PHASES.find(
       (phase) =>
-        phase.id ===
-        String(id)
+        phase.id === String(id)
     ) || null
   );
 }
@@ -210,14 +177,20 @@ function getPhaseById(id) {
 =========================================================
 ACTIVE PHASE
 =========================================================
-
-There is ONLY Phase #02.
-
-No automatic fallback to Phase #01.
-=========================================================
 */
 
 function getActivePhase() {
+  /*
+   * There is only one challenge phase:
+   * PHASE #02.
+   *
+   * We intentionally return Phase #02
+   * even outside its active date window.
+   *
+   * This keeps the API stable and prevents
+   * any fallback to the deleted Phase #01.
+   */
+
   return PHASE_02;
 }
 
@@ -272,15 +245,16 @@ async function getGeckoTrades() {
   const map = new Map();
 
   /*
-   * We only need Phase #02.
+   * We only need trades from PHASE #02.
    *
    * Gecko returns newest trades first.
+   *
+   * Stop once the oldest loaded trade is
+   * before the beginning of Phase #02.
    */
 
   const phaseStart =
-    phaseStartTimestamp(
-      PHASE_02
-    );
+    phaseStartTimestamp(PHASE_02);
 
   let pagesLoaded = 0;
 
@@ -295,9 +269,7 @@ async function getGeckoTrades() {
       );
 
       const data =
-        await getGeckoPage(
-          page
-        );
+        await getGeckoPage(page);
 
       const rows =
         data?.data;
@@ -348,8 +320,7 @@ async function getGeckoTrades() {
             ? Math.floor(
                 new Date(
                   attributes.block_timestamp
-                ).getTime() /
-                  1000
+                ).getTime() / 1000
               )
             : 0;
 
@@ -360,8 +331,7 @@ async function getGeckoTrades() {
 
         if (
           timestamp > 0 &&
-          timestamp <
-            oldestTimestamp
+          timestamp < oldestTimestamp
         ) {
           oldestTimestamp =
             timestamp;
@@ -374,9 +344,7 @@ async function getGeckoTrades() {
         if (
           !hash ||
           !wallet ||
-          !Number.isFinite(
-            volumeUsd
-          ) ||
+          !Number.isFinite(volumeUsd) ||
           volumeUsd <= 0 ||
           !timestamp
         ) {
@@ -437,6 +405,10 @@ async function getGeckoTrades() {
         break;
       }
 
+      /*
+       * Last page.
+       */
+
       if (
         rows.length < 100
       ) {
@@ -455,7 +427,8 @@ async function getGeckoTrades() {
       );
 
       /*
-       * Keep previously loaded valid data.
+       * Preserve previously loaded
+       * valid data if one page fails.
        */
 
       break;
@@ -463,7 +436,7 @@ async function getGeckoTrades() {
   }
 
   /*
-   * Sort by timestamp.
+   * Sort internally by timestamp.
    */
 
   const sorted =
@@ -506,7 +479,7 @@ async function getGeckoTrades() {
   );
 
   console.log(
-    "[CHALLENGE] Phase: 02"
+    "[CHALLENGE] Phase: #02"
   );
 
   console.log(
@@ -533,7 +506,7 @@ async function getGeckoTrades() {
 
 /*
 =========================================================
-BUILD TRADES FOR PHASE
+BUILD TRADES FOR PHASE #02
 =========================================================
 */
 
@@ -546,10 +519,8 @@ async function buildTrades(
   const trades = [];
 
   let ignoredOutsidePhase = 0;
-
   let buyCount = 0;
   let sellCount = 0;
-
   let buyBelowTwo = 0;
   let buyAtLeastTwo = 0;
 
@@ -567,6 +538,12 @@ async function buildTrades(
       continue;
     }
 
+    /*
+    =====================================================
+    BUY
+    =====================================================
+    */
+
     if (
       trade.kind === "buy"
     ) {
@@ -582,39 +559,47 @@ async function buildTrades(
       }
     }
 
+    /*
+    =====================================================
+    SELL
+    =====================================================
+    */
+
     if (
       trade.kind === "sell"
     ) {
       sellCount += 1;
     }
 
-    trades.push({
-      hash:
-        trade.hash,
+    trades.push(
+      {
+        hash:
+          trade.hash,
 
-      timestamp:
-        trade.timestamp,
+        timestamp:
+          trade.timestamp,
 
-      participant:
-        trade.participant,
+        participant:
+          trade.participant,
 
-      plpeAmount:
-        0,
+        plpeAmount:
+          0,
 
-      plpeDirection:
-        trade.kind === "buy"
-          ? "BUY"
-          : "SELL",
+        plpeDirection:
+          trade.kind === "buy"
+            ? "BUY"
+            : "SELL",
 
-      volumeUsd:
-        trade.volumeUsd,
+        volumeUsd:
+          trade.volumeUsd,
 
-      volumeSource:
-        "GECKOTERMINAL_TRADE",
+        volumeSource:
+          "GECKOTERMINAL_TRADE",
 
-      verified:
-        true,
-    });
+        verified:
+          true,
+      }
+    );
   }
 
   trades.sort(
@@ -657,7 +642,7 @@ async function buildTrades(
   );
 
   console.log(
-    "[CHALLENGE] Outside phase:",
+    "[CHALLENGE] Outside Phase #02:",
     ignoredOutsidePhase
   );
 
@@ -737,8 +722,10 @@ function buildLeaderboard(
       wallets.get(wallet);
 
     /*
-     * TOTAL VOLUME
-     */
+    =====================================================
+    TOTAL VOLUME
+    =====================================================
+    */
 
     item.volume +=
       tradeVolume;
@@ -746,8 +733,10 @@ function buildLeaderboard(
     item.trades += 1;
 
     /*
-     * BUY
-     */
+    =====================================================
+    BUY
+    =====================================================
+    */
 
     if (
       trade.plpeDirection ===
@@ -759,7 +748,7 @@ function buildLeaderboard(
         tradeVolume;
 
       /*
-       * Every BUY >= $2
+       * Every individual BUY >= $2
        * gives exactly 1 ENTRY.
        *
        * Maximum 6.
@@ -779,36 +768,40 @@ function buildLeaderboard(
           item.entries +=
             1;
 
-          item.entryDetails.push({
-            hash:
-              trade.hash,
+          item.entryDetails.push(
+            {
+              hash:
+                trade.hash,
 
-            type:
-              "BUY",
+              type:
+                "BUY",
 
-            volume:
-              Number(
-                tradeVolume.toFixed(
-                  4
-                )
-              ),
+              volume:
+                Number(
+                  tradeVolume.toFixed(
+                    4
+                  )
+                ),
 
-            source:
-              trade.volumeSource,
+              source:
+                trade.volumeSource,
 
-            entry:
-              item.entries,
+              entry:
+                item.entries,
 
-            entriesTotal:
-              item.entries,
-          });
+              entriesTotal:
+                item.entries,
+            }
+          );
         }
       }
     }
 
     /*
-     * SELL
-     */
+    =====================================================
+    SELL
+    =====================================================
+    */
 
     else if (
       trade.plpeDirection ===
@@ -822,8 +815,10 @@ function buildLeaderboard(
   }
 
   /*
-   * BUILD RESULT
-   */
+  =======================================================
+  BUILD RESULT
+  =======================================================
+  */
 
   const leaderboard =
     Array.from(
@@ -883,30 +878,89 @@ function buildLeaderboard(
             MINIMUM_VOLUME,
         })
       )
+
+      /*
+       * Only wallets with minimum
+       * total volume qualify.
+       */
+
       .filter(
         (item) =>
           item.qualified
       )
+
       /*
-       * OFFICIAL RANKING
-       *
-       * 1. ENTRIES
-       * 2. VOLUME
-       * 3. TRANSACTIONS
-       * 4. WALLET
+       ===================================================
+       RANKING — SAME AS FRONTEND
+       ===================================================
+
+       1. ENTRIES
+       2. VOLUME
+       3. TRADES
+       4. WALLET
        */
+
       .sort(
-        (a, b) =>
-          b.entries -
-            a.entries ||
-          b.volume -
-            a.volume ||
-          b.trades -
-            a.trades ||
-          a.wallet.localeCompare(
+        (a, b) => {
+
+          /*
+           * 1. ENTRIES
+           */
+
+          if (
+            b.entries !==
+            a.entries
+          ) {
+            return (
+              b.entries -
+              a.entries
+            );
+          }
+
+          /*
+           * 2. VOLUME
+           */
+
+          if (
+            b.volume !==
+            a.volume
+          ) {
+            return (
+              b.volume -
+              a.volume
+            );
+          }
+
+          /*
+           * 3. TRANSACTIONS
+           */
+
+          if (
+            b.trades !==
+            a.trades
+          ) {
+            return (
+              b.trades -
+              a.trades
+            );
+          }
+
+          /*
+           * 4. WALLET
+           *
+           * Stable deterministic
+           * tie-breaker.
+           */
+
+          return a.wallet.localeCompare(
             b.wallet
-          )
+          );
+        }
       );
+
+  /*
+   * Assign final ranks.
+   */
 
   leaderboard.forEach(
     (
@@ -931,24 +985,24 @@ async function calculateChallenge(
   phase = PHASE_02
 ) {
   /*
-   * Only Phase #02 is allowed.
+   * Force Phase #02.
+   *
+   * There is no Phase #01 anymore.
    */
 
-  if (
-    !phase ||
-    phase.id !== "02"
-  ) {
-    throw new Error(
-      "Only Challenge Phase #02 exists."
-    );
-  }
+  phase =
+    PHASE_02;
 
   console.log(
     "======================================"
   );
 
   console.log(
-    "PLPE MONTHLY TRADING CHALLENGE - PHASE #02"
+    "PLPE MONTHLY TRADING CHALLENGE"
+  );
+
+  console.log(
+    "PHASE #02"
   );
 
   console.log(
@@ -959,15 +1013,27 @@ async function calculateChallenge(
     "======================================"
   );
 
+  /*
+   * LOAD GECKO TRADES
+   */
+
   const verifiedTrades =
     await buildTrades(
       phase
     );
 
+  /*
+   * LEADERBOARD
+   */
+
   const leaderboard =
     buildLeaderboard(
       verifiedTrades
     );
+
+  /*
+   * STATS
+   */
 
   const verifiedBuys =
     verifiedTrades.filter(
@@ -1022,25 +1088,37 @@ async function calculateChallenge(
   return {
     status: "1",
 
+    /*
+    =====================================================
+    PHASE
+    =====================================================
+    */
+
     phase: {
       id:
-        phase.id,
+        PHASE_02.id,
 
       name:
-        phase.name,
+        PHASE_02.name,
 
       status:
-        phase.status,
+        PHASE_02.status,
 
       start:
-        phase.start,
+        PHASE_02.start,
 
       end:
-        phase.end,
+        PHASE_02.end,
 
       displayEnd:
-        phase.displayEnd,
+        PHASE_02.displayEnd,
     },
+
+    /*
+    =====================================================
+    RULES
+    =====================================================
+    */
 
     rules: {
       minimumVolume:
@@ -1062,8 +1140,11 @@ async function calculateChallenge(
         "Each individual BUY >= $2 gives exactly 1 ENTRY. BUY < $2 gives 0 ENTRY. SELL gives 0 ENTRY.",
     },
 
-    rewardPool:
-      REWARD_POOL,
+    /*
+    =====================================================
+    ENTRIES
+    =====================================================
+    */
 
     entries: {
       minimumBuy:
@@ -1081,6 +1162,12 @@ async function calculateChallenge(
       sell:
         "SELL = 0 ENTRY",
     },
+
+    /*
+    =====================================================
+    STATS
+    =====================================================
+    */
 
     stats: {
       plpeTransfers:
@@ -1111,6 +1198,12 @@ async function calculateChallenge(
         leaderboard.length,
     },
 
+    /*
+    =====================================================
+    LEADERBOARD
+    =====================================================
+    */
+
     leaderboard,
   };
 }
@@ -1125,23 +1218,27 @@ async function getChallenge(
   phaseId
 ) {
   /*
-   * No Phase #01.
+   * Phase #01 is gone.
    *
-   * If a caller sends 01,
-   * reject it.
+   * Any request now resolves to Phase #02.
+   */
+
+  const phase =
+    PHASE_02;
+
+  /*
+   * If an old frontend/API request
+   * sends "01", ignore it completely.
    */
 
   if (
     phaseId &&
     String(phaseId) !== "02"
   ) {
-    throw new Error(
-      `Unknown challenge phase: ${phaseId}`
+    console.warn(
+      `[CHALLENGE] Ignoring requested phase ${phaseId}. Only Phase #02 exists.`
     );
   }
-
-  const phase =
-    PHASE_02;
 
   const key =
     phase.id;
@@ -1166,7 +1263,7 @@ async function getChallenge(
   try {
     const result =
       await calculateChallenge(
-        phase
+        PHASE_02
       );
 
     if (
@@ -1224,15 +1321,6 @@ async function getChallengeLeaderboard(
     phase:
       result.phase,
 
-    rules:
-      result.rules,
-
-    rewardPool:
-      result.rewardPool,
-
-    entries:
-      result.entries,
-
     stats:
       result.stats,
 
@@ -1250,19 +1338,13 @@ DIAGNOSTICS
 async function getChallengeDiagnostics(
   phaseId
 ) {
-  if (
-    phaseId &&
-    String(phaseId) !== "02"
-  ) {
-    throw new Error(
-      `Unknown challenge phase: ${phaseId}`
-    );
-  }
+  const phase =
+    PHASE_02;
 
   try {
     const data =
       await calculateChallenge(
-        PHASE_02
+        phase
       );
 
     return {
@@ -1277,7 +1359,7 @@ async function getChallengeDiagnostics(
   } catch (error) {
     const cached =
       challengeCache.get(
-        PHASE_02.id
+        phase.id
       );
 
     if (
@@ -1310,12 +1392,17 @@ CLEAR CACHE
 function clearChallengeCache(
   phaseId
 ) {
-  if (
-    phaseId &&
-    String(phaseId) !== "02"
-  ) {
-    console.warn(
-      `[CHALLENGE] Ignoring cache clear for removed Phase #${phaseId}.`
+  /*
+   * Only Phase #02 exists.
+   */
+
+  if (phaseId) {
+    challengeCache.delete(
+      "02"
+    );
+
+    console.log(
+      "[CHALLENGE] Phase #02 cache cleared."
     );
 
     return;
@@ -1330,7 +1417,7 @@ function clearChallengeCache(
     0;
 
   console.log(
-    "[CHALLENGE] Phase #02 cache cleared."
+    "[CHALLENGE] All challenge caches cleared."
   );
 }
 
@@ -1344,7 +1431,9 @@ function getChallengePhases() {
   return [
     {
       ...PHASE_02,
-      active: true,
+
+      active:
+        true,
     },
   ];
 }
