@@ -295,7 +295,11 @@ walletPlaceholder: "Paste Ethereum wallet address...",
 nextPhase: "🚀 NEXT PHASE",
 nextPhaseDescription:
   "The next Challenge phase starts on {start} and ends on {end}. Your volume and entries will reset for the new phase.",
-  },
+      entryRules: "ENTRY RULES",
+    entryRulesDescription:
+      "BUY >= $2 = 1 ENTRY. BUY < $2 = 0 ENTRY. SELL = 0 ENTRY.",
+    pairMinimumVolume: "Minimum volume: $2",
+    phaseLabel: "PHASE",},
 };
 
 export default en;

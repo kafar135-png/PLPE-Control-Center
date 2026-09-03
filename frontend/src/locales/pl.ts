@@ -303,7 +303,11 @@ walletPlaceholder:
 nextPhase: "🚀 NASTĘPNA FAZA",
 nextPhaseDescription:
   "Kolejna faza Challenge rozpocznie się {start} i zakończy {end}. Wolumen i losy zostaną wyzerowane dla nowej fazy.",
-  },
+      entryRules: "ZASADY ENTRY",
+    entryRulesDescription:
+      "BUY >= $2 = 1 ENTRY. BUY < $2 = 0 ENTRY. SELL = 0 ENTRY.",
+    pairMinimumVolume: "Minimalny wolumen: $2",
+    phaseLabel: "FAZA",},
 };
 
 export default pl;
