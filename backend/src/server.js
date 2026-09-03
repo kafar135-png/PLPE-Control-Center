@@ -14,6 +14,9 @@ const holdersRoute = require("./routes/holders");
 const liveTradesRoute = require("./routes/liveTrades");
 const walletRoute = require("./routes/wallet");
 const challengeRoute = require("./routes/challenge");
+const onlineRoute = require("./routes/online");
+
+console.log("🔥 ONLINE ROUTE LOADED:", typeof onlineRoute);
 
 // ============================================
 // APP
@@ -167,6 +170,15 @@ app.use(
 app.use(
   "/api/challenge",
   challengeRoute
+);
+
+// ============================================
+// ONLINE USERS
+// ============================================
+
+app.use(
+  "/api/online",
+  onlineRoute
 );
 
 // ============================================
