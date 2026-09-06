@@ -10,12 +10,16 @@ const config = createConfig({
   chains: [mainnet],
 
   connectors: [
-    injected(),
+    injected({
+      shimDisconnect: true,
+    }),
   ],
 
   transports: {
     [mainnet.id]: http("https://ethereum-rpc.publicnode.com"),
   },
+
+  ssr: false,
 });
 
 interface Props {
@@ -24,7 +28,7 @@ interface Props {
 
 export default function Web3Provider({ children }: Props) {
   return (
-    <WagmiProvider config={config}>
+    <WagmiProvider config={config} reconnectOnMount={false}>
       <QueryClientProvider client={queryClient}>
         {children}
       </QueryClientProvider>
