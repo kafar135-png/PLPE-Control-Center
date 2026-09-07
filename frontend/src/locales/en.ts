@@ -265,41 +265,52 @@ walletPlaceholder: "Paste Ethereum wallet address...",
 
 },
   challenge: {
-    title: "🏆 PLPE MONTHLY TRADING CHALLENGE",
-    phase: "Phase",
-    launchPhase: "LAUNCH PHASE",
-    rewardPool: "REWARD POOL",
-    minimumVolume: "Minimum Volume",
-    trades: "Trades",
-    qualified: "Qualified",
-    wallet: "Wallet",
-    volume: "Volume",
-    entries: "Entries",
-    rank: "Rank",
-    noQualified: "No qualified portfolios",
-    noQualifiedDescription:
-      "Make a PLPE/WETH transaction with a minimum total volume of $2.",
-    portfolioNotQualified: "Your portfolio is not qualified yet.",
-    portfolioNotQualifiedDescription:
-      "Generate at least $2 in PLPE/WETH volume to receive your first entry.",
-    live: "LIVE",
-    maxEntries: "Max. 6 entries / wallet",
-    onChainVerified: "On-chain verified",
-    loading: "Loading challenge...",
-    error: "Unable to load challenge.",
-    buy: "BUY",
-    sell: "SELL",
-    buyOnly: "BUY ONLY",
-    qualifiedStatus: "Qualified",
-    phasePeriod: "Current phase: {start} → {end}",
-nextPhase: "🚀 NEXT PHASE",
-nextPhaseDescription:
-  "The next Challenge phase starts on {start} and ends on {end}. Your volume and entries will reset for the new phase.",
-      entryRules: "ENTRY RULES",
-    entryRulesDescription:
-      "BUY >= $2 = 1 ENTRY. BUY < $2 = 0 ENTRY. SELL = 0 ENTRY.",
-    pairMinimumVolume: "Minimum volume: $2",
-    phaseLabel: "PHASE",},
+  title: "MONTHLY TRADING CHALLENGE",
+  phase: "PHASE",
+  launchPhase: "LAUNCH PHASE",
+  rewardPool: "Reward Pool",
+  minimumVolume: "Minimum Volume",
+  trades: "Trades",
+  qualified: "Qualified",
+  wallet: "Wallet",
+  volume: "Volume",
+  entries: "Entries",
+  rank: "Rank",
+
+  noQualified: "No qualified portfolios",
+  noQualifiedDescription:
+    "Make a PLPE/WETH transaction with a minimum total volume of $2.",
+
+  portfolioNotQualified: "Your portfolio is not qualified yet.",
+  portfolioNotQualifiedDescription:
+    "Generate at least $2 in PLPE/WETH volume to receive your first entry.",
+
+  live: "LIVE",
+  maxEntries: "Max. 6 entries / wallet",
+  onChainVerified: "On-chain verified",
+
+  loading: "Loading challenge...",
+  error: "Unable to load challenge.",
+
+  buy: "BUY",
+  sell: "SELL",
+  buyOnly: "BUY ONLY",
+
+  qualifiedStatus: "Qualified",
+
+  phasePeriod: "Current phase: {start} → {end}",
+
+  nextPhase: "🚀 NEXT PHASE",
+  nextPhaseDescription:
+    "The next Challenge phase starts on {start} and ends on {end}. Your volume and entries will reset for the new phase.",
+
+  entryRules: "ENTRY RULES",
+  entryRulesDescription:
+    "BUY ≥ $2 = 1 ENTRY · BUY < $2 = 0 ENTRY · SELL = 0 ENTRY · MAX 6 ENTRIES / WALLET",
+
+  pairMinimumVolume: "Minimum volume: $2",
+  phaseLabel: "PHASE",
+},
 };
 
 export default en;

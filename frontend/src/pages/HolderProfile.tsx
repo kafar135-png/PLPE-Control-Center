@@ -7,6 +7,7 @@ import { useSelectedWallet } from "../hooks/useSelectedWallet";
 import { useWalletProfile } from "../hooks/useWalletProfile";
 import { useWalletHistory } from "../hooks/useWalletHistory";
 import { useLanguage } from "../hooks/useLanguage";
+
 import CardTitle from "../components/UI/CardTitle/CardTitle";
 import PortfolioPerformance from "../components/HolderProfile/PortfolioPerformance/PortfolioPerformance";
 
@@ -19,7 +20,6 @@ import {
 } from "lucide-react";
 
 export default function HolderProfile() {
-
   const { t } = useLanguage();
 
   const {
@@ -51,9 +51,12 @@ export default function HolderProfile() {
   let totalSold = 0;
 
   history.forEach((tx: any) => {
+    const decimals =
+      Number(tx.tokenDecimal) || 18;
+
     const amount =
       Number(tx.value) /
-      Math.pow(10, Number(tx.tokenDecimal));
+      Math.pow(10, decimals);
 
     if (
       tx.to?.toLowerCase() ===
@@ -70,7 +73,8 @@ export default function HolderProfile() {
     }
   });
 
-  const netPosition = totalBought - totalSold;
+  const netPosition =
+    totalBought - totalSold;
 
   return (
     <div className="page">
@@ -80,7 +84,10 @@ export default function HolderProfile() {
 
       {!isConnected && !address && (
         <div className="profile-card">
-          <h2>{t.holderProfile.noWalletSelected}</h2>
+          <h2>
+            {t.holderProfile.noWalletSelected}
+          </h2>
+
           <p>
             {t.holderProfile.noWalletDescription}
           </p>
@@ -94,7 +101,9 @@ export default function HolderProfile() {
               className="profile-card"
               style={{ marginBottom: 20 }}
             >
-              <h2>{t.holderProfile.externalWalletAnalysis}</h2>
+              <h2>
+                {t.holderProfile.externalWalletAnalysis}
+              </h2>
 
               <div className="profile-row">
                 <span className="profile-label">
@@ -123,14 +132,22 @@ export default function HolderProfile() {
               </div>
             </div>
           )}
-          <PortfolioPerformance />
+
+          {/* Portfolio Performance tylko dla podłączonego walletu */}
+          {isConnected &&
+            !usingExternalWallet &&
+            address && (
+              <PortfolioPerformance
+                address={address}
+              />
+            )}
 
           <div className="profile-grid">
             <div className="profile-card">
               <CardTitle
-  icon={Wallet}
-  title={t.holderProfile.wallet}
-/>
+                icon={Wallet}
+                title={t.holderProfile.wallet}
+              />
 
               <div className="profile-row">
                 <span className="profile-label">
@@ -138,8 +155,8 @@ export default function HolderProfile() {
                 </span>
 
                 <span className="profile-value green">
-  {t.holderProfile.ready}
-</span>
+                  {t.holderProfile.ready}
+                </span>
               </div>
 
               <div className="profile-row">
@@ -180,14 +197,14 @@ export default function HolderProfile() {
 
             <div className="profile-card">
               <CardTitle
-  icon={Coins}
-  title={t.holderProfile.holdings}
-/>
+                icon={Coins}
+                title={t.holderProfile.holdings}
+              />
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.plpeBalance}
-</span>
+                  {t.holderProfile.plpeBalance}
+                </span>
 
                 <span className="profile-value">
                   {loading
@@ -221,14 +238,14 @@ export default function HolderProfile() {
 
             <div className="profile-card">
               <CardTitle
-  icon={PieChart}
-  title={t.holderProfile.ownership}
-/>
+                icon={PieChart}
+                title={t.holderProfile.ownership}
+              />
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.supplyShare}
-</span>
+                  {t.holderProfile.supplyShare}
+                </span>
 
                 <span className="profile-value">
                   {share.toFixed(4)}%
@@ -237,8 +254,8 @@ export default function HolderProfile() {
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.transactions}
-</span>
+                  {t.holderProfile.transactions}
+                </span>
 
                 <span className="profile-value">
                   {historyLoading
@@ -262,14 +279,16 @@ export default function HolderProfile() {
 
             <div className="profile-card">
               <CardTitle
-  icon={ChartColumn}
-  title={t.holderProfile.portfolioAnalytics}
-/>
+                icon={ChartColumn}
+                title={
+                  t.holderProfile.portfolioAnalytics
+                }
+              />
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.largestBuy}
-</span>
+                  {t.holderProfile.largestBuy}
+                </span>
 
                 <span className="profile-value green">
                   {largestBuy.toLocaleString(
@@ -300,35 +319,38 @@ export default function HolderProfile() {
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.portfolioAge}
-</span>
+                  {t.holderProfile.portfolioAge}
+                </span>
 
                 <span className="profile-value">
-                  {holdingDays} 
+                  {holdingDays}
                 </span>
               </div>
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.activity}
-</span>
+                  {t.holderProfile.activity}
+                </span>
 
                 <span className="profile-value green">
-  {t.holderProfile.active}
-</span>
+                  {t.holderProfile.active}
+                </span>
               </div>
             </div>
 
             <div className="profile-card">
               <CardTitle
-  icon={TrendingUp}
-  title={t.holderProfile.portfolioPerformance}
-/>
+                icon={TrendingUp}
+                title={
+                  t.holderProfile
+                    .portfolioPerformance
+                }
+              />
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.currentBalance}
-</span>
+                  {t.holderProfile.currentBalance}
+                </span>
 
                 <span className="profile-value">
                   {balance.toLocaleString(
@@ -343,8 +365,8 @@ export default function HolderProfile() {
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.currentValue}
-</span>
+                  {t.holderProfile.currentValue}
+                </span>
 
                 <span className="profile-value green">
                   $
@@ -360,8 +382,8 @@ export default function HolderProfile() {
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.totalBought}
-</span>
+                  {t.holderProfile.totalBought}
+                </span>
 
                 <span className="profile-value green">
                   {totalBought.toLocaleString(
@@ -376,7 +398,7 @@ export default function HolderProfile() {
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.totalSold}
+                  {t.holderProfile.totalSold}
                 </span>
 
                 <span className="profile-value red">
@@ -392,8 +414,8 @@ export default function HolderProfile() {
 
               <div className="profile-row">
                 <span className="profile-label">
-  {t.holderProfile.netPosition}
-</span>
+                  {t.holderProfile.netPosition}
+                </span>
 
                 <span className="profile-value yellow">
                   {netPosition.toLocaleString(

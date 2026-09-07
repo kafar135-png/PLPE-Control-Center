@@ -1,131 +1,601 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* =========================================================
+   PLPE OS — GLOBAL CSS
+   ========================================================= */
+
+:root {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: #f8fafc;
+  background: #05070b;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --plpe-green: #00ff8c;
+  --plpe-green-dark: #00c96f;
+  --plpe-bg: #05070b;
+  --plpe-card: #101622;
+  --plpe-card-2: #151c2b;
+  --plpe-border: #263149;
+  --plpe-text: #f8fafc;
+  --plpe-muted: #94a3b8;
+  --plpe-red: #ff4d67;
+  --plpe-yellow: #ffd84d;
 }
 
-:root{
-
-    --plpe-green:#22c55e;
-    --plpe-green-hover:#31e674;
-
-    --bg:#090b11;
-    --bg2:#0d1119;
-
-    --text:#ffffff;
-    --text2:#b8c1d6;
-
+* {
+  box-sizing: border-box;
 }
 
-html{
-
-    scroll-behavior:smooth;
-
+html {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  background: var(--plpe-bg);
 }
 
-body{
-
-    margin:0;
-
-    color:var(--text);
-
-    font-family:
-        Inter,
-        "Segoe UI",
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background:
-
-        radial-gradient(
-            circle at top,
-            rgba(34,197,94,.08),
-            transparent 35%
-        ),
-
-        radial-gradient(
-            circle at bottom right,
-            rgba(220,38,38,.05),
-            transparent 40%
-        ),
-
-        linear-gradient(
-            180deg,
-            var(--bg) 0%,
-            var(--bg2) 100%
-        );
-
-    -webkit-font-smoothing:antialiased;
-
-    -moz-osx-font-smoothing:grayscale;
-
-    overflow-x:hidden;
-
+body {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: var(--plpe-bg);
+  color: var(--plpe-text);
+  overflow-x: hidden;
 }
 
-body::before{
-
-    content:"";
-
-    position:fixed;
-
-    inset:0;
-
-    pointer-events:none;
-
-    background:
-
-        radial-gradient(
-            circle,
-            rgba(255,255,255,.015) 1px,
-            transparent 1px
-        );
-
-    background-size:34px 34px;
-
-    opacity:.35;
-
+#root {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
-#root{
-
-    width:100%;
-
-    min-height:100vh;
-
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
-::selection{
-
-    background:rgba(34,197,94,.35);
-
-    color:white;
-
+button {
+  cursor: pointer;
 }
 
-::-webkit-scrollbar{
-
-    width:10px;
-
+img {
+  display: block;
+  max-width: 100%;
 }
 
-::-webkit-scrollbar-track{
-
-    background:#0d1119;
-
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-::-webkit-scrollbar-thumb{
+/* =========================================================
+   DESKTOP — GLOBAL SAFETY
+   ========================================================= */
 
-    background:rgba(34,197,94,.30);
-
-    border-radius:50px;
-
+.page {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-::-webkit-scrollbar-thumb:hover{
+.profile-grid,
+.dashboard-grid,
+.analytics-grid,
+.stats-grid {
+  min-width: 0;
+}
 
-    background:rgba(34,197,94,.55);
+.profile-card,
+.card,
+.stat-card {
+  min-width: 0;
+  box-sizing: border-box;
+}
 
+/* =========================================================
+   TABLET / ANDROID
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+  html,
+  body,
+  #root {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    min-height: 100vh;
+    background: #05070b !important;
+  }
+
+  /* -------------------------------------------------------
+     APP WRAPPER
+     ------------------------------------------------------- */
+
+  #root > * {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* -------------------------------------------------------
+     SIDEBAR
+     ------------------------------------------------------- */
+
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+
+    width: 76px !important;
+    min-width: 76px !important;
+    max-width: 76px !important;
+
+    height: 100vh !important;
+
+    padding: 12px 7px !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    z-index: 1000 !important;
+  }
+
+  .sidebar-logo {
+    width: 100% !important;
+    padding: 4px 0 16px !important;
+    text-align: center !important;
+  }
+
+  .sidebar-logo img,
+  .sidebar-logo-image {
+    width: 54px !important;
+    height: 54px !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+  }
+
+  .sidebar-logo h1,
+  .sidebar-logo h2,
+  .sidebar-logo h3 {
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    margin: 5px 0 0 !important;
+  }
+
+  .sidebar-logo p,
+  .sidebar-logo small {
+    display: none !important;
+  }
+
+  /* -------------------------------------------------------
+     SIDEBAR MENU
+     ------------------------------------------------------- */
+
+  .sidebar-menu {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .sidebar-menu a,
+  .sidebar-menu button,
+  .sidebar-link {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    min-height: 54px !important;
+
+    margin: 4px 0 !important;
+    padding: 10px 4px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 0 !important;
+
+    border-radius: 13px !important;
+
+    overflow: hidden !important;
+  }
+
+  .sidebar-menu a > span:not(:first-child),
+  .sidebar-menu button > span:not(:first-child),
+  .sidebar-link > span:last-child {
+    display: none !important;
+  }
+
+  .sidebar-menu svg,
+  .sidebar-link svg {
+    width: 27px !important;
+    height: 27px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* -------------------------------------------------------
+     WALLET PANEL
+     ------------------------------------------------------- */
+
+  .wallet-panel {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    margin: 16px 0 !important;
+    padding: 10px 5px !important;
+
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .wallet-panel .wallet-title {
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 1px !important;
+  }
+
+  .wallet-panel .wallet-status {
+    justify-content: center !important;
+    font-size: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  .wallet-panel button {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    padding: 9px 3px !important;
+
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+
+    white-space: normal !important;
+  }
+
+  .wallet-address,
+  .wallet-info,
+  .wallet-stats {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* -------------------------------------------------------
+     SIDEBAR FOOTER
+     ------------------------------------------------------- */
+
+  .sidebar-footer {
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* -------------------------------------------------------
+     MAIN CONTENT
+     ------------------------------------------------------- */
+
+  main {
+    width: calc(100% - 76px) !important;
+    min-width: 0 !important;
+    max-width: calc(100% - 76px) !important;
+
+    margin-left: 76px !important;
+
+    padding: 12px !important;
+
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+  }
+
+  .main,
+  .main-content,
+  .content,
+  .content-area {
+    width: calc(100% - 76px) !important;
+    min-width: 0 !important;
+    max-width: calc(100% - 76px) !important;
+
+    margin-left: 76px !important;
+
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+  }
+
+  /* -------------------------------------------------------
+     PAGE
+     ------------------------------------------------------- */
+
+  .page {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    margin: 0 !important;
+    padding: 10px !important;
+
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+  }
+
+  /* -------------------------------------------------------
+     TOP BAR
+     ------------------------------------------------------- */
+
+  .topbar,
+  .top-bar {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    overflow-x: hidden !important;
+  }
+
+  /* -------------------------------------------------------
+     HEADINGS
+     ------------------------------------------------------- */
+
+  h1 {
+    max-width: 100% !important;
+
+    font-size: 24px !important;
+    line-height: 1.15 !important;
+
+    word-break: break-word !important;
+  }
+
+  h2 {
+    max-width: 100% !important;
+
+    font-size: 20px !important;
+    line-height: 1.2 !important;
+  }
+
+  h3 {
+    max-width: 100% !important;
+
+    font-size: 17px !important;
+  }
+
+  p {
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* -------------------------------------------------------
+     GRIDS
+     ------------------------------------------------------- */
+
+  .profile-grid,
+  .dashboard-grid,
+  .analytics-grid,
+  .stats-grid {
+    display: grid !important;
+
+    grid-template-columns: minmax(0, 1fr) !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    gap: 14px !important;
+  }
+
+  /* -------------------------------------------------------
+     CARDS
+     ------------------------------------------------------- */
+
+  .profile-card,
+  .card,
+  .stat-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+  }
+
+  /* -------------------------------------------------------
+     PROFILE ROWS
+     ------------------------------------------------------- */
+
+  .profile-row {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+
+    flex-wrap: wrap !important;
+
+    gap: 6px !important;
+  }
+
+  .profile-label,
+  .profile-value {
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    overflow-wrap: anywhere !important;
+  }
+
+  /* -------------------------------------------------------
+     TABLES
+     ------------------------------------------------------- */
+
+  .table-container,
+  .table-wrapper,
+  .transaction-table {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    overflow-x: auto !important;
+  }
+
+  table {
+    max-width: 100% !important;
+  }
+
+  /* -------------------------------------------------------
+     CHARTS
+     ------------------------------------------------------- */
+
+  .chart-container,
+  .chart-area,
+  .portfolio-chart {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+  }
+
+  /* -------------------------------------------------------
+     LANGUAGE SWITCHER
+     ------------------------------------------------------- */
+
+  .language-switcher,
+  .language-selector {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .language-switcher select,
+  .language-selector select,
+  select {
+    max-width: 100% !important;
+  }
+
+  /* -------------------------------------------------------
+     BUTTONS
+     ------------------------------------------------------- */
+
+  button {
+    max-width: 100%;
+  }
+
+  /* -------------------------------------------------------
+     IMAGES
+     ------------------------------------------------------- */
+
+  img {
+    max-width: 100% !important;
+  }
+
+  /* -------------------------------------------------------
+     FLEX CONTAINERS
+     ------------------------------------------------------- */
+
+  .profile-header,
+  .portfolio-header,
+  .challenge-header,
+  .challenge-header-actions {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* -------------------------------------------------------
+     LONG TEXT / ADDRESSES
+     ------------------------------------------------------- */
+
+  code,
+  pre,
+  .wallet-address,
+  .address,
+  .tx-hash {
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+}
+
+/* =========================================================
+   SMALL ANDROID PHONES
+   ========================================================= */
+
+@media screen and (max-width: 480px) {
+
+  .sidebar {
+    width: 68px !important;
+    min-width: 68px !important;
+    max-width: 68px !important;
+
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+
+  main,
+  .main,
+  .main-content,
+  .content,
+  .content-area {
+    width: calc(100% - 68px) !important;
+    max-width: calc(100% - 68px) !important;
+
+    margin-left: 68px !important;
+
+    padding: 8px !important;
+  }
+
+  .page {
+    padding: 8px !important;
+  }
+
+  .sidebar-logo img,
+  .sidebar-logo-image {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .sidebar-menu a,
+  .sidebar-menu button,
+  .sidebar-link {
+    min-height: 50px !important;
+  }
+
+  .sidebar-menu svg,
+  .sidebar-link svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  h1 {
+    font-size: 21px !important;
+  }
+
+  h2 {
+    font-size: 18px !important;
+  }
 }

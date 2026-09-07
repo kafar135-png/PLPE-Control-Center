@@ -272,42 +272,53 @@ walletPlaceholder:
   copyFailed: "Nie udało się skopiować kontraktu.",
 
 },
-  challenge: {
-    title: "🏆 MIESIĘCZNY CHALLENGE PLPE",
-    phase: "Faza",
-    launchPhase: "FAZA STARTOWA",
-    rewardPool: "PULA NAGRÓD",
-    minimumVolume: "Minimalny wolumen",
-    trades: "Transakcje",
-    qualified: "Zakwalifikowani",
-    wallet: "Portfel",
-    volume: "Wolumen",
-    entries: "Losy",
-    rank: "Miejsce",
-    noQualified: "Brak zakwalifikowanych portfeli",
-    noQualifiedDescription:
-      "Wykonaj transakcję PLPE/WETH o łącznym wolumenie minimum $2.",
-    portfolioNotQualified: "Twój portfel nie jest jeszcze zakwalifikowany.",
-    portfolioNotQualifiedDescription:
-      "Wygeneruj minimum $2 wolumenu PLPE/WETH, aby otrzymać pierwszy los.",
-    live: "NA ŻYWO",
-    maxEntries: "Maks. 6 losów / portfel",
-    onChainVerified: "Zweryfikowano on-chain",
-    loading: "Ładowanie challenge...",
-    error: "Nie można załadować challenge.",
-    buy: "KUPNO",
-    sell: "SPRZEDAŻ",
-    buyOnly: "TYLKO ZAKUPY",
-    qualifiedStatus: "Zakwalifikowany",
-    phasePeriod: "Aktualna faza: {start} → {end}",
-nextPhase: "🚀 NASTĘPNA FAZA",
-nextPhaseDescription:
-  "Kolejna faza Challenge rozpocznie się {start} i zakończy {end}. Wolumen i losy zostaną wyzerowane dla nowej fazy.",
-      entryRules: "ZASADY ENTRY",
-    entryRulesDescription:
-      "BUY >= $2 = 1 ENTRY. BUY < $2 = 0 ENTRY. SELL = 0 ENTRY.",
-    pairMinimumVolume: "Minimalny wolumen: $2",
-    phaseLabel: "FAZA",},
+ challenge: {
+  title: "MIESIĘCZNY TRADING CHALLENGE",
+  phase: "FAZA",
+  launchPhase: "FAZA STARTOWA",
+  rewardPool: "Pula nagród",
+  minimumVolume: "Minimalny wolumen",
+  trades: "Transakcje",
+  qualified: "Zakwalifikowani",
+  wallet: "Portfel",
+  volume: "Wolumen",
+  entries: "Losy",
+  rank: "Miejsce",
+
+  noQualified: "Brak zakwalifikowanych portfeli",
+  noQualifiedDescription:
+    "Wykonaj transakcję PLPE/WETH z minimalnym łącznym wolumenem $2.",
+
+  portfolioNotQualified: "Twój portfel nie jest jeszcze zakwalifikowany.",
+  portfolioNotQualifiedDescription:
+    "Wygeneruj co najmniej $2 wolumenu PLPE/WETH, aby otrzymać pierwszy los.",
+
+  live: "NA ŻYWO",
+  maxEntries: "Maks. 6 losów / portfel",
+  onChainVerified: "Zweryfikowano on-chain",
+
+  loading: "Ładowanie challenge...",
+  error: "Nie udało się załadować challenge.",
+
+  buy: "KUPNO",
+  sell: "SPRZEDAŻ",
+  buyOnly: "TYLKO KUPNO",
+
+  qualifiedStatus: "Zakwalifikowany",
+
+  phasePeriod: "Aktualna faza: {start} → {end}",
+
+  nextPhase: "🚀 NASTĘPNA FAZA",
+  nextPhaseDescription:
+    "Następna faza Challenge rozpocznie się {start} i zakończy {end}. Twój wolumen i liczba losów zostaną zresetowane dla nowej fazy.",
+
+  entryRules: "ZASADY ENTRY",
+  entryRulesDescription:
+    "BUY ≥ $2 = 1 ENTRY · BUY < $2 = 0 ENTRY · SELL = 0 ENTRY · MAX 6 ENTRY / PORTFEL",
+
+  pairMinimumVolume: "Minimalny wolumen: $2",
+  phaseLabel: "FAZA",
+},
 };
 
 export default pl;

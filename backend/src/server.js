@@ -50,13 +50,13 @@ app.use(
         return callback(null, true);
       }
 
-      // Produkcyjny frontend PLPE OS
-      if (
-        origin === "https://plpe-control-center.vercel.app"
-      ) {
-        return callback(null, true);
-      }
-
+   // Produkcyjny frontend PLPE OS
+if (
+  origin === "https://plpe-control-center.vercel.app" ||
+  origin === `https://${process.env.VERCEL_URL}`
+) {
+  return callback(null, true);
+}
       console.warn(
         `[CORS] Blocked origin: ${origin}`
       );

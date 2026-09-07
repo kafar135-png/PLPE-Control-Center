@@ -460,13 +460,6 @@ function ChallengeLeaderboard() {
      2. VOLUME — więcej = wyżej
      3. TRANSACTIONS — więcej = wyżej
      4. WALLET — stabilny tie-breaker
-
-     Przykład:
-
-     A = $4 volume / 2 entries
-     B = $10 volume / 0 entries
-
-     A jest wyżej.
      ======================================================= */
 
   const leaderboard =
@@ -630,22 +623,49 @@ function ChallengeLeaderboard() {
         </div>
 
         {/* =================================================
-            REWARD
+            TRADE + REWARD
             ================================================= */}
 
-        <div className="challenge-reward">
+        <div className="challenge-header-actions">
 
-          <span>
-            {t.challenge.rewardPool}
-          </span>
+          {/* TRADE PLPE */}
 
-          <strong>
-            $100
-          </strong>
+          <a
+            href="https://app.uniswap.org/swap?chain=mainnet&inputCurrency=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2&outputCurrency=0xc34e5ef4f7f5607fbd3e060077cd6e2161ab54c7"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="challenge-trade-button"
+          >
+            <span>
+              ⚡
+            </span>
 
-          <small>
-            🥇 $50 · 🥈 $30 · 🥉 $20 ETH
-          </small>
+            <strong>
+              TRADE PLPE
+            </strong>
+
+            <small>
+              PLPE / WETH
+            </small>
+          </a>
+
+          {/* REWARD POOL */}
+
+          <div className="challenge-reward">
+
+            <span>
+              {t.challenge.rewardPool}
+            </span>
+
+            <strong>
+              $100
+            </strong>
+
+            <small>
+              🥇 $50 · 🥈 $30 · 🥉 $20 ETH
+            </small>
+
+          </div>
 
         </div>
 
@@ -727,7 +747,7 @@ function ChallengeLeaderboard() {
 
         🎟️{" "}
         <strong>
-          ZASADY ENTRY
+          {t.challenge.entryRules}
         </strong>
 
         <div
@@ -736,9 +756,7 @@ function ChallengeLeaderboard() {
             marginTop: "4px",
           }}
         >
-          BUY ≥ $2 = 1 ENTRY · BUY &lt; $2 = 0
-          ENTRY · SELL = 0 ENTRY · MAX 6 ENTRY
-          / WALLET
+          {t.challenge.entryRulesDescription}
         </div>
 
       </div>
