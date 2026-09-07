@@ -2751,55 +2751,30 @@ async function calculateChallenge(
 
   /*
    * =======================================================
-   * 5. SAVE ONLY DURABLE VERIFIED TX TO LEDGER
+   * 5. SAVE VERIFIED TX PERMANENTLY TO LEDGER
    * =======================================================
    *
-   * Do persistent Ledger zapisujemy tylko:
+   * KAŻDA zweryfikowana transakcja zostaje zapisana.
    *
-   * - GECKOTERMINAL_TRADE
-   * - GECKOTERMINAL_OHLCV
+   * Po zapisaniu:
    *
-   * WETH_FALLBACK NIE jest zapisywany na stale.
+   * - wallet jest stały
+   * - BUY / SELL jest stałe
+   * - volume USD jest stałe
+   * - source jest stałe
+   * - ENTRY jest stałe
    *
-   * Dzięki temu chwilowa awaria Gecko/Historical WETH
-   * nie zamraża przybliżonej wartości USD w Ledgerze.
+   * Refresh strony NIE przelicza starych transakcji.
    *
-   * Fallback może być użyty tymczasowo w aktualnym
-   * leaderboardzie, ale TX zostanie ponownie sprawdzony
-   * przy następnym przeliczeniu.
+   * Nowe transakcje są dodawane do Ledgeru,
+   * stare pozostają bez zmian.
    */
 
-  const persistentTrades =
-    newVerifiedTrades.filter(
-      (trade) =>
-        trade.volumeSource ===
-          "GECKOTERMINAL_TRADE" ||
-        trade.volumeSource ===
-          "GECKOTERMINAL_OHLCV"
-    );
-
-  const transientTrades =
-    newVerifiedTrades.filter(
-      (trade) =>
-        trade.volumeSource ===
-          "WETH_FALLBACK"
-    );
-
-  console.log(
-    "[CHALLENGE] Durable trades:",
-    persistentTrades.length
-  );
-
-  console.log(
-    "[CHALLENGE] Transient WETH fallback trades:",
-    transientTrades.length
-  );
-
   if (
-    persistentTrades.length > 0
+    newVerifiedTrades.length > 0
   ) {
     const ledgerInsertRows =
-      persistentTrades
+      newVerifiedTrades
         .map(
           (trade) => ({
             phase_id:
@@ -2841,7 +2816,8 @@ async function calculateChallenge(
               ).toISOString(),
 
             source:
-              trade.volumeSource,
+              trade.volumeSource ||
+              "UNKNOWN",
 
             verified:
               true,
@@ -2851,6 +2827,9 @@ async function calculateChallenge(
           (row) =>
             row.tx_hash &&
             row.wallet &&
+            Number.isFinite(
+              row.volume_usd
+            ) &&
             row.volume_usd > 0
         );
 
@@ -2863,7 +2842,7 @@ async function calculateChallenge(
         );
 
       console.log(
-        "[CHALLENGE] Durable trades saved to Ledger:",
+        "[CHALLENGE] Trades permanently saved to Ledger:",
         inserted.length
       );
     }
@@ -2871,13 +2850,13 @@ async function calculateChallenge(
 
   /*
    * =======================================================
-   * 6. READ LEDGER AGAIN + ADD TRANSIENT FALLBACKS
+   * 6. READ FINAL PERSISTENT LEDGER
    * =======================================================
    *
-   * Persistent TX bierzemy z Supabase.
+   * Leaderboard powstaje WYŁĄCZNIE z Supabase Ledger.
    *
-   * WETH_FALLBACK dodajemy tylko do wyniku bieżącego
-   * requestu. Nie zapisujemy go do Supabase.
+   * Nie dokładamy żadnych transient/fallback wyników
+   * tylko na czas requestu.
    */
 
   const finalLedgerRows =
@@ -2885,110 +2864,35 @@ async function calculateChallenge(
       phase.id
     );
 
-  const verifiedTradesMap =
-    new Map();
-
-  for (
-    const row of
-      finalLedgerRows
-  ) {
-    const trade =
-      ledgerRowToTrade(
-        row
-      );
-
-    if (
-      !trade.verified ||
-      !Number.isFinite(
-        Number(
-          trade.volumeUsd
-        )
-      ) ||
-      Number(
-        trade.volumeUsd
-      ) <= 0
-    ) {
-      continue;
-    }
-
-    const hash =
-      normalizeHash(
-        trade.hash
-      );
-
-    if (!hash) {
-      continue;
-    }
-
-    verifiedTradesMap.set(
-      hash,
-      trade
-    );
-  }
-
-  /*
-   * Dodajemy fallback tylko do aktualnego wyniku.
-   * Nie może nadpisać lepszego rekordu z Ledgeru.
-   */
-
-  for (
-    const trade of
-      transientTrades
-  ) {
-    if (
-      !trade.verified ||
-      !Number.isFinite(
-        Number(
-          trade.volumeUsd
-        )
-      ) ||
-      Number(
-        trade.volumeUsd
-      ) <= 0
-    ) {
-      continue;
-    }
-
-    const hash =
-      normalizeHash(
-        trade.hash
-      );
-
-    if (
-      !hash ||
-      verifiedTradesMap.has(
-        hash
-      )
-    ) {
-      continue;
-    }
-
-    verifiedTradesMap.set(
-      hash,
-      trade
-    );
-  }
-
   const verifiedTrades =
-    Array.from(
-      verifiedTradesMap.values()
-    ).sort(
-      (a, b) =>
-        Number(
-          a.timestamp || 0
-        ) -
-        Number(
-          b.timestamp || 0
-        )
-    );
+    finalLedgerRows
+      .map(
+        ledgerRowToTrade
+      )
+      .filter(
+        (trade) =>
+          trade.verified &&
+          Number.isFinite(
+            Number(
+              trade.volumeUsd
+            )
+          ) &&
+          Number(
+            trade.volumeUsd
+          ) > 0
+      )
+      .sort(
+        (a, b) =>
+          Number(
+            a.timestamp || 0
+          ) -
+          Number(
+            b.timestamp || 0
+          )
+      );
 
   console.log(
-    "[CHALLENGE] Persistent Ledger trades:",
-    finalLedgerRows.length
-  );
-
-  console.log(
-    "[CHALLENGE] Current verified trades including transient:",
+    "[CHALLENGE] Stable persistent verified trades:",
     verifiedTrades.length
   );
 
