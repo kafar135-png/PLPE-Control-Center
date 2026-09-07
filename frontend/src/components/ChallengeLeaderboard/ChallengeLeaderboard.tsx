@@ -364,7 +364,7 @@ function ChallengeLeaderboard() {
             </h2>
 
             <p>
-              PLPE/WETH
+              PLPE/WETH · {t.challenge.pairMinimumVolume}
             </p>
 
           </div>
