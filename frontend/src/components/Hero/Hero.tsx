@@ -1,6 +1,9 @@
 import "./Hero.css";
-import logo from "../../assets/logo.png";
+
+import logo from "../../assets/polishpepe-logo.png";
+
 import { CircleDot } from "lucide-react";
+
 import { useLanguage } from "../../hooks/useLanguage";
 
 function Hero() {
@@ -8,18 +11,26 @@ function Hero() {
 
   return (
     <section className="hero">
+
       <div className="hero-left">
+
         <div className="hero-badge">
+
           <CircleDot
             size={14}
             fill="var(--plpe-green)"
             color="var(--plpe-green)"
           />
 
-          <span>{t.common.live}</span>
+          <span>
+            {t.common.live}
+          </span>
+
         </div>
 
-        <h1>PLPE OS</h1>
+        <h1>
+          PLPE OS
+        </h1>
 
         <h2>
           First Polish Meme Coin
@@ -30,16 +41,22 @@ function Hero() {
         <p>
           AI Powered • Community Driven • Built in Poland
         </p>
+
       </div>
 
       <div className="hero-right">
+
         <div className="hero-circle">
+
           <img
             src={logo}
             alt="PolishPepe"
           />
+
         </div>
+
       </div>
+
     </section>
   );
 }

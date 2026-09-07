@@ -8,7 +8,7 @@ import {
   CircleDot,
 } from "lucide-react";
 
-import logo from "../../assets/logo.png";
+import logo from "../../assets/polishpepe-logo.png";
 import WalletPanel from "../WalletPanel/WalletPanel";
 import { useLanguage } from "../../hooks/useLanguage";
 import { sendOnlineHeartbeat } from "../../services/online";
@@ -66,10 +66,8 @@ function Sidebar() {
       }
     }
 
-    // Initial heartbeat
     heartbeat();
 
-    // Heartbeat every 15 seconds
     const interval = setInterval(
       heartbeat,
       15000
