@@ -1,6 +1,6 @@
 import "./Hero.css";
 
-import logo from "../../assets/polishpepe-logo.png";
+import logo from "../../assets/polishpepe-logo-512.png";
 
 import { CircleDot } from "lucide-react";
 

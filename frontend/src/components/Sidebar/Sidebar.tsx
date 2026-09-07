@@ -8,7 +8,7 @@ import {
   CircleDot,
 } from "lucide-react";
 
-import logo from "../../assets/polishpepe-logo.png";
+import logo from "../../assets/polishpepe-logo-512.png";
 import WalletPanel from "../WalletPanel/WalletPanel";
 import { useLanguage } from "../../hooks/useLanguage";
 import { sendOnlineHeartbeat } from "../../services/online";
