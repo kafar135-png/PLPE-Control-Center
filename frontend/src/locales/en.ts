@@ -14,15 +14,14 @@ const en: TranslationDictionary = {
     save: "Save",
     cancel: "Cancel",
     dashboard: "Dashboard",
-analytics: "Analytics",
-holderProfile: "Holder Profile",
-about: "About",
-connectWallet: "🦊 Connect Wallet",
-connecting: "Connecting...",
-disconnect: "Disconnect",
-value: "Value",
-share: "Share",
-
+    analytics: "Analytics",
+    holderProfile: "Holder Profile",
+    about: "About",
+    connectWallet: "🦊 Connect Wallet",
+    connecting: "Connecting...",
+    disconnect: "Disconnect",
+    value: "Value",
+    share: "Share",
   },
 
   topbar: {
@@ -38,290 +37,510 @@ share: "Share",
     marketCap: "Market Cap",
     volume24h: "24H Volume",
     chartTitle: "📈 PLPE Market",
-chartSubtitle: "Live Candlestick Chart",
-chartLoading: "Loading chart...",
-chartError: "Cannot load chart",
-poweredBy: "Powered by PLPE Backend · GeckoTerminal",
+    chartSubtitle: "Live Candlestick Chart",
+    chartLoading: "Loading chart...",
+    chartError: "Cannot load chart",
+    poweredBy:
+      "Powered by PLPE Backend · GeckoTerminal",
   },
 
   analytics: {
     title: "Analytics",
     loading: "Loading market...",
-price: " Price",
-liquidity: " Liquidity",
-marketCap: " Market Cap",
-volume24h: " 24H Volume",
-holderGrowthTitle: "📈 Holder Growth",
-holderGrowthSubtitle: "Total holders over time",
-current: "Current",
-marketHealthTitle: "🧠 Market Health",
-topHoldersTitle: "👑 Top Holders",
-whaleActivityTitle: "🐋 Whale Activity",
+    price: " Price",
+    liquidity: " Liquidity",
+    marketCap: " Market Cap",
+    volume24h: " 24H Volume",
 
-scanning: "Scanning blockchain...",
+    holderGrowthTitle:
+      "📈 Holder Growth",
 
-marketPressure: "Market Pressure",
-largeTrades: "Large Trades",
-monitoring: "Monitoring",
-lastScan: "Last Scan",
+    holderGrowthSubtitle:
+      "Total holders over time",
 
-highActivity: "High Activity",
-mediumActivity: "Medium Activity",
-lowActivity: "Low Activity",
+    current: "Current",
 
-buyingPressure: "Buying Pressure",
-sellingPressure: "Selling Pressure",
-neutral: "Neutral",
+    marketHealthTitle:
+      "🧠 Market Health",
 
-detected: "Detected",
+    topHoldersTitle:
+      "👑 Top Holders",
 
-status: "Status",
-trend: "Trend",
-risk: "Risk",
-aiScore: "AI Score",
+    whaleActivityTitle:
+      "🐋 Whale Activity",
 
-healthy: "🟢 Healthy",
-moderate: "🟡 Moderate",
-weak: "🔴 Weak",
+    scanning:
+      "Scanning blockchain...",
 
-bullish: "📈 Bullish",
-bearish: "📉 Bearish",
-liveTradesTitle: "🔥 Live Trades",
-aiAnalysisTitle: "🧠 PLPE AI",
+    marketPressure:
+      "Market Pressure",
 
-marketHealth: "Market Health",
-riskScore: "Risk Score",
+    largeTrades:
+      "Large Trades",
 
-strongBuy: "Strong Buy",
-accumulation: "Accumulation",
-highRisk: "High Risk",
+    monitoring:
+      "Monitoring",
 
-lowLiquidity: "🔴 Low Liquidity",
-marketMonitorTitle: "⚡ Market Monitor",
+    lastScan:
+      "Last Scan",
 
-connecting: "Connecting...",
+    highActivity:
+      "High Activity",
 
-currentPrice: "Current Price",
+    mediumActivity:
+      "Medium Activity",
 
-connection: "Connection",
+    lowActivity:
+      "Low Activity",
 
-lastRefresh: "Last Refresh",
+    buyingPressure:
+      "Buying Pressure",
+
+    sellingPressure:
+      "Selling Pressure",
+
+    neutral:
+      "Neutral",
+
+    detected:
+      "Detected",
+
+    status:
+      "Status",
+
+    trend:
+      "Trend",
+
+    risk:
+      "Risk",
+
+    aiScore:
+      "AI Score",
+
+    healthy:
+      "🟢 Healthy",
+
+    moderate:
+      "🟡 Moderate",
+
+    weak:
+      "🔴 Weak",
+
+    bullish:
+      "📈 Bullish",
+
+    bearish:
+      "📉 Bearish",
+
+    liveTradesTitle:
+      "🔥 Live Trades",
+
+    aiAnalysisTitle:
+      "🧠 PLPE AI",
+
+    marketHealth:
+      "Market Health",
+
+    riskScore:
+      "Risk Score",
+
+    strongBuy:
+      "Strong Buy",
+
+    accumulation:
+      "Accumulation",
+
+    highRisk:
+      "High Risk",
+
+    lowLiquidity:
+      "🔴 Low Liquidity",
+
+    marketMonitorTitle:
+      "⚡ Market Monitor",
+
+    connecting:
+      "Connecting...",
+
+    currentPrice:
+      "Current Price",
+
+    connection:
+      "Connection",
+
+    lastRefresh:
+      "Last Refresh",
   },
-   holderProfile: {
-    
-      portfolioTimeline: "📈 Portfolio Timeline",
 
-noTransactions: "No transactions found.",
+  holderProfile: {
+    portfolioTimeline:
+      "📈 Portfolio Timeline",
 
-buy: "🟢 BUY",
+    noTransactions:
+      "No transactions found.",
 
-sell: "🔴 SELL",
-noWalletSelected: "No Wallet Selected",
+    buy:
+      "🟢 BUY",
 
-noWalletDescription:
-  "Connect MetaMask or enter a wallet address above.",
+    sell:
+      "🔴 SELL",
 
-externalWalletAnalysis:
-  "External Wallet Analysis",
+    noWalletSelected:
+      "No Wallet Selected",
 
-connectedWallet: "Connected Wallet",
+    noWalletDescription:
+      "Connect MetaMask or enter a wallet address above.",
 
-analyzedWallet: "Analyzed Wallet",
-wallet: "Wallet",
+    externalWalletAnalysis:
+      "External Wallet Analysis",
 
-status: "Status",
+    connectedWallet:
+      "Connected Wallet",
 
-ready: "🟢 Ready",
+    analyzedWallet:
+      "Analyzed Wallet",
 
-address: "Address",
+    wallet:
+      "Wallet",
 
-firstBuy: "First Buy",
+    status:
+      "Status",
 
-holdingDays: "Holding Days",
-holdings: "Holdings",
+    ready:
+      "🟢 Ready",
 
-plpeBalance: "PLPE Balance",
+    address:
+      "Address",
 
-currentValue: "Current Value",
-ownership: "Ownership",
+    firstBuy:
+      "First Buy",
 
-supplyShare: "Supply Share",
+    holdingDays:
+      "Holding Days",
 
-transactions: "Transactions",
+    holdings:
+      "Holdings",
 
-lastActivity: "Last Activity",
-portfolioAnalytics: "Portfolio Analytics",
+    plpeBalance:
+      "PLPE Balance",
 
-largestBuy: "Largest Buy",
+    currentValue:
+      "Current Value",
 
-largestSell: "Largest Sell",
+    ownership:
+      "Ownership",
 
-portfolioAge: "Portfolio Age",
+    supplyShare:
+      "Supply Share",
 
-activity: "Activity",
+    transactions:
+      "Transactions",
 
-active: "Active",
-portfolioPerformance: "Portfolio Performance",
+    lastActivity:
+      "Last Activity",
 
-currentBalance: "Current Balance",
+    portfolioAnalytics:
+      "Portfolio Analytics",
 
-totalBought: "Total Bought",
+    largestBuy:
+      "Largest Buy",
 
-totalSold: "Total Sold",
+    largestSell:
+      "Largest Sell",
 
-netPosition: "Net Position",
-searchWallet: "Search Wallet",
-searchSubtitle: "Analyze any PLPE holder by wallet address.",
-analyze: "Analyze",
-myWallet: "My Wallet",
-invalidWallet: "Invalid Ethereum wallet address.",
-walletPlaceholder: "Paste Ethereum wallet address...",
+    portfolioAge:
+      "Portfolio Age",
+
+    activity:
+      "Activity",
+
+    active:
+      "Active",
+
+    portfolioPerformance:
+      "Portfolio Performance",
+
+    currentBalance:
+      "Current Balance",
+
+    totalBought:
+      "Total Bought",
+
+    totalSold:
+      "Total Sold",
+
+    netPosition:
+      "Net Position",
+
+    searchWallet:
+      "Search Wallet",
+
+    searchSubtitle:
+      "Analyze any PLPE holder by wallet address.",
+
+    analyze:
+      "Analyze",
+
+    myWallet:
+      "My Wallet",
+
+    invalidWallet:
+      "Invalid Ethereum wallet address.",
+
+    walletPlaceholder:
+      "Paste Ethereum wallet address...",
   },
 
   ai: {
-    title: "🤖 PLPE AI",
-    loading: "Loading AI...",
+    title:
+      "🤖 PLPE AI",
 
-    waitingTitle: "Loading...",
-    waitingText: "Waiting for market data...",
+    loading:
+      "Loading AI...",
 
-    strongBullishTitle: "🚀 Strong Bullish",
-    strongBullishText: "Momentum is very strong. Buyers are in control.",
+    waitingTitle:
+      "Loading...",
 
-    bullishTitle: "🟢 Bullish",
-    bullishText: "Positive trend with healthy buying pressure.",
+    waitingText:
+      "Waiting for market data...",
 
-    strongBearishTitle: "🔴 Strong Bearish",
-    strongBearishText: "Heavy selling pressure detected.",
+    strongBullishTitle:
+      "🚀 Strong Bullish",
 
-    bearishTitle: "🟠 Bearish",
-    bearishText: "Market is currently under pressure.",
+    strongBullishText:
+      "Momentum is very strong. Buyers are in control.",
 
-    neutralTitle: "🟡 Neutral",
-    neutralText: "Price is moving sideways.",
+    bullishTitle:
+      "🟢 Bullish",
 
-    change24h: "24H Change",
-    liquidity: "Liquidity",
+    bullishText:
+      "Positive trend with healthy buying pressure.",
 
-    scoreButton: "AI Score (Coming in v2)",
+    strongBearishTitle:
+      "🔴 Strong Bearish",
+
+    strongBearishText:
+      "Heavy selling pressure detected.",
+
+    bearishTitle:
+      "🟠 Bearish",
+
+    bearishText:
+      "Market is currently under pressure.",
+
+    neutralTitle:
+      "🟡 Neutral",
+
+    neutralText:
+      "Price is moving sideways.",
+
+    change24h:
+      "24H Change",
+
+    liquidity:
+      "Liquidity",
+
+    scoreButton:
+      "AI Score (Coming in v2)",
   },
 
   activity: {
-    title: "📋 Live Activity",
+    title:
+      "📋 Live Activity",
 
-    loading: "Loading latest transactions...",
+    loading:
+      "Loading latest transactions...",
 
-    buy: "🟢 BUY",
-    sell: "🔴 SELL",
-    transfer: "🔵 TRANSFER",
+    buy:
+      "🟢 BUY",
 
-    noActivity: "No recent activity.",
+    sell:
+      "🔴 SELL",
 
-    secondsAgo: "s ago",
-    minutesAgo: "m ago",
-    hoursAgo: "h ago",
-    daysAgo: "d ago",
+    transfer:
+      "🔵 TRANSFER",
+
+    noActivity:
+      "No recent activity.",
+
+    secondsAgo:
+      "s ago",
+
+    minutesAgo:
+      "m ago",
+
+    hoursAgo:
+      "h ago",
+
+    daysAgo:
+      "d ago",
   },
+
   about: {
+    title:
+      "About PolishPepe",
 
-  title: "About PolishPepe",
+    projectInformation:
+      "Project Information",
 
-  projectInformation: "Project Information",
+    version:
+      "Version",
 
-  version: "Version",
-  network: "Network",
-  token: "Token",
-  supply: "Supply",
-  status: "Status",
+    network:
+      "Network",
 
-  mission: "Mission",
+    token:
+      "Token",
 
-  missionText1:
-    "PolishPepe is the first Polish community-driven meme ecosystem built on Ethereum.",
+    supply:
+      "Supply",
 
-  missionText2:
-    "Our vision is to create much more than a token.",
+    status:
+      "Status",
 
-  missionText3:
-    "PLPE OS, BOCIAN, AI-powered analytics, community tools and future Web3 products are all part of one growing ecosystem.",
+    mission:
+      "Mission",
 
-  officialLinks: "Official Links",
+    missionText1:
+      "PolishPepe is the first Polish community-driven meme ecosystem built on Ethereum.",
 
-  website: "Website",
+    missionText2:
+      "Our vision is to create much more than a token.",
 
-  x: "X",
+    missionText3:
+      "PLPE OS, BOCIAN, AI-powered analytics, community tools and future Web3 products are all part of one growing ecosystem.",
 
-  telegram: "Telegram",
+    officialLinks:
+      "Official Links",
 
-  discord: "Discord",
+    website:
+      "Website",
 
-  smartContract: "Smart Contract",
+    x:
+      "X",
 
-  copy: "Copy",
+    telegram:
+      "Telegram",
 
-  contractCopied: "Contract copied!",
+    discord:
+      "Discord",
 
-  copyFailed: "Copy failed.",
+    smartContract:
+      "Smart Contract",
 
-},
+    copy:
+      "Copy",
+
+    contractCopied:
+      "Contract copied!",
+
+    copyFailed:
+      "Copy failed.",
+  },
+
   challenge: {
-  monthlyTradingChallenge: "MONTHLY TRADING CHALLENGE",
-  monthlyChallenge: "MONTHLY CHALLENGE",
-  tradePlpe: "TRADE PLPE",
+    monthlyTradingChallenge:
+      "MONTHLY TRADING CHALLENGE",
 
-  title: "MONTHLY TRADING CHALLENGE",
-  phase: "PHASE",
-  launchPhase: "LAUNCH PHASE",
-  rewardPool: "Reward Pool",
-  minimumVolume: "Minimum Volume",
-  trades: "Trades",
-  qualified: "Qualified",
-  wallet: "Wallet",
-  volume: "Volume",
-  entries: "Entries",
-  rank: "Rank",
+    monthlyChallenge:
+      "MONTHLY CHALLENGE",
 
-  noQualified: "No qualified portfolios",
-  noQualifiedDescription:
-    "Make a PLPE/WETH transaction with a minimum total volume of $2.",
+    tradePlpe:
+      "TRADE PLPE",
 
-  portfolioNotQualified:
-    "Your portfolio is not qualified yet.",
+    title:
+      "MONTHLY TRADING CHALLENGE",
 
-  portfolioNotQualifiedDescription:
-    "Generate at least $2 in PLPE/WETH volume to receive your first entry.",
+    phase:
+      "PHASE",
 
-  live: "LIVE",
-  maxEntries: "Max. 6 entries / wallet",
-  onChainVerified: "On-chain verified",
+    launchPhase:
+      "LAUNCH PHASE",
 
-  loading: "Loading challenge...",
-  error: "Unable to load challenge.",
+    rewardPool:
+      "Reward Pool",
 
-  buy: "BUY",
-  sell: "SELL",
-  buyOnly: "BUY ONLY",
+    minimumVolume:
+      "Minimum Volume",
 
-  qualifiedStatus: "Qualified",
+    trades:
+      "Trades",
 
-  phasePeriod:
-    "Current phase: {start} → {end}",
+    qualified:
+      "Qualified",
 
-  nextPhase: "🚀 NEXT PHASE",
+    wallet:
+      "Wallet",
 
-  nextPhaseDescription:
-    "The next Challenge phase starts on {start} and ends on {end}. Your volume and entries will reset for the new phase.",
+    volume:
+      "Volume",
 
-  entryRules: "ENTRY RULES",
+    entries:
+      "Entries",
 
-  entryRulesDescription:
-    "BUY ≥ $2 = 1 ENTRY · BUY < $2 = 0 ENTRY · SELL = 0 ENTRY · MAX 6 ENTRIES / WALLET",
+    rank:
+      "Rank",
 
-  pairMinimumVolume:
-    "Minimum volume: $2",
+    noQualified:
+      "No qualified portfolios",
 
-  phaseLabel: "PHASE",
-},
+    noQualifiedDescription:
+      "Make a PLPE/WETH transaction with a minimum total volume of $2.",
+
+    portfolioNotQualified:
+      "Your portfolio is not qualified yet.",
+
+    portfolioNotQualifiedDescription:
+      "Generate at least $2 in PLPE/WETH volume to receive your first entry.",
+
+    live:
+      "LIVE",
+
+    maxEntries:
+      "Max. 6 entries / wallet",
+
+    onChainVerified:
+      "On-chain verified",
+
+    loading:
+      "Loading challenge...",
+
+    error:
+      "Unable to load challenge.",
+
+    buy:
+      "BUY",
+
+    sell:
+      "SELL",
+
+    buyOnly:
+      "BUY ONLY",
+
+    qualifiedStatus:
+      "Qualified",
+
+    phasePeriod:
+      "Current phase: {start} → {end}",
+
+    nextPhase:
+      "🚀 NEXT PHASE",
+
+    nextPhaseDescription:
+      "The next Challenge phase starts on {start} and ends on {end}. Your volume and entries will reset for the new phase.",
+
+    entryRules:
+      "ENTRY RULES",
+
+    entryRulesDescription:
+      "BUY ≥ $2 = 1 ENTRY · BUY < $2 = 0 ENTRY · SELL = 0 ENTRY · MAX 6 ENTRIES / WALLET",
+
+    pairMinimumVolume:
+      "Minimum volume: $2",
+
+    phaseLabel:
+      "PHASE",
+  },
 };
 
 export default en;

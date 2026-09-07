@@ -359,16 +359,12 @@ function ChallengeLeaderboard() {
 
           <div className="challenge-title-block">
 
-            <div className="challenge-kicker">
-              {t.challenge.title}
-            </div>
-
             <h2>
-              {t.challenge.monthlyChallenge}
+              {t.challenge.monthlyTradingChallenge}
             </h2>
 
             <p>
-              PLPE/WETH · {t.challenge.pairMinimumVolume}
+              PLPE/WETH
             </p>
 
           </div>
@@ -388,13 +384,6 @@ function ChallengeLeaderboard() {
   }
 
   /* =======================================================
-     TRANSLATED PHASE NAME
-     ======================================================= */
-
-  const phaseName =
-    t.challenge.monthlyChallenge;
-
-  /* =======================================================
      LEADERBOARD SORT
      ======================================================= */
 
@@ -403,6 +392,8 @@ function ChallengeLeaderboard() {
       ...(challenge.leaderboard || [])
     ]
       .sort((a, b) => {
+
+        /* 1. ENTRIES */
 
         const entriesA =
           getSafeEntries(a);
@@ -420,6 +411,8 @@ function ChallengeLeaderboard() {
           );
         }
 
+        /* 2. VOLUME */
+
         const volumeA =
           Number(a.volume) || 0;
 
@@ -436,6 +429,8 @@ function ChallengeLeaderboard() {
           );
         }
 
+        /* 3. TRANSACTIONS */
+
         const tradesA =
           Number(a.trades) || 0;
 
@@ -451,6 +446,8 @@ function ChallengeLeaderboard() {
             tradesA
           );
         }
+
+        /* 4. WALLET */
 
         return String(
           a.wallet || ""
@@ -506,37 +503,30 @@ function ChallengeLeaderboard() {
   return (
     <section className="challenge-card">
 
-      {/* HEADER */}
+      {/* ===================================================
+          HEADER
+          =================================================== */}
 
       <div className="challenge-header">
 
         <div className="challenge-title-block">
 
-          <div className="challenge-kicker">
-            {t.challenge.title}
-          </div>
-
           <h2>
-            {phaseName}
+            {t.challenge.monthlyTradingChallenge}
           </h2>
 
           <p>
-            PLPE/WETH · {t.challenge.pairMinimumVolume}
+            PLPE/WETH
           </p>
 
           <div
             className="challenge-phase-dates"
             style={{
-              marginTop: "10px",
+              marginTop: "8px",
               fontSize: "13px",
               lineHeight: "1.6",
             }}
           >
-            🏆{" "}
-            <strong>
-              {phaseName}
-            </strong>{" "}
-            ·{" "}
             {formatPhaseDate(
               phaseStart
             )}{" "}
@@ -548,7 +538,9 @@ function ChallengeLeaderboard() {
 
         </div>
 
-        {/* TRADE + REWARD */}
+        {/* =================================================
+            TRADE + REWARD
+            ================================================= */}
 
         <div className="challenge-header-actions">
 
@@ -591,7 +583,9 @@ function ChallengeLeaderboard() {
 
       </div>
 
-      {/* STATS */}
+      {/* ===================================================
+          STATS
+          =================================================== */}
 
       <div className="challenge-info">
 
@@ -643,7 +637,9 @@ function ChallengeLeaderboard() {
 
       </div>
 
-      {/* RULES */}
+      {/* ===================================================
+          RULES
+          =================================================== */}
 
       <div
         className="challenge-next-phase"
@@ -677,7 +673,9 @@ function ChallengeLeaderboard() {
 
       </div>
 
-      {/* TABLE */}
+      {/* ===================================================
+          TABLE
+          =================================================== */}
 
       <div className="challenge-table">
 
@@ -821,7 +819,9 @@ function ChallengeLeaderboard() {
 
       </div>
 
-      {/* MY RESULT */}
+      {/* ===================================================
+          MY RESULT
+          =================================================== */}
 
       {myParticipant && (
 
@@ -884,7 +884,9 @@ function ChallengeLeaderboard() {
 
       )}
 
-      {/* NOT QUALIFIED */}
+      {/* ===================================================
+          NOT QUALIFIED
+          =================================================== */}
 
       {!myParticipant &&
         walletAddress && (
@@ -904,7 +906,9 @@ function ChallengeLeaderboard() {
 
         )}
 
-      {/* FOOTER */}
+      {/* ===================================================
+          FOOTER
+          =================================================== */}
 
       <div className="challenge-footer">
 

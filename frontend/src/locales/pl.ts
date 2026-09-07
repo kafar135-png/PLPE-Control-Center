@@ -14,368 +14,533 @@ const pl: TranslationDictionary = {
     save: "Zapisz",
     cancel: "Anuluj",
     dashboard: "Dashboard",
-analytics: "Analityka",
-holderProfile: "Profil Holdera",
-about: "O projekcie",
-connectWallet: "🦊 Połącz portfel",
-connecting: "Łączenie...",
-disconnect: "Rozłącz",
-value: "Wartość",
-share: "Udział",
-
+    analytics: "Analityka",
+    holderProfile: "Profil Holdera",
+    about: "O projekcie",
+    connectWallet: "🦊 Połącz portfel",
+    connecting: "Łączenie...",
+    disconnect: "Rozłącz",
+    value: "Wartość",
+    share: "Udział",
   },
 
   topbar: {
     title: "Panel PLPE",
-    subtitle: "System Operacyjny PolishPepe",
+    subtitle: "PolishPepe System operacyjny",
     networkName: "Ethereum",
   },
 
   dashboard: {
-    loading: "Ładowanie Dashboardu...",
+    loading: "Ładowanie panelu...",
     price: "Cena PLPE",
     liquidity: "Płynność",
     marketCap: "Kapitalizacja",
     volume24h: "Wolumen 24H",
     chartTitle: "📈 Rynek PLPE",
-chartSubtitle: "Wykres świecowy na żywo",
-chartLoading: "Ładowanie wykresu...",
-chartError: "Nie można załadować wykresu",
-poweredBy: "Dane: PLPE Backend · GeckoTerminal",
+    chartSubtitle: "Wykres świecowy na żywo",
+    chartLoading: "Ładowanie wykresu...",
+    chartError: "Nie można załadować wykresu",
+    poweredBy:
+      "Dane PLPE Backend · GeckoTerminal",
   },
 
   analytics: {
     title: "Analityka",
     loading: "Ładowanie rynku...",
-price: " Cena",
-liquidity: " Płynność",
-marketCap: " Kapitalizacja",
-volume24h: " Wolumen 24H",
-holderGrowthTitle: "📈 Wzrost Holderów",
-holderGrowthSubtitle: "Liczba holderów w czasie rzeczywistym",
-current: "Obecnie",
-marketHealthTitle: "🧠 Kondycja Rynku",
-topHoldersTitle: "👑 Najwięksi Holderzy",
-whaleActivityTitle: "🐋 Aktywność Wielorybów",
+    price: " Cena",
+    liquidity: " Płynność",
+    marketCap: " Kapitalizacja",
+    volume24h: " Wolumen 24H",
 
-scanning: "Skanowanie blockchaina...",
+    holderGrowthTitle:
+      "📈 Wzrost holderów",
 
-marketPressure: "Presja Rynkowa",
-largeTrades: "Duże Transakcje",
-monitoring: "Monitoring",
-lastScan: "Ostatnia Aktualizacja",
+    holderGrowthSubtitle:
+      "Łączna liczba holderów w czasie",
 
-highActivity: "Wysoka Aktywność",
-mediumActivity: "Średnia Aktywność",
-lowActivity: "Niska Aktywność",
+    current: "Aktualnie",
 
-buyingPressure: "Presja Kupujących",
-sellingPressure: "Presja Sprzedających",
-neutral: "Neutralnie",
+    marketHealthTitle:
+      "🧠 Kondycja rynku",
 
-detected: "Wykryto",
+    topHoldersTitle:
+      "👑 Najwięksi holderzy",
 
-status: "Status",
-trend: "Trend",
-risk: "Ryzyko",
-aiScore: "AI Score",
+    whaleActivityTitle:
+      "🐋 Aktywność wielorybów",
 
-healthy: "🟢 Silny",
-moderate: "🟡 Umiarkowany",
-weak: "🔴 Słaby",
+    scanning:
+      "Skanowanie blockchaina...",
 
-bullish: "📈 Wzrostowy",
-bearish: "📉 Spadkowy",
-liveTradesTitle: "🔥 Transakcje na Żywo",
-aiAnalysisTitle: "🧠 PLPE AI",
+    marketPressure:
+      "Presja rynku",
 
-marketHealth: "Kondycja Rynku",
-riskScore: "Ocena Ryzyka",
+    largeTrades:
+      "Duże transakcje",
 
-strongBuy: "Mocny Zakup",
-accumulation: "Akumulacja",
-highRisk: "Wysokie Ryzyko",
+    monitoring:
+      "Monitorowanie",
 
-lowLiquidity: "🔴 Niska Płynność",
-marketMonitorTitle: "⚡ Monitor Rynku",
+    lastScan:
+      "Ostatni skan",
 
-connecting: "Łączenie...",
+    highActivity:
+      "Wysoka aktywność",
 
-currentPrice: "Aktualna Cena",
+    mediumActivity:
+      "Średnia aktywność",
 
-connection: "Połączenie",
+    lowActivity:
+      "Niska aktywność",
 
-lastRefresh: "Ostatnie Odświeżenie",
+    buyingPressure:
+      "Presja kupujących",
+
+    sellingPressure:
+      "Presja sprzedających",
+
+    neutral:
+      "Neutralnie",
+
+    detected:
+      "Wykryto",
+
+    status:
+      "Status",
+
+    trend:
+      "Trend",
+
+    risk:
+      "Ryzyko",
+
+    aiScore:
+      "Wynik AI",
+
+    healthy:
+      "🟢 Zdrowy",
+
+    moderate:
+      "🟡 Umiarkowany",
+
+    weak:
+      "🔴 Słaby",
+
+    bullish:
+      "📈 Wzrostowy",
+
+    bearish:
+      "📉 Spadkowy",
+
+    liveTradesTitle:
+      "🔥 Transakcje na żywo",
+
+    aiAnalysisTitle:
+      "🧠 PLPE AI",
+
+    marketHealth:
+      "Kondycja rynku",
+
+    riskScore:
+      "Poziom ryzyka",
+
+    strongBuy:
+      "Silny zakup",
+
+    accumulation:
+      "Akumulacja",
+
+    highRisk:
+      "Wysokie ryzyko",
+
+    lowLiquidity:
+      "🔴 Niska płynność",
+
+    marketMonitorTitle:
+      "⚡ Monitor rynku",
+
+    connecting:
+      "Łączenie...",
+
+    currentPrice:
+      "Aktualna cena",
+
+    connection:
+      "Połączenie",
+
+    lastRefresh:
+      "Ostatnie odświeżenie",
   },
-   holderProfile: {
-    
-      portfolioTimeline: "📈 Historia Portfela",
 
-noTransactions: "Nie znaleziono transakcji.",
+  holderProfile: {
+    portfolioTimeline:
+      "📈 Historia portfela",
 
-buy: "🟢 KUPNO",
+    noTransactions:
+      "Nie znaleziono transakcji.",
 
-sell: "🔴 SPRZEDAŻ",
-noWalletSelected: "Nie wybrano portfela",
+    buy:
+      "🟢 KUPNO",
 
-noWalletDescription:
-  "Połącz MetaMask lub wpisz adres portfela powyżej.",
+    sell:
+      "🔴 SPRZEDAŻ",
 
-externalWalletAnalysis:
-  "Analiza Zewnętrznego Portfela",
+    noWalletSelected:
+      "Nie wybrano portfela",
 
-connectedWallet: "Połączony Portfel",
+    noWalletDescription:
+      "Połącz MetaMask lub wpisz adres portfela powyżej.",
 
-analyzedWallet: "Analizowany Portfel",
-wallet: "Portfel",
+    externalWalletAnalysis:
+      "Analiza zewnętrznego portfela",
 
-status: "Status",
+    connectedWallet:
+      "Połączony portfel",
 
-ready: "🟢 Gotowy",
+    analyzedWallet:
+      "Analizowany portfel",
 
-address: "Adres",
+    wallet:
+      "Portfel",
 
-firstBuy: "Pierwszy Zakup",
+    status:
+      "Status",
 
-holdingDays: "Dni Trzymania",
-holdings: "Stan Posiadania",
+    ready:
+      "🟢 Gotowy",
 
-plpeBalance: "Saldo PLPE",
+    address:
+      "Adres",
 
-currentValue: "Aktualna Wartość",
-ownership: "Udział",
+    firstBuy:
+      "Pierwszy zakup",
 
-supplyShare: "Udział w Podaży",
+    holdingDays:
+      "Dni posiadania",
 
-transactions: "Transakcje",
+    holdings:
+      "Posiadane środki",
 
-lastActivity: "Ostatnia Aktywność",
-portfolioAnalytics: "Analiza Portfela",
+    plpeBalance:
+      "Saldo PLPE",
 
-largestBuy: "Największy Zakup",
+    currentValue:
+      "Aktualna wartość",
 
-largestSell: "Największa Sprzedaż",
+    ownership:
+      "Udział",
 
-portfolioAge: "Wiek Portfela",
+    supplyShare:
+      "Udział w podaży",
 
-activity: "Aktywność",
+    transactions:
+      "Transakcje",
 
-active: "Aktywny",
-portfolioPerformance: "Wyniki Portfela",
+    lastActivity:
+      "Ostatnia aktywność",
 
-currentBalance: "Aktualne Saldo",
+    portfolioAnalytics:
+      "Analityka portfela",
 
-totalBought: "Łącznie Kupiono",
+    largestBuy:
+      "Największy zakup",
 
-totalSold: "Łącznie Sprzedano",
+    largestSell:
+      "Największa sprzedaż",
 
-netPosition: "Pozycja Netto",
-searchWallet: "Szukaj Portfela",
+    portfolioAge:
+      "Wiek portfela",
 
-searchSubtitle:
-  "Analizuj dowolny portfel PLPE po adresie.",
+    activity:
+      "Aktywność",
 
-analyze: "Analizuj",
+    active:
+      "Aktywny",
 
-myWallet: "Mój Portfel",
+    portfolioPerformance:
+      "Wyniki portfela",
 
-invalidWallet:
-  "Nieprawidłowy adres portfela Ethereum.",
+    currentBalance:
+      "Aktualne saldo",
 
-walletPlaceholder:
-  "Wklej adres portfela Ethereum...",
+    totalBought:
+      "Łącznie kupiono",
+
+    totalSold:
+      "Łącznie sprzedano",
+
+    netPosition:
+      "Pozycja netto",
+
+    searchWallet:
+      "Szukaj portfela",
+
+    searchSubtitle:
+      "Analizuj dowolnego holdera PLPE po adresie portfela.",
+
+    analyze:
+      "Analizuj",
+
+    myWallet:
+      "Mój portfel",
+
+    invalidWallet:
+      "Nieprawidłowy adres portfela Ethereum.",
+
+    walletPlaceholder:
+      "Wklej adres portfela Ethereum...",
   },
 
   ai: {
-    title: "🤖 PLPE AI",
-    loading: "Ładowanie AI...",
+    title:
+      "🤖 PLPE AI",
 
-    waitingTitle: "Ładowanie...",
-    waitingText: "Oczekiwanie na dane rynku...",
+    loading:
+      "Ładowanie AI...",
 
-    strongBullishTitle: "🚀 Silny trend wzrostowy",
-    strongBullishText: "Momentum jest bardzo silne. Kupujący kontrolują rynek.",
+    waitingTitle:
+      "Ładowanie...",
 
-    bullishTitle: "🟢 Trend wzrostowy",
-    bullishText: "Pozytywny trend z dobrą presją zakupową.",
+    waitingText:
+      "Oczekiwanie na dane rynkowe...",
 
-    strongBearishTitle: "🔴 Silny trend spadkowy",
-    strongBearishText: "Wykryto dużą presję sprzedażową.",
+    strongBullishTitle:
+      "🚀 Silnie wzrostowy",
 
-    bearishTitle: "🟠 Trend spadkowy",
-    bearishText: "Rynek znajduje się pod presją.",
+    strongBullishText:
+      "Momentum jest bardzo silne. Kupujący kontrolują rynek.",
 
-    neutralTitle: "🟡 Neutralnie",
-    neutralText: "Cena porusza się w konsolidacji.",
+    bullishTitle:
+      "🟢 Wzrostowy",
 
-    change24h: "Zmiana 24H",
-    liquidity: "Płynność",
+    bullishText:
+      "Pozytywny trend i zdrowa presja kupujących.",
 
-    scoreButton: "AI Score (w wersji 2.0)",
+    strongBearishTitle:
+      "🔴 Silnie spadkowy",
+
+    strongBearishText:
+      "Wykryto silną presję sprzedażową.",
+
+    bearishTitle:
+      "🟠 Spadkowy",
+
+    bearishText:
+      "Rynek znajduje się obecnie pod presją.",
+
+    neutralTitle:
+      "🟡 Neutralny",
+
+    neutralText:
+      "Cena porusza się bokiem.",
+
+    change24h:
+      "Zmiana 24H",
+
+    liquidity:
+      "Płynność",
+
+    scoreButton:
+      "Wynik AI (wkrótce w v2)",
   },
 
   activity: {
-    title: "📋 Aktywność na żywo",
+    title:
+      "📋 Aktywność na żywo",
 
-    loading: "Ładowanie ostatnich transakcji...",
+    loading:
+      "Ładowanie najnowszych transakcji...",
 
-    buy: "🟢 KUPNO",
-    sell: "🔴 SPRZEDAŻ",
-    transfer: "🔵 TRANSFER",
+    buy:
+      "🟢 KUPNO",
 
-    noActivity: "Brak ostatniej aktywności.",
+    sell:
+      "🔴 SPRZEDAŻ",
 
-    secondsAgo: "s temu",
-    minutesAgo: "m temu",
-    hoursAgo: "h temu",
-    daysAgo: "d temu",
+    transfer:
+      "🔵 TRANSFER",
+
+    noActivity:
+      "Brak ostatniej aktywności.",
+
+    secondsAgo:
+      "s temu",
+
+    minutesAgo:
+      "min temu",
+
+    hoursAgo:
+      "godz. temu",
+
+    daysAgo:
+      "dni temu",
   },
+
   about: {
+    title:
+      "O PolishPepe",
 
-  title: "O PolishPepe",
+    projectInformation:
+      "Informacje o projekcie",
 
-  projectInformation: "Informacje o Projekcie",
+    version:
+      "Wersja",
 
-  version: "Wersja",
-  network: "Sieć",
-  token: "Token",
-  supply: "Podaż",
-  status: "Status",
+    network:
+      "Sieć",
 
-  mission: "Misja",
+    token:
+      "Token",
 
-  missionText1:
-    "PolishPepe to pierwszy polski ekosystem memecoinów tworzony przez społeczność na Ethereum.",
+    supply:
+      "Podaż",
 
-  missionText2:
-    "Naszą wizją jest stworzenie znacznie więcej niż tylko tokena.",
+    status:
+      "Status",
 
-  missionText3:
-    "PLPE OS, BOCIAN, analityka AI, narzędzia społeczności oraz przyszłe produkty Web3 są częścią jednego rozwijającego się ekosystemu.",
+    mission:
+      "Misja",
 
-  officialLinks: "Oficjalne Linki",
+    missionText1:
+      "PolishPepe to pierwszy polski społecznościowy ekosystem memowy zbudowany na Ethereum.",
 
-  website: "Strona WWW",
+    missionText2:
+      "Naszą wizją jest stworzenie czegoś znacznie większego niż sam token.",
 
-  x: "X",
+    missionText3:
+      "PLPE OS, BOCIAN, analityka wspierana przez AI, narzędzia społecznościowe i przyszłe produkty Web3 są częścią jednego rozwijającego się ekosystemu.",
 
-  telegram: "Telegram",
+    officialLinks:
+      "Oficjalne linki",
 
-  discord: "Discord",
+    website:
+      "Strona internetowa",
 
-  smartContract: "Smart Kontrakt",
+    x:
+      "X",
 
-  copy: "Kopiuj",
+    telegram:
+      "Telegram",
 
-  contractCopied: "Kontrakt został skopiowany!",
+    discord:
+      "Discord",
 
-  copyFailed: "Nie udało się skopiować kontraktu.",
+    smartContract:
+      "Smart Contract",
 
-},
- challenge: {
-  monthlyTradingChallenge:
-    "MIESIĘCZNE WYZWANIE TRADINGOWE",
+    copy:
+      "Kopiuj",
 
-  monthlyChallenge:
-    "MIESIĘCZNE WYZWANIE",
+    contractCopied:
+      "Skopiowano kontrakt!",
 
-  tradePlpe:
-    "HANDLUJ PLPE",
+    copyFailed:
+      "Nie udało się skopiować.",
+  },
 
-  title:
-    "MIESIĘCZNE WYZWANIE TRADINGOWE",
+  challenge: {
+    monthlyTradingChallenge:
+      "MIESIĘCZNE WYZWANIE TRADINGOWE",
 
-  phase:
-    "FAZA",
+    monthlyChallenge:
+      "MIESIĘCZNE WYZWANIE",
 
-  launchPhase:
-    "FAZA STARTOWA",
+    tradePlpe:
+      "HANDLUJ PLPE",
 
-  rewardPool:
-    "Pula nagród",
+    title:
+      "MIESIĘCZNE WYZWANIE TRADINGOWE",
 
-  minimumVolume:
-    "Minimalny wolumen",
+    phase:
+      "FAZA",
 
-  trades:
-    "Transakcje",
+    launchPhase:
+      "FAZA STARTOWA",
 
-  qualified:
-    "Zakwalifikowani",
+    rewardPool:
+      "Pula nagród",
 
-  wallet:
-    "Portfel",
+    minimumVolume:
+      "Minimalny wolumen",
 
-  volume:
-    "Wolumen",
+    trades:
+      "Transakcje",
 
-  entries:
-    "Losy",
+    qualified:
+      "Zakwalifikowani",
 
-  rank:
-    "Miejsce",
+    wallet:
+      "Portfel",
 
-  noQualified:
-    "Brak zakwalifikowanych portfeli",
+    volume:
+      "Wolumen",
 
-  noQualifiedDescription:
-    "Wykonaj transakcję PLPE/WETH o minimalnym łącznym wolumenie $2.",
+    entries:
+      "Losy",
 
-  portfolioNotQualified:
-    "Twój portfel nie jest jeszcze zakwalifikowany.",
+    rank:
+      "Miejsce",
 
-  portfolioNotQualifiedDescription:
-    "Wygeneruj co najmniej $2 wolumenu PLPE/WETH, aby otrzymać pierwszy los.",
+    noQualified:
+      "Brak zakwalifikowanych portfeli",
 
-  live:
-    "NA ŻYWO",
+    noQualifiedDescription:
+      "Wykonaj transakcję PLPE/WETH o minimalnym łącznym wolumenie $2.",
 
-  maxEntries:
-    "Maks. 6 losów / portfel",
+    portfolioNotQualified:
+      "Twój portfel nie jest jeszcze zakwalifikowany.",
 
-  onChainVerified:
-    "Zweryfikowane on-chain",
+    portfolioNotQualifiedDescription:
+      "Wygeneruj co najmniej $2 wolumenu PLPE/WETH, aby otrzymać pierwszy los.",
 
-  loading:
-    "Ładowanie wyzwania...",
+    live:
+      "NA ŻYWO",
 
-  error:
-    "Nie udało się załadować wyzwania.",
+    maxEntries:
+      "Maks. 6 losów / portfel",
 
-  buy:
-    "KUPNO",
+    onChainVerified:
+      "Zweryfikowane on-chain",
 
-  sell:
-    "SPRZEDAŻ",
+    loading:
+      "Ładowanie wyzwania...",
 
-  buyOnly:
-    "TYLKO KUPNO",
+    error:
+      "Nie udało się załadować wyzwania.",
 
-  qualifiedStatus:
-    "Zakwalifikowany",
+    buy:
+      "KUPNO",
 
-  phasePeriod:
-    "Aktualna faza: {start} → {end}",
+    sell:
+      "SPRZEDAŻ",
 
-  nextPhase:
-    "🚀 NASTĘPNA FAZA",
+    buyOnly:
+      "TYLKO KUPNO",
 
-  nextPhaseDescription:
-    "Następna faza Challenge rozpoczyna się {start} i kończy {end}. Wolumen i losy zostaną wyzerowane dla nowej fazy.",
+    qualifiedStatus:
+      "Zakwalifikowany",
 
-  entryRules:
-    "ZASADY LOSÓW",
+    phasePeriod:
+      "Aktualna faza: {start} → {end}",
 
-  entryRulesDescription:
-    "BUY ≥ $2 = 1 LOS · BUY < $2 = 0 LOSÓW · SELL = 0 LOSÓW · MAKS. 6 LOSÓW / PORTFEL",
+    nextPhase:
+      "🚀 NASTĘPNA FAZA",
 
-  pairMinimumVolume:
-    "Minimalny wolumen: $2",
+    nextPhaseDescription:
+      "Następna faza Challenge rozpoczyna się {start} i kończy {end}. Wolumen i losy zostaną wyzerowane dla nowej fazy.",
 
-  phaseLabel:
-    "FAZA",
-},
+    entryRules:
+      "ZASADY LOSÓW",
+
+    entryRulesDescription:
+      "BUY ≥ $2 = 1 LOS · BUY < $2 = 0 LOSÓW · SELL = 0 LOSÓW · MAKS. 6 LOSÓW / PORTFEL",
+
+    pairMinimumVolume:
+      "Minimalny wolumen: $2",
+
+    phaseLabel:
+      "FAZA",
+  },
 };
 
 export default pl;
-
