@@ -228,6 +228,9 @@ export interface TranslationDictionary {
   };
 
   challenge: {
+    monthlyTradingChallenge: string;
+monthlyChallenge: string;
+tradePlpe: string;
     title: string;
     phase: string;
     launchPhase: string;

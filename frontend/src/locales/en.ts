@@ -265,6 +265,10 @@ walletPlaceholder: "Paste Ethereum wallet address...",
 
 },
   challenge: {
+  monthlyTradingChallenge: "MONTHLY TRADING CHALLENGE",
+  monthlyChallenge: "MONTHLY CHALLENGE",
+  tradePlpe: "TRADE PLPE",
+
   title: "MONTHLY TRADING CHALLENGE",
   phase: "PHASE",
   launchPhase: "LAUNCH PHASE",
@@ -281,7 +285,9 @@ walletPlaceholder: "Paste Ethereum wallet address...",
   noQualifiedDescription:
     "Make a PLPE/WETH transaction with a minimum total volume of $2.",
 
-  portfolioNotQualified: "Your portfolio is not qualified yet.",
+  portfolioNotQualified:
+    "Your portfolio is not qualified yet.",
+
   portfolioNotQualifiedDescription:
     "Generate at least $2 in PLPE/WETH volume to receive your first entry.",
 
@@ -298,17 +304,22 @@ walletPlaceholder: "Paste Ethereum wallet address...",
 
   qualifiedStatus: "Qualified",
 
-  phasePeriod: "Current phase: {start} → {end}",
+  phasePeriod:
+    "Current phase: {start} → {end}",
 
   nextPhase: "🚀 NEXT PHASE",
+
   nextPhaseDescription:
     "The next Challenge phase starts on {start} and ends on {end}. Your volume and entries will reset for the new phase.",
 
   entryRules: "ENTRY RULES",
+
   entryRulesDescription:
     "BUY ≥ $2 = 1 ENTRY · BUY < $2 = 0 ENTRY · SELL = 0 ENTRY · MAX 6 ENTRIES / WALLET",
 
-  pairMinimumVolume: "Minimum volume: $2",
+  pairMinimumVolume:
+    "Minimum volume: $2",
+
   phaseLabel: "PHASE",
 },
 };

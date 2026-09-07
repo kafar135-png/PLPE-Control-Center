@@ -41,22 +41,6 @@ function formatVolume(volume: number) {
 
 /* =========================================================
    ENTRIES
-   =========================================================
-
-   REGULAMIN FAZY 02:
-
-   BUY >= $2  = 1 ENTRY
-   BUY < $2   = 0 ENTRY
-   SELL       = 0 ENTRY
-
-   Maksymalnie:
-   6 ENTRIES / WALLET / FAZA
-
-   Ważne:
-   $2, $5, $10, $100 BUY
-   = zawsze 1 ENTRY.
-
-   ENTRY nie zależy od wielkości BUY.
    ========================================================= */
 
 function getSafeEntries(
@@ -99,44 +83,6 @@ function getMedal(rank: number) {
   if (rank === 3) return "🥉";
 
   return `#${rank}`;
-}
-
-/* =========================================================
-   PHASE
-   ========================================================= */
-
-function getPhaseName(
-  phase: ChallengeData["phase"]
-) {
-  /*
-   * FAZA 02 jest jedyną aktywną fazą.
-   *
-   * Backend powinien zwracać:
-   *
-   * id   = "02"
-   * name = "MONTHLY CHALLENGE"
-   */
-
-  if (
-    String(phase?.id) === "02" ||
-    String(phase?.id) === "2"
-  ) {
-    return "MONTHLY CHALLENGE";
-  }
-
-  /*
-   * Nie tworzymy tutaj FAZY 01.
-   *
-   * Jeżeli backend zwróci coś nieoczekiwanego,
-   * pokazujemy nazwę z backendu.
-   */
-
-  return (
-    String(
-      phase?.name || ""
-    ).trim() ||
-    "MONTHLY CHALLENGE"
-  );
 }
 
 /* =========================================================
@@ -418,11 +364,11 @@ function ChallengeLeaderboard() {
             </div>
 
             <h2>
-              MONTHLY CHALLENGE
+              {t.challenge.monthlyChallenge}
             </h2>
 
             <p>
-              PLPE/WETH · $2 minimum volume
+              PLPE/WETH · {t.challenge.pairMinimumVolume}
             </p>
 
           </div>
@@ -442,24 +388,14 @@ function ChallengeLeaderboard() {
   }
 
   /* =======================================================
-     PHASE
+     TRANSLATED PHASE NAME
      ======================================================= */
 
   const phaseName =
-    getPhaseName(
-      challenge.phase
-    );
+    t.challenge.monthlyChallenge;
 
   /* =======================================================
      LEADERBOARD SORT
-     =======================================================
-
-     Kolejność:
-
-     1. ENTRIES — więcej = wyżej
-     2. VOLUME — więcej = wyżej
-     3. TRANSACTIONS — więcej = wyżej
-     4. WALLET — stabilny tie-breaker
      ======================================================= */
 
   const leaderboard =
@@ -467,8 +403,6 @@ function ChallengeLeaderboard() {
       ...(challenge.leaderboard || [])
     ]
       .sort((a, b) => {
-
-        /* 1. ENTRIES */
 
         const entriesA =
           getSafeEntries(a);
@@ -486,8 +420,6 @@ function ChallengeLeaderboard() {
           );
         }
 
-        /* 2. VOLUME */
-
         const volumeA =
           Number(a.volume) || 0;
 
@@ -504,8 +436,6 @@ function ChallengeLeaderboard() {
           );
         }
 
-        /* 3. TRANSACTIONS */
-
         const tradesA =
           Number(a.trades) || 0;
 
@@ -521,8 +451,6 @@ function ChallengeLeaderboard() {
             tradesA
           );
         }
-
-        /* 4. WALLET */
 
         return String(
           a.wallet || ""
@@ -578,9 +506,7 @@ function ChallengeLeaderboard() {
   return (
     <section className="challenge-card">
 
-      {/* ===================================================
-          HEADER
-          =================================================== */}
+      {/* HEADER */}
 
       <div className="challenge-header">
 
@@ -595,7 +521,7 @@ function ChallengeLeaderboard() {
           </h2>
 
           <p>
-            PLPE/WETH · $2 minimum volume
+            PLPE/WETH · {t.challenge.pairMinimumVolume}
           </p>
 
           <div
@@ -622,13 +548,9 @@ function ChallengeLeaderboard() {
 
         </div>
 
-        {/* =================================================
-            TRADE + REWARD
-            ================================================= */}
+        {/* TRADE + REWARD */}
 
         <div className="challenge-header-actions">
-
-          {/* TRADE PLPE */}
 
           <a
             href="https://app.uniswap.org/swap?chain=mainnet&inputCurrency=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2&outputCurrency=0xc34e5ef4f7f5607fbd3e060077cd6e2161ab54c7"
@@ -641,15 +563,13 @@ function ChallengeLeaderboard() {
             </span>
 
             <strong>
-              TRADE PLPE
+              {t.challenge.tradePlpe}
             </strong>
 
             <small>
               PLPE / WETH
             </small>
           </a>
-
-          {/* REWARD POOL */}
 
           <div className="challenge-reward">
 
@@ -671,9 +591,7 @@ function ChallengeLeaderboard() {
 
       </div>
 
-      {/* ===================================================
-          STATS
-          =================================================== */}
+      {/* STATS */}
 
       <div className="challenge-info">
 
@@ -725,9 +643,7 @@ function ChallengeLeaderboard() {
 
       </div>
 
-      {/* ===================================================
-          CHALLENGE RULES
-          =================================================== */}
+      {/* RULES */}
 
       <div
         className="challenge-next-phase"
@@ -761,9 +677,7 @@ function ChallengeLeaderboard() {
 
       </div>
 
-      {/* ===================================================
-          TABLE
-          =================================================== */}
+      {/* TABLE */}
 
       <div className="challenge-table">
 
@@ -848,8 +762,6 @@ function ChallengeLeaderboard() {
                   }
                 >
 
-                  {/* RANK */}
-
                   <div className="challenge-rank">
 
                     <span>
@@ -859,8 +771,6 @@ function ChallengeLeaderboard() {
                     </span>
 
                   </div>
-
-                  {/* WALLET */}
 
                   <div className="challenge-wallet">
 
@@ -878,8 +788,6 @@ function ChallengeLeaderboard() {
 
                   </div>
 
-                  {/* VOLUME */}
-
                   <div className="challenge-volume">
 
                     {formatVolume(
@@ -888,8 +796,6 @@ function ChallengeLeaderboard() {
 
                   </div>
 
-                  {/* TRADES */}
-
                   <div className="challenge-trades">
 
                     {
@@ -897,8 +803,6 @@ function ChallengeLeaderboard() {
                     }
 
                   </div>
-
-                  {/* ENTRIES */}
 
                   <div className="challenge-entries">
 
@@ -917,9 +821,7 @@ function ChallengeLeaderboard() {
 
       </div>
 
-      {/* ===================================================
-          MY RESULT
-          =================================================== */}
+      {/* MY RESULT */}
 
       {myParticipant && (
 
@@ -982,9 +884,7 @@ function ChallengeLeaderboard() {
 
       )}
 
-      {/* ===================================================
-          NOT QUALIFIED
-          =================================================== */}
+      {/* NOT QUALIFIED */}
 
       {!myParticipant &&
         walletAddress && (
@@ -1004,9 +904,7 @@ function ChallengeLeaderboard() {
 
         )}
 
-      {/* ===================================================
-          FOOTER
-          =================================================== */}
+      {/* FOOTER */}
 
       <div className="challenge-footer">
 
@@ -1015,7 +913,7 @@ function ChallengeLeaderboard() {
         </span>
 
         <span>
-          MAX 6 ENTRIES
+          {t.challenge.maxEntries.toUpperCase()}
         </span>
 
         <span>
