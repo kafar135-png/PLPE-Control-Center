@@ -23,6 +23,12 @@ const en: TranslationDictionary = {
     value: "Value",
     share: "Share",
     installApp: "Install App",
+
+installAppManual:
+  "Use your browser menu and choose Install app or Add to Home screen.",
+
+installAppIos:
+  "Tap Share and then choose Add to Home Screen.",
   },
 
   topbar: {

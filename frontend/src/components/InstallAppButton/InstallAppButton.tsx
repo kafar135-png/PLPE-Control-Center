@@ -15,6 +15,10 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 function isStandalone() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
   return (
     window.matchMedia(
       "(display-mode: standalone)"
@@ -22,6 +26,16 @@ function isStandalone() {
     (window.navigator as Navigator & {
       standalone?: boolean;
     }).standalone === true
+  );
+}
+
+function isIOS() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return /iphone|ipad|ipod/i.test(
+    navigator.userAgent
   );
 }
 
@@ -86,26 +100,60 @@ export default function InstallAppButton() {
   }, []);
 
   async function handleInstall() {
-    if (!installPrompt) {
+    /*
+     * Normal PWA installation flow
+     * Chrome / Edge / Android
+     */
+
+    if (installPrompt) {
+      await installPrompt.prompt();
+
+      const result =
+        await installPrompt.userChoice;
+
+      if (
+        result.outcome === "accepted"
+      ) {
+        setInstallPrompt(null);
+      }
+
       return;
     }
 
-    await installPrompt.prompt();
+    /*
+     * iPhone / iPad
+     *
+     * iOS does not support
+     * beforeinstallprompt.
+     */
 
-    const result =
-      await installPrompt.userChoice;
+    if (isIOS()) {
+      window.alert(
+        t.common.installAppIos
+      );
 
-    if (
-      result.outcome === "accepted"
-    ) {
-      setInstallPrompt(null);
+      return;
     }
+
+    /*
+     * Browser has not exposed the
+     * install prompt yet.
+     *
+     * Keep the button visible and
+     * tell the user how to install.
+     */
+
+    window.alert(
+      t.common.installAppManual
+    );
   }
 
-  if (
-    installed ||
-    !installPrompt
-  ) {
+  /*
+   * Hide only when the user is already
+   * running PLPE OS as an installed PWA.
+   */
+
+  if (installed) {
     return null;
   }
 

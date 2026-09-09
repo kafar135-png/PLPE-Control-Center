@@ -23,6 +23,11 @@ const pl: TranslationDictionary = {
     value: "Wartość",
     share: "Udział",
     installApp: "Pobierz aplikację",
+   installAppManual:
+  "Otwórz menu przeglądarki i wybierz Zainstaluj aplikację lub Dodaj do ekranu głównego.",
+
+installAppIos:
+  "Kliknij Udostępnij, a następnie wybierz Dodaj do ekranu początkowego.",
   },
 
   topbar: {
