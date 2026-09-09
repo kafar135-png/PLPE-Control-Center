@@ -1,196 +1,422 @@
 .topbar {
+    display: flex;
 
-    display:flex;
+    justify-content: space-between;
+    align-items: center;
 
-    justify-content:space-between;
+    margin-bottom: 30px;
 
-    align-items:center;
+    padding: 22px 28px;
 
-    margin-bottom:30px;
+    border-radius: var(--radius-lg);
 
-    padding:22px 28px;
+    background: rgba(17, 24, 39, .75);
 
-    border-radius:var(--radius-lg);
+    backdrop-filter: blur(18px);
 
-    background:rgba(17,24,39,.75);
-
-    backdrop-filter:blur(18px);
-
-    border:1px solid var(--border);
+    border: 1px solid var(--border);
 
     box-shadow:
         var(--shadow);
-
 }
 
-.topbar-left h1{
+/* ============================================
+   LEFT
+============================================ */
 
-    margin:0;
+.topbar-left h1 {
+    margin: 0;
 
-    color:var(--text);
+    color: var(--text);
 
-    font-size:34px;
+    font-size: 34px;
 
-    font-weight:700;
+    font-weight: 700;
 
-    letter-spacing:.5px;
-
+    letter-spacing: .5px;
 }
 
-.topbar-left p{
+.topbar-left p {
+    margin-top: 8px;
 
-    margin-top:8px;
+    color: var(--text-secondary);
 
-    color:var(--text-secondary);
-
-    font-size:14px;
-
+    font-size: 14px;
 }
 
-.topbar-right{
+/* ============================================
+   RIGHT
+============================================ */
 
-    display:flex;
+.topbar-right {
+    display: flex;
 
-    align-items:center;
+    align-items: center;
 
-    gap:14px;
-
+    gap: 14px;
 }
 
-.topbar-box{
+/* ============================================
+   BOX
+============================================ */
 
-    display:flex;
+.topbar-box {
+    display: flex;
 
-    align-items:center;
+    align-items: center;
 
-    gap:14px;
+    gap: 14px;
 
-    min-width:165px;
+    min-width: 165px;
 
-    padding:12px 18px;
+    padding: 12px 18px;
 
-    border-radius:var(--radius-md);
+    border-radius: var(--radius-md);
 
-    background:var(--gradient-card);
+    background: var(--gradient-card);
 
-    border:1px solid var(--border);
+    border: 1px solid var(--border);
 
-    transition:all var(--transition);
-
+    transition: all var(--transition);
 }
 
-.topbar-box:hover{
+.topbar-box:hover {
+    transform: translateY(-3px);
 
-    transform:translateY(-3px);
-
-    border-color:var(--border-hover);
+    border-color: var(--border-hover);
 
     box-shadow:
-
         var(--shadow-green);
-
 }
 
-.topbar-box small{
+.topbar-box small {
+    display: block;
 
-    display:block;
+    margin-bottom: 3px;
 
-    margin-bottom:3px;
+    color: var(--text-muted);
 
-    color:var(--text-muted);
+    font-size: 11px;
 
-    font-size:11px;
+    text-transform: uppercase;
 
-    text-transform:uppercase;
-
-    letter-spacing:.8px;
-
+    letter-spacing: .8px;
 }
 
-.topbar-box strong{
+.topbar-box strong {
+    color: var(--text);
 
-    color:var(--text);
+    font-size: 15px;
 
-    font-size:15px;
-
-    font-weight:700;
-
+    font-weight: 700;
 }
 
-.status{
+/* ============================================
+   STATUS
+============================================ */
 
-    display:flex;
+.status {
+    display: flex;
 
-    align-items:center;
+    align-items: center;
+    justify-content: center;
 
-    justify-content:center;
+    gap: 5px;
 
-    min-width:105px;
+    min-width: 105px;
 
-    padding:12px 18px;
+    padding: 12px 18px;
 
-    border-radius:var(--radius-md);
+    border-radius: var(--radius-md);
 
-    background:var(--gradient-button);
+    background: var(--gradient-button);
 
-    color:white;
+    color: white;
 
-    font-weight:700;
+    font-weight: 700;
 
-    letter-spacing:.5px;
+    letter-spacing: .5px;
 
     box-shadow:
-
-        0 0 18px rgba(34,197,94,.25);
-
+        0 0 18px rgba(34, 197, 94, .25);
 }
 
-.status:hover{
-
-    transform:translateY(-2px);
-
+.status:hover {
+    transform: translateY(-2px);
 }
 
-@media(max-width:1200px){
+/* Desktop only */
 
-    .topbar{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-        gap:22px;
-
-    }
-
-    .topbar-right{
-
-        flex-wrap:wrap;
-
-    }
-
+.mobile-online-label {
+    display: none;
 }
 
-@media(max-width:768px){
+/* Mobile wallet hidden on desktop */
 
-    .topbar{
+.topbar-mobile-wallet {
+    display: none;
+}
 
-        padding:18px;
+/* ============================================
+   TABLET
+============================================ */
 
+@media (max-width: 1200px) {
+
+    .topbar {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 22px;
     }
 
-    .topbar-box{
+    .topbar-right {
+        flex-wrap: wrap;
+    }
+}
 
-        width:100%;
+/* =========================================================
+   MOBILE
+========================================================= */
 
-        min-width:unset;
+@media (max-width: 768px) {
 
+    .topbar {
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+            1fr;
+
+        gap: 12px;
+
+        margin-bottom: 16px;
+
+        padding: 14px;
+
+        border-radius: 14px;
+
+        box-sizing: border-box;
     }
 
-    .status{
+    /* -----------------------------------------
+       TITLE
+    ----------------------------------------- */
 
-        width:100%;
-
+    .topbar-left {
+        width: 100%;
     }
 
+    .topbar-left h1 {
+        font-size: 23px;
+
+        line-height: 1.2;
+    }
+
+    .topbar-left p {
+        margin-top: 4px;
+
+        font-size: 11px;
+
+        line-height: 1.3;
+    }
+
+    /* -----------------------------------------
+       INFO GRID
+    ----------------------------------------- */
+
+    .topbar-right {
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+    }
+
+    .topbar-box {
+        width: 100%;
+
+        min-width: 0;
+
+        gap: 8px;
+
+        padding: 9px 10px;
+
+        border-radius: 10px;
+
+        box-sizing: border-box;
+    }
+
+    .topbar-box:hover {
+        transform: none;
+    }
+
+    .topbar-icon {
+        width: 18px;
+        height: 18px;
+
+        flex-shrink: 0;
+    }
+
+    .topbar-box small {
+        margin-bottom: 2px;
+
+        font-size: 8px;
+
+        letter-spacing: .5px;
+    }
+
+    .topbar-box strong {
+        display: block;
+
+        max-width: 100%;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+
+        font-size: 11px;
+    }
+
+    /* -----------------------------------------
+       LANGUAGE
+    ----------------------------------------- */
+
+    .topbar-right > *:nth-child(4) {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+    /* -----------------------------------------
+       ONLINE
+    ----------------------------------------- */
+
+    .status {
+        width: 100%;
+
+        min-width: 0;
+
+        padding: 9px 8px;
+
+        border-radius: 10px;
+
+        box-sizing: border-box;
+
+        font-size: 11px;
+    }
+
+    .status:hover {
+        transform: none;
+    }
+
+    .desktop-live-label {
+        display: none;
+    }
+
+    .mobile-online-label {
+        display: inline;
+    }
+
+    /* -----------------------------------------
+       MOBILE WALLET
+    ----------------------------------------- */
+
+    .topbar-mobile-wallet {
+        display: block;
+
+        width: 100%;
+
+        min-width: 0;
+    }
+
+    .topbar-mobile-wallet .wallet-panel {
+        width: 100%;
+
+        margin: 0;
+
+        padding: 10px;
+
+        border-radius: 11px;
+
+        box-sizing: border-box;
+    }
+
+    .topbar-mobile-wallet .wallet-title {
+        display: none;
+    }
+
+    .topbar-mobile-wallet .wallet-status {
+        margin-bottom: 7px;
+
+        font-size: 11px;
+    }
+
+    .topbar-mobile-wallet .wallet-address {
+        margin-bottom: 8px;
+
+        font-size: 12px;
+    }
+
+    /*
+     * Balances are already available
+     * in Holder Profile.
+     *
+     * On mobile TopBar we hide them
+     * to keep Connect Wallet compact.
+     */
+
+    .topbar-mobile-wallet .wallet-balance {
+        display: none;
+    }
+
+    .topbar-mobile-wallet .wallet-button {
+        min-height: 40px;
+
+        padding: 9px 12px;
+
+        border-radius: 9px;
+
+        font-size: 12px;
+    }
+}
+
+/* =========================================================
+   SMALL PHONE
+========================================================= */
+
+@media (max-width: 390px) {
+
+    .topbar {
+        padding: 11px;
+
+        gap: 9px;
+    }
+
+    .topbar-left h1 {
+        font-size: 21px;
+    }
+
+    .topbar-right {
+        gap: 6px;
+    }
+
+    .topbar-box {
+        padding: 8px;
+    }
+
+    .topbar-box strong {
+        font-size: 10px;
+    }
+
+    .status {
+        font-size: 10px;
+    }
 }

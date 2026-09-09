@@ -1,97 +1,103 @@
-.analytics-page{
+.analytics-page {
+    width: 100%;
+    min-width: 0;
 
-    padding:30px;
+    padding: 30px;
 
+    box-sizing: border-box;
 }
 
-.analytics-page h1{
+.analytics-page h1 {
+    margin-bottom: 28px;
 
-    margin-bottom:28px;
+    color: var(--text);
 
-    color:var(--text);
+    font-size: 36px;
+    font-weight: 700;
 
-    font-size:36px;
-
-    font-weight:700;
-
-    letter-spacing:.3px;
-
+    letter-spacing: .3px;
 }
 
-.analytics-overview{
+.analytics-overview {
+    width: 100%;
+    min-width: 0;
 
-    margin-bottom:26px;
-
+    margin-bottom: 26px;
 }
 
-.analytics-grid{
+.analytics-grid {
+    width: 100%;
+    min-width: 0;
 
-    display:flex;
+    display: flex;
 
-    flex-direction:column;
+    flex-direction: column;
 
-    gap:24px;
-
+    gap: 24px;
 }
 
-.analytics-top{
+.analytics-top {
+    width: 100%;
+    min-width: 0;
 
-    display:grid;
+    display: grid;
 
-    grid-template-columns:2fr 1fr;
+    grid-template-columns:
+        minmax(0, 2fr)
+        minmax(0, 1fr);
 
-    gap:24px;
-
+    gap: 24px;
 }
 
-.analytics-row{
+.analytics-row {
+    width: 100%;
+    min-width: 0;
 
-    display:grid;
+    display: grid;
 
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
-    gap:24px;
-
+    gap: 24px;
 }
 
-.analytics-card{
+.analytics-card {
+    position: relative;
 
-    position:relative;
+    width: 100%;
+    min-width: 0;
 
-    overflow:hidden;
+    overflow: hidden;
 
-    padding:24px;
+    padding: 24px;
 
-    background:var(--gradient-card);
+    background: var(--gradient-card);
 
-    border:1px solid var(--border);
+    border: 1px solid var(--border);
 
-    border-radius:var(--radius-md);
+    border-radius: var(--radius-md);
 
-    box-shadow:var(--shadow);
+    box-shadow: var(--shadow);
 
-    backdrop-filter:blur(14px);
+    backdrop-filter: blur(14px);
 
-    transition:all var(--transition);
+    transition: all var(--transition);
 
+    box-sizing: border-box;
 }
 
-.analytics-card::before{
+.analytics-card::before {
+    content: "";
 
-    content:"";
+    position: absolute;
 
-    position:absolute;
+    left: 0;
+    right: 0;
+    top: 0;
 
-    left:0;
-
-    right:0;
-
-    top:0;
-
-    height:2px;
+    height: 2px;
 
     background:
-
         linear-gradient(
             90deg,
             transparent,
@@ -99,124 +105,183 @@
             transparent
         );
 
-    opacity:.7;
-
+    opacity: .7;
 }
 
-.analytics-card:hover{
+.analytics-card:hover {
+    transform: translateY(-5px);
 
-    transform:translateY(-5px);
-
-    border-color:var(--border-hover);
+    border-color: var(--border-hover);
 
     box-shadow:
-
         var(--shadow),
-
         var(--shadow-green);
-
 }
 
-.analytics-card h2{
+.analytics-card h2 {
+    margin: 0 0 20px;
 
-    margin:0 0 20px;
+    color: var(--text);
 
-    color:var(--text);
+    font-size: 21px;
+    font-weight: 700;
 
-    font-size:21px;
-
-    font-weight:700;
-
-    letter-spacing:.3px;
-
+    letter-spacing: .3px;
 }
 
-.analytics-card p{
+.analytics-card p {
+    color: var(--text-secondary);
 
-    color:var(--text-secondary);
-
-    line-height:1.7;
-
+    line-height: 1.7;
 }
 
-.analytics-card hr{
+.analytics-card hr {
+    border: none;
 
-    border:none;
+    border-top:
+        1px solid rgba(255, 255, 255, .06);
 
-    border-top:1px solid rgba(255,255,255,.06);
-
-    margin:18px 0;
-
+    margin: 18px 0;
 }
 
-.analytics-card .value{
+.analytics-card .value {
+    color: var(--text);
 
-    color:var(--text);
-
-    font-size:30px;
-
-    font-weight:700;
-
+    font-size: 30px;
+    font-weight: 700;
 }
 
-.analytics-card .positive{
-
-    color:var(--success);
-
+.analytics-card .positive {
+    color: var(--success);
 }
 
-.analytics-card .negative{
-
-    color:var(--danger);
-
+.analytics-card .negative {
+    color: var(--danger);
 }
 
-.analytics-card .warning{
-
-    color:var(--warning);
-
+.analytics-card .warning {
+    color: var(--warning);
 }
 
-.analytics-card .muted{
-
-    color:var(--text-muted);
-
+.analytics-card .muted {
+    color: var(--text-muted);
 }
 
-@media(max-width:1100px){
+/* =========================================================
+   TABLET
+========================================================= */
 
-    .analytics-top{
+@media (max-width: 1100px) {
 
-        grid-template-columns:1fr;
-
+    .analytics-top {
+        grid-template-columns: 1fr;
     }
 
-    .analytics-row{
-
-        grid-template-columns:1fr;
-
+    .analytics-row {
+        grid-template-columns: 1fr;
     }
-
 }
 
-@media(max-width:768px){
+/* =========================================================
+   MOBILE
+========================================================= */
 
-    .analytics-page{
+@media (max-width: 768px) {
 
-        padding:20px;
+    .analytics-page {
+        width: 100%;
+        min-width: 0;
 
+        padding: 8px 0 20px;
+
+        overflow-x: hidden;
     }
 
-    .analytics-page h1{
+    .analytics-page > h1 {
+        width: 100%;
 
-        font-size:30px;
+        margin: 4px 0 18px;
 
+        font-size: 25px !important;
+
+        line-height: 1.2;
+
+        gap: 8px !important;
     }
 
-    .analytics-card{
+    .analytics-page > h1 svg {
+        width: 25px;
+        height: 25px;
 
-        padding:20px;
-
+        flex-shrink: 0;
     }
 
+    .analytics-overview {
+        width: 100%;
+
+        margin-bottom: 16px;
+    }
+
+    .analytics-grid {
+        width: 100%;
+        min-width: 0;
+
+        gap: 14px;
+    }
+
+    .analytics-top,
+    .analytics-row {
+        width: 100%;
+        min-width: 0;
+
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+    }
+
+    .analytics-card {
+        width: 100%;
+        min-width: 0;
+
+        padding: 14px;
+
+        border-radius: 13px;
+
+        overflow: hidden;
+    }
+
+    .analytics-card:hover {
+        transform: none;
+    }
+
+    .analytics-card h2 {
+        margin-bottom: 12px;
+
+        font-size: 17px;
+    }
+
+    .analytics-card p {
+        font-size: 12px;
+
+        line-height: 1.5;
+    }
+
+    .analytics-card .value {
+        font-size: 24px;
+    }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 390px) {
+
+    .analytics-page > h1 {
+        font-size: 23px !important;
+    }
+
+    .analytics-card {
+        padding: 12px;
+    }
 }

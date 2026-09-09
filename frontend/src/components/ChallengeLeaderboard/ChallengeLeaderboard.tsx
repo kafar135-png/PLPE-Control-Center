@@ -515,9 +515,9 @@ function ChallengeLeaderboard() {
             {t.challenge.monthlyTradingChallenge}
           </h2>
 
-          <p>
-            PLPE/WETH
-          </p>
+         <p>
+  PLPE/WETH · {t.challenge.pairMinimumVolume}
+</p>
 
           <div
             className="challenge-phase-dates"
