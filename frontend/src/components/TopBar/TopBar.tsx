@@ -20,6 +20,7 @@ import { sendOnlineHeartbeat } from "../../services/online";
 
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 import WalletPanel from "../WalletPanel/WalletPanel";
+import InstallAppButton from "../InstallAppButton/InstallAppButton";
 
 function TopBar() {
   const {
@@ -178,6 +179,8 @@ function TopBar() {
 
           <div>
 
+            
+
             <small>
               {t.common.wallet}
             </small>
@@ -191,6 +194,8 @@ function TopBar() {
           </div>
 
         </div>
+
+        <InstallAppButton />
 
         {/* LANGUAGE */}
 

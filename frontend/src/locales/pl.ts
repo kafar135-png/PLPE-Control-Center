@@ -22,6 +22,7 @@ const pl: TranslationDictionary = {
     disconnect: "Rozłącz",
     value: "Wartość",
     share: "Udział",
+    installApp: "Pobierz aplikację",
   },
 
   topbar: {

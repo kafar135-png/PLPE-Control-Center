@@ -29,6 +29,7 @@ export interface TranslationDictionary {
     disconnect: string;
     value: string;
     share: string;
+   installApp: string;
   };
 
   topbar: {
