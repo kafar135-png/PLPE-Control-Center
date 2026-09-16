@@ -1,0 +1,476 @@
+[
+  {
+    "key": "prologue-01-01",
+    "speaker": "narrator",
+    "pl": "PolishPepe budzi się pośród mokrych drzew. Wokół niego leżą porwane liny, metalowe elementy i resztki rozbitego balonu.",
+    "en": "PolishPepe wakes among wet trees. Torn ropes, metal parts, and the remains of a crashed balloon are scattered around him."
+  },
+  {
+    "key": "prologue-01-02",
+    "speaker": "pepe",
+    "pl": "Co... się stało?",
+    "en": "What... happened?"
+  },
+  {
+    "key": "prologue-01-03",
+    "speaker": "narrator",
+    "pl": "Nie pamięta katastrofy. Nie pamięta lotu. Nie pamięta nawet, skąd przybył.",
+    "en": "He does not remember the crash. He does not remember the flight. He does not even remember where he came from."
+  },
+  {
+    "key": "prologue-01-04",
+    "speaker": "pepe",
+    "pl": "Kim ja jestem?",
+    "en": "Who am I?"
+  },
+  {
+    "key": "prologue-02-01",
+    "speaker": "narrator",
+    "pl": "Wśród rzeczy ocalałych z katastrofy znajduje stary plecak. W środku: uszkodzony kompas i ręcznie narysowana mapa.",
+    "en": "Among the belongings that survived the crash, he finds an old backpack. Inside: a damaged compass and a hand-drawn map."
+  },
+  {
+    "key": "prologue-02-02",
+    "speaker": "narrator",
+    "pl": "Większość mapy jest zniszczona. Pozostał tylko jeden wyraźnie zaznaczony punkt wysoko w górach.",
+    "en": "Most of the map is destroyed. Only one clearly marked point remains high in the mountains."
+  },
+  {
+    "key": "prologue-02-03",
+    "speaker": "pepe",
+    "pl": "Nie wiem, co tam jest.",
+    "en": "I don't know what's there."
+  },
+  {
+    "key": "prologue-02-04",
+    "speaker": "pepe",
+    "pl": "Ale ktoś bardzo chciał, żebym tam dotarł.",
+    "en": "But someone really wanted me to get there."
+  },
+  {
+    "key": "prologue-03-01",
+    "speaker": "narrator",
+    "pl": "Pierwsze dni są chaotyczne. PolishPepe szuka wody, jedzenia i próbuje zrozumieć mapę.",
+    "en": "The first days are chaotic. PolishPepe searches for water, food, and tries to understand the map."
+  },
+  {
+    "key": "prologue-03-02",
+    "speaker": "narrator",
+    "pl": "Kilka razy wybiera złą drogę. Kilka razy wraca do tego samego miejsca.",
+    "en": "Several times he chooses the wrong road. Several times he returns to the same place."
+  },
+  {
+    "key": "prologue-03-03",
+    "speaker": "pepe",
+    "pl": "Świetnie. Nawet mapa nie chce ze mną współpracować.",
+    "en": "Great. Even the map doesn't want to cooperate with me."
+  },
+  {
+    "key": "prologue-04-01",
+    "speaker": "narrator",
+    "pl": "Dni zmieniają się w tygodnie. Las ustępuje ruinom, ruiny mokrym dolinom, a doliny górskim drogom.",
+    "en": "Days become weeks. Forests give way to ruins, ruins to wet valleys, and valleys to mountain roads."
+  },
+  {
+    "key": "prologue-04-02",
+    "speaker": "narrator",
+    "pl": "W nocy przychodzą przebłyski. PLPE. Biały orzeł. Sieć. Światło. Głosy ludzi.",
+    "en": "At night, flashes come. PLPE. A white eagle. A network. Light. Human voices."
+  },
+  {
+    "key": "prologue-04-03",
+    "speaker": "pepe",
+    "pl": "To są wspomnienia... czy tylko mój mózg zaczyna wariować?",
+    "en": "Are these memories... or is my brain just starting to fall apart?"
+  },
+  {
+    "key": "prologue-05-01",
+    "speaker": "narrator",
+    "pl": "Tygodnie zmieniają się w miesiące. PolishPepe staje się coraz bardziej doświadczonym wędrowcem.",
+    "en": "Weeks become months. PolishPepe becomes a more experienced wanderer."
+  },
+  {
+    "key": "prologue-05-02",
+    "speaker": "narrator",
+    "pl": "Naprawia ubranie, zdobywa lepszy sprzęt i uczy się przetrwać tam, gdzie wcześniej ledwo dawał sobie radę.",
+    "en": "He repairs his clothes, finds better equipment, and learns to survive where he once barely managed."
+  },
+  {
+    "key": "prologue-05-03",
+    "speaker": "narrator",
+    "pl": "W opuszczonym schronieniu znajduje symbol identyczny jak znak obok punktu na mapie.",
+    "en": "In an abandoned shelter, he finds a symbol identical to the mark beside the point on his map."
+  },
+  {
+    "key": "prologue-05-04",
+    "speaker": "pepe",
+    "pl": "Czyli to miejsce naprawdę istnieje.",
+    "en": "So this place really exists."
+  },
+  {
+    "key": "prologue-06-01",
+    "speaker": "narrator",
+    "pl": "Po miesiącach wędrówki dociera do wysokich gór. Po raz pierwszy układ szczytów zgadza się z liniami na mapie.",
+    "en": "After months of wandering, he reaches the high mountains. For the first time, the shape of the peaks matches the lines on the map."
+  },
+  {
+    "key": "prologue-06-02",
+    "speaker": "pepe",
+    "pl": "Wreszcie.",
+    "en": "Finally."
+  },
+  {
+    "key": "prologue-06-03",
+    "speaker": "narrator",
+    "pl": "Im wyżej się wspina, tym silniejsze staje się dziwne poczucie, że już kiedyś widział te góry.",
+    "en": "The higher he climbs, the stronger the strange feeling becomes that he has seen these mountains before."
+  },
+  {
+    "key": "prologue-07-01",
+    "speaker": "narrator",
+    "pl": "Wychodzi ponad warstwę chmur. Na skalnym zboczu stoi ogromny klasztor, dokładnie w miejscu zaznaczonym na mapie.",
+    "en": "He climbs above the clouds. A massive monastery stands on the rocky mountainside, exactly where the point was marked on the map."
+  },
+  {
+    "key": "prologue-07-02",
+    "speaker": "pepe",
+    "pl": "Więc to tutaj.",
+    "en": "So this is it."
+  },
+  {
+    "key": "prologue-07-03",
+    "speaker": "pepe",
+    "pl": "Nie wiem, kim jestem. Nie wiem, kto zaznaczył to miejsce... ale ktoś bardzo chciał, żebym tu dotarł.",
+    "en": "I don't know who I am. I don't know who marked this place... but someone really wanted me to reach it."
+  },
+  {
+    "key": "prologue-08-01",
+    "speaker": "narrator",
+    "pl": "Przy bramie czeka samotna postać w ciemnej szacie.",
+    "en": "A lone figure in a dark robe waits at the gate."
+  },
+  {
+    "key": "prologue-08-02",
+    "speaker": "bocian",
+    "pl": "W końcu dotarłeś.",
+    "en": "You finally made it."
+  },
+  {
+    "key": "prologue-08-03",
+    "speaker": "pepe",
+    "pl": "Znasz mnie?",
+    "en": "You know me?"
+  },
+  {
+    "key": "prologue-08-04",
+    "speaker": "bocian",
+    "pl": "Znam twoje imię.",
+    "en": "I know your name."
+  },
+  {
+    "key": "prologue-08-05",
+    "speaker": "pepe",
+    "pl": "Skąd?",
+    "en": "How?"
+  },
+  {
+    "key": "prologue-08-06",
+    "speaker": "bocian",
+    "pl": "Pytanie brzmi raczej... dlaczego ty go nie pamiętasz.",
+    "en": "The better question is... why don't you remember it?"
+  },
+  {
+    "key": "prologue-08-07",
+    "speaker": "bocian",
+    "pl": "Wejdź, PolishPepe. Jeżeli naprawdę chcesz odpowiedzi, musimy zacząć od początku.",
+    "en": "Come inside, PolishPepe. If you truly want answers, we must begin at the beginning."
+  },
+  {
+    "key": "story-forest-first-road-01",
+    "speaker": "pepe",
+    "pl": "Jeżeli ta mapa naprawdę prowadzi do mojego balonu, chcę iść dalej bez postoju.",
+    "en": "If this map really leads to my balloon, I want to keep moving without stopping."
+  },
+  {
+    "key": "story-forest-first-road-02",
+    "speaker": "bocian",
+    "pl": "I dlatego właśnie ja idę z tobą. Kto biegnie za odpowiedzią, zwykle pierwszy wpada w pułapkę.",
+    "en": "And that is exactly why I am coming with you. Whoever runs after an answer usually falls into the trap first."
+  },
+  {
+    "key": "story-forest-first-road-03",
+    "speaker": "pepe",
+    "pl": "Czyli plan brzmi: ja wpadam w pułapkę, ty mówisz «a nie mówiłem»?",
+    "en": "So the plan is: I fall into the trap, and you say 'I told you so'?"
+  },
+  {
+    "key": "story-forest-first-road-04",
+    "speaker": "bocian",
+    "pl": "Nie. Plan brzmi: tym razem zauważymy ją wcześniej.",
+    "en": "No. The plan is that this time we notice it first."
+  },
+  {
+    "key": "story-mist-lake-01",
+    "speaker": "pepe",
+    "pl": "Woda jest zbyt spokojna. Nawet wiatr jej nie rusza.",
+    "en": "The water is too calm. Even the wind does not move it."
+  },
+  {
+    "key": "story-mist-lake-02",
+    "speaker": "bocian",
+    "pl": "Bo wiatr omija miejsca, których nie rozumie.",
+    "en": "Because the wind avoids places it does not understand."
+  },
+  {
+    "key": "story-mist-lake-03",
+    "speaker": "pepe",
+    "pl": "To miało zabrzmieć mądrze czy niepokojąco?",
+    "en": "Was that supposed to sound wise or unsettling?"
+  },
+  {
+    "key": "story-mist-lake-04",
+    "speaker": "bocian",
+    "pl": "Jedno nie wyklucza drugiego. Trzymaj broń blisko.",
+    "en": "One does not exclude the other. Keep your weapon close."
+  },
+  {
+    "key": "story-mountain-pass-01",
+    "speaker": "bocian",
+    "pl": "Za przełęczą zaczyna się teren, którego nie kontroluje Klasztor.",
+    "en": "Beyond the pass begins territory the Monastery does not control."
+  },
+  {
+    "key": "story-mountain-pass-02",
+    "speaker": "pepe",
+    "pl": "Czyli wreszcie robi się ciekawie.",
+    "en": "So things are finally getting interesting."
+  },
+  {
+    "key": "story-mountain-pass-03",
+    "speaker": "bocian",
+    "pl": "Ciekawie to słowo używane przez ludzi, którzy nie muszą później zszywać ran.",
+    "en": "Interesting is a word used by people who do not have to stitch the wounds afterward."
+  },
+  {
+    "key": "story-mountain-pass-04",
+    "speaker": "pepe",
+    "pl": "Dobrze. W takim razie robi się strategicznie.",
+    "en": "Fine. Then things are getting strategic."
+  },
+  {
+    "key": "story-hidden-cave-01",
+    "speaker": "pepe",
+    "pl": "Te znaki... widziałem je wcześniej. Jeszcze przed katastrofą.",
+    "en": "These marks... I have seen them before. Before the crash."
+  },
+  {
+    "key": "story-hidden-cave-02",
+    "speaker": "bocian",
+    "pl": "Pamięć wraca fragmentami, kiedy miejsce pasuje do śladu.",
+    "en": "Memory returns in fragments when a place matches the trace."
+  },
+  {
+    "key": "story-hidden-cave-03",
+    "speaker": "pepe",
+    "pl": "A jeśli przypomnę sobie coś, czego wolałbym nie wiedzieć?",
+    "en": "And what if I remember something I would rather not know?"
+  },
+  {
+    "key": "story-hidden-cave-04",
+    "speaker": "bocian",
+    "pl": "Wtedy przynajmniej będzie to twoja prawda, a nie cudza opowieść.",
+    "en": "Then at least it will be your truth, not someone else's story."
+  },
+  {
+    "key": "story-old-quarry-01",
+    "speaker": "pepe",
+    "pl": "Cztery relikty w jednym miejscu. Dzisiaj los mnie lubi.",
+    "en": "Four relics in one place. Luck likes me today."
+  },
+  {
+    "key": "story-old-quarry-02",
+    "speaker": "bocian",
+    "pl": "Relikt nie jest monetą. To narzędzie, po którym ktoś zostawił historię.",
+    "en": "A relic is not a coin. It is a tool on which someone left a story."
+  },
+  {
+    "key": "story-old-quarry-03",
+    "speaker": "pepe",
+    "pl": "A jeśli historię da się sprzedać?",
+    "en": "And what if the story can be sold?"
+  },
+  {
+    "key": "story-old-quarry-04",
+    "speaker": "bocian",
+    "pl": "Wtedy Archiwum wpisze cię na listę barbarzyńców.",
+    "en": "Then the Archive will put you on the list of barbarians."
+  },
+  {
+    "key": "story-deep-mine-01",
+    "speaker": "bocian",
+    "pl": "Słyszysz ten rytm? Ktoś uruchomił stare maszyny dużo wcześniej niż Niedźwiedzie pojawiły się w dolinie.",
+    "en": "Do you hear that rhythm? Someone started the old machines long before the Bears appeared in the valley."
+  },
+  {
+    "key": "story-deep-mine-02",
+    "speaker": "pepe",
+    "pl": "Czyli wojna nie zaczęła się od nich?",
+    "en": "So the war did not begin with them?"
+  },
+  {
+    "key": "story-deep-mine-03",
+    "speaker": "bocian",
+    "pl": "Wojny prawie nigdy nie zaczynają się tam, gdzie pierwszy raz widzimy miecz.",
+    "en": "Wars almost never begin where we first see the sword."
+  },
+  {
+    "key": "story-watchtower-cellar-01",
+    "speaker": "pepe",
+    "pl": "Te księgi opisują ruchy patroli sprzed wielu lat. Ktoś przewidział tę wojnę.",
+    "en": "These books describe patrol movements from many years ago. Someone predicted this war."
+  },
+  {
+    "key": "story-watchtower-cellar-02",
+    "speaker": "bocian",
+    "pl": "Albo przygotował ją wcześniej.",
+    "en": "Or prepared it in advance."
+  },
+  {
+    "key": "story-watchtower-cellar-03",
+    "speaker": "pepe",
+    "pl": "Nie lubię, kiedy twoje odpowiedzi są gorsze od moich pytań.",
+    "en": "I do not like it when your answers are worse than my questions."
+  },
+  {
+    "key": "story-stone-circle-01",
+    "speaker": "bocian",
+    "pl": "Kamienie reagują na relikty, które niesiesz.",
+    "en": "The stones are reacting to the relics you carry."
+  },
+  {
+    "key": "story-stone-circle-02",
+    "speaker": "pepe",
+    "pl": "Czyli cały czas nosiłem klucze i nawet o tym nie wiedziałem.",
+    "en": "So I have been carrying the keys all this time and did not even know it."
+  },
+  {
+    "key": "story-stone-circle-03",
+    "speaker": "bocian",
+    "pl": "Tak działa większość ważnych rzeczy. Najpierw je znajdujesz, dopiero później rozumiesz.",
+    "en": "That is how most important things work. First you find them, only later do you understand them."
+  },
+  {
+    "key": "story-coastal-beacon-01",
+    "speaker": "pepe",
+    "pl": "Jeśli zapalimy latarnię, zobaczą nas z połowy wybrzeża.",
+    "en": "If we light the beacon, half the coast will see us."
+  },
+  {
+    "key": "story-coastal-beacon-02",
+    "speaker": "bocian",
+    "pl": "Właśnie o to chodzi.",
+    "en": "That is exactly the point."
+  },
+  {
+    "key": "story-coastal-beacon-03",
+    "speaker": "pepe",
+    "pl": "Przez całą drogę uczyłeś mnie unikać zasadzek.",
+    "en": "The whole journey you taught me to avoid ambushes."
+  },
+  {
+    "key": "story-coastal-beacon-04",
+    "speaker": "bocian",
+    "pl": "A teraz jesteśmy wystarczająco silni, żeby wybrać miejsce następnej.",
+    "en": "And now we are strong enough to choose the place for the next one."
+  },
+  {
+    "key": "story-bear-outpost-01",
+    "speaker": "bocian",
+    "pl": "Ich posterunki nie są już przypadkowe. Każdy osłania kolejny.",
+    "en": "Their outposts are no longer random. Each one protects the next."
+  },
+  {
+    "key": "story-bear-outpost-02",
+    "speaker": "pepe",
+    "pl": "To dobrze. Przynajmniej wiemy, gdzie szukać następnego przeciwnika.",
+    "en": "Good. At least we know where to look for the next opponent."
+  },
+  {
+    "key": "story-bear-outpost-03",
+    "speaker": "bocian",
+    "pl": "Ty naprawdę potrafisz zamienić logistykę wojenną w zaproszenie do bójki.",
+    "en": "You really can turn military logistics into an invitation to a fight."
+  },
+  {
+    "key": "story-bear-outpost-04",
+    "speaker": "pepe",
+    "pl": "To moja specjalizacja.",
+    "en": "That is my specialization."
+  },
+  {
+    "key": "story-burned-village-01",
+    "speaker": "pepe",
+    "pl": "Tu nie ma już kogo ratować.",
+    "en": "There is no one left here to save."
+  },
+  {
+    "key": "story-burned-village-02",
+    "speaker": "bocian",
+    "pl": "Dlatego nie możemy traktować tej drogi jak turnieju.",
+    "en": "That is why we cannot treat this road like a tournament."
+  },
+  {
+    "key": "story-burned-village-03",
+    "speaker": "pepe",
+    "pl": "Wiem. Od tej chwili kończymy to nie dla mapy. Dla tych, którzy nie zdążyli odejść.",
+    "en": "I know. From now on we finish this not for the map. For those who did not have time to leave."
+  },
+  {
+    "key": "story-dark-gate-01",
+    "speaker": "bocian",
+    "pl": "Za tą bramą nie będzie już zwiadu. Każdy ruch stanie się częścią finału.",
+    "en": "Beyond this gate there will be no more scouting. Every move becomes part of the finale."
+  },
+  {
+    "key": "story-dark-gate-02",
+    "speaker": "pepe",
+    "pl": "Dobrze. Przez całą drogę próbowałem sobie przypomnieć, kim byłem.",
+    "en": "Good. The whole way I was trying to remember who I used to be."
+  },
+  {
+    "key": "story-dark-gate-03",
+    "speaker": "bocian",
+    "pl": "A teraz?",
+    "en": "And now?"
+  },
+  {
+    "key": "story-dark-gate-04",
+    "speaker": "pepe",
+    "pl": "Teraz bardziej interesuje mnie, kim zdecyduję się być po drugiej stronie.",
+    "en": "Now I care more about who I choose to become on the other side."
+  },
+  {
+    "key": "story-war-awakens-01",
+    "speaker": "bocian",
+    "pl": "Ciemna Dolina obserwuje nasze szlaki i buduje własną sieć wpływów.",
+    "en": "The Dark Valley watches our routes and builds its own network of influence."
+  },
+  {
+    "key": "story-war-awakens-02",
+    "speaker": "bocian",
+    "pl": "Nie wystarczy pokonać jednego Niedźwiedzia. Musimy odebrać im teren, informacje i zapasy.",
+    "en": "Defeating one Bear is not enough. We must take away their territory, intelligence and supplies."
+  },
+  {
+    "key": "story-scout-rescued-01",
+    "speaker": "narrator",
+    "pl": "Bear Army nie trzyma wszystkich sił w Ciemnej Dolinie.",
+    "en": "The Bear Army does not keep all its forces in the Dark Valley."
+  },
+  {
+    "key": "story-scout-rescued-02",
+    "speaker": "narrator",
+    "pl": "Mają mniejsze posterunki, magazyny i grupy, które potrafią odbijać teren.",
+    "en": "They have smaller outposts, depots and groups capable of retaking territory."
+  }
+]

@@ -1,0 +1,67 @@
+.profile-card,
+.analytics-card,
+.about-card,
+.stat-card{
+
+    background:var(--gradient-card);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius-md);
+
+    box-shadow:var(--shadow);
+
+    backdrop-filter:blur(14px);
+
+    transition:all var(--transition);
+
+    overflow:hidden;
+
+    position:relative;
+
+}
+
+.profile-card::before,
+.analytics-card::before,
+.about-card::before,
+.stat-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    top:0;
+
+    height:2px;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        var(--plpe-green),
+        transparent
+    );
+
+    opacity:.55;
+
+}
+
+.profile-card:hover,
+.analytics-card:hover,
+.about-card:hover,
+.stat-card:hover{
+
+    transform:translateY(-5px);
+
+    border-color:var(--border-hover);
+
+    box-shadow:
+
+        var(--shadow),
+
+        var(--shadow-green);
+
+}

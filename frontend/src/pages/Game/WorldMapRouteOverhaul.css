@@ -1,0 +1,387 @@
+/* =========================================================
+   PLPE ARENA — CAMPAIGN MAP v6
+   Single, readable mission-by-mission route.
+========================================================= */
+
+.world-map__route--graph {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 16 !important;
+  pointer-events: none !important;
+  overflow: visible !important;
+}
+
+.world-map__graph-edge-shadow {
+  stroke: rgba(0, 0, 0, 0.72) !important;
+  stroke-width: 10px !important;
+  stroke-linecap: round !important;
+  opacity: 0.72 !important;
+  vector-effect: non-scaling-stroke !important;
+}
+
+.world-map__graph-edge {
+  fill: none !important;
+  stroke: #c7d0d7 !important;
+  stroke-width: 4px !important;
+  stroke-linecap: round !important;
+  stroke-dasharray: none !important;
+  opacity: 0.9 !important;
+  vector-effect: non-scaling-stroke !important;
+  filter: drop-shadow(0 0 4px rgba(235, 242, 247, 0.5)) !important;
+}
+
+.world-map__graph-edge.neutral-zone {
+  stroke: #bfc7cd !important;
+}
+
+.world-map__graph-edge.player-zone {
+  stroke: #35df91 !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 7px rgba(53, 223, 145, 0.85)) !important;
+}
+
+.world-map__graph-edge.enemy-zone {
+  stroke: #e94b43 !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 7px rgba(233, 75, 67, 0.82)) !important;
+}
+
+.world-map__graph-edge.current {
+  stroke-width: 5px !important;
+}
+
+.world-map__graph-edge.visited:not(.enemy-zone):not(.player-zone) {
+  opacity: 1 !important;
+}
+
+/* =========================================================
+   MISSION NODES
+========================================================= */
+
+.world-map__location--graph {
+  z-index: 34 !important;
+  transform: translate(-50%, -50%) !important;
+  width: 32px !important;
+  height: 32px !important;
+  overflow: visible !important;
+}
+
+.world-map__location-icon {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-width: 2px !important;
+  font-size: 13px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.62) !important;
+}
+
+.world-map__location--graph.current {
+  z-index: 66 !important;
+  transform: translate(-50%, -50%) scale(1.22) !important;
+}
+
+.world-map__location--graph.current .world-map__location-icon {
+  border-color: #45eaa2 !important;
+  box-shadow:
+    0 0 0 5px rgba(69, 234, 162, 0.14),
+    0 0 22px rgba(69, 234, 162, 0.9) !important;
+}
+
+.world-map__location--graph.campaign-next {
+  z-index: 62 !important;
+  transform: translate(-50%, -50%) scale(1.16) !important;
+}
+
+.world-map__location--graph.campaign-next .world-map__location-icon {
+  border-color: #f0c85f !important;
+  box-shadow:
+    0 0 0 4px rgba(240, 200, 95, 0.12),
+    0 0 18px rgba(240, 200, 95, 0.8) !important;
+  animation: plpe-next-mission-pulse 1.7s ease-in-out infinite !important;
+}
+
+@keyframes plpe-next-mission-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.world-map__location--graph.undiscovered .world-map__location-icon {
+  color: #dbc978 !important;
+  background: rgba(6, 12, 18, 0.9) !important;
+  border-color: rgba(219, 201, 120, 0.44) !important;
+  font-size: 16px !important;
+}
+
+.world-map__mission-number {
+  position: absolute !important;
+  top: -10px !important;
+  right: -13px !important;
+  z-index: 8 !important;
+  min-width: 22px !important;
+  height: 18px !important;
+  padding: 0 4px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 9px !important;
+  border: 1px solid rgba(236, 201, 103, 0.45) !important;
+  background: rgba(5, 9, 14, 0.95) !important;
+  color: #f1cf70 !important;
+  font-size: 7px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.04em !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.65) !important;
+  pointer-events: none !important;
+}
+
+.world-map__location--graph.current .world-map__mission-number {
+  color: #72efb2 !important;
+  border-color: rgba(79, 232, 163, 0.55) !important;
+}
+
+/* Labels no longer cover one another. Only the important node is labelled. */
+.world-map__location-label {
+  position: absolute !important;
+  left: 50% !important;
+  top: 42px !important;
+  transform: translateX(-50%) translateY(-4px) !important;
+  min-width: 118px !important;
+  max-width: 160px !important;
+  padding: 6px 9px !important;
+  border-radius: 8px !important;
+  background: rgba(3, 8, 13, 0.94) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(10px) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.14s ease, transform 0.14s ease !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5) !important;
+}
+
+.world-map__location--graph:hover .world-map__location-label,
+.world-map__location--graph.current .world-map__location-label,
+.world-map__location--graph.campaign-next .world-map__location-label,
+.world-map__location--graph.quest-target .world-map__location-label {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateX(-50%) translateY(0) !important;
+}
+
+.world-map__location-label small {
+  font-size: 6.5px !important;
+  line-height: 1.1 !important;
+}
+
+.world-map__location-label strong {
+  display: block !important;
+  margin-top: 2px !important;
+  font-size: 9px !important;
+  line-height: 1.2 !important;
+  white-space: normal !important;
+}
+
+.world-map__location--graph.campaign-next .world-map__location-label {
+  border-color: rgba(236, 197, 92, 0.5) !important;
+}
+
+.world-map__activity-badge {
+  right: -10px !important;
+  bottom: -9px !important;
+  z-index: 9 !important;
+}
+
+.world-map__tower-badge {
+  right: -18px !important;
+  top: -20px !important;
+  min-width: 27px !important;
+  height: 27px !important;
+  padding: 0 4px !important;
+  border-radius: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #082419 !important;
+  border: 1px solid #35d58b !important;
+  color: #fff !important;
+  font-size: 11px !important;
+  box-shadow: 0 0 14px rgba(53, 213, 139, 0.48) !important;
+  z-index: 10 !important;
+}
+
+.world-map__tower-badge.enemy {
+  background: #310909 !important;
+  border-color: #ef4e42 !important;
+  box-shadow: 0 0 14px rgba(239, 78, 66, 0.5) !important;
+}
+
+/* =========================================================
+   CLEAN MAP HUD — no overlapping info/buttons
+========================================================= */
+
+.world-map__campaign-stage {
+  display: none !important;
+}
+
+.world-map__route-legend {
+  position: absolute !important;
+  left: 18px !important;
+  bottom: 88px !important;
+  top: auto !important;
+  z-index: 94 !important;
+  padding: 8px 10px !important;
+  background: rgba(3, 8, 13, 0.92) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 9px !important;
+  display: flex !important;
+  gap: 10px !important;
+  font-size: 7.5px !important;
+  font-weight: 900 !important;
+}
+
+.world-map__route-legend span::before {
+  content: "" !important;
+  display: inline-block !important;
+  width: 18px !important;
+  height: 4px !important;
+  border-radius: 4px !important;
+  margin-right: 5px !important;
+  vertical-align: middle !important;
+}
+
+.world-map__route-legend .green::before { background: #35df91 !important; }
+.world-map__route-legend .gray::before { background: #bfc7cd !important; }
+.world-map__route-legend .red::before { background: #e94b43 !important; }
+
+.world-map__turn-activities {
+  position: absolute !important;
+  left: 16px !important;
+  top: 166px !important;
+  bottom: auto !important;
+  z-index: 96 !important;
+  width: 208px !important;
+  padding: 9px !important;
+  border-radius: 11px !important;
+  background: rgba(3, 9, 14, 0.94) !important;
+  border: 1px solid rgba(74, 225, 157, 0.24) !important;
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.36) !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 6px !important;
+}
+
+.world-map__turn-activities > div {
+  grid-column: 1 / -1 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.world-map__turn-activities > div span {
+  font-size: 7px !important;
+  font-weight: 900 !important;
+  color: #5be1a6 !important;
+  letter-spacing: 0.12em !important;
+}
+
+.world-map__turn-activities > div strong {
+  font-size: 12px !important;
+  color: #fff !important;
+}
+
+.world-map__turn-activities button {
+  min-height: 39px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: #0c1620 !important;
+  color: #fff !important;
+  font-size: 8px !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+  padding: 6px 7px !important;
+}
+
+.world-map__turn-activities button:first-of-type {
+  grid-column: 1 / -1 !important;
+}
+
+.world-map__turn-activities button small {
+  display: block !important;
+  font-size: 6px !important;
+  color: #93a4b2 !important;
+  margin-top: 2px !important;
+}
+
+.world-map__turn-activities button:disabled {
+  opacity: 0.3 !important;
+}
+
+.world-map__upgrade-toast {
+  left: auto !important;
+  right: 18px !important;
+  bottom: 84px !important;
+  width: 270px !important;
+  z-index: 95 !important;
+}
+
+/* Keep strategy units attached to their mission node. */
+.world-strategy__bot {
+  z-index: 52 !important;
+}
+
+/* Current hero stays above the route without covering labels. */
+.world-map__pepe {
+  z-index: 58 !important;
+  transform: translate(-50%, -92%) !important;
+}
+
+@media (max-width: 1280px) {
+  .world-map__turn-activities {
+    width: 190px !important;
+    top: 154px !important;
+  }
+
+  .world-map__location-label {
+    min-width: 104px !important;
+    max-width: 132px !important;
+  }
+}
+
+
+/* =========================================================
+   MAP v7 — single Stronghold-style campaign road
+========================================================= */
+.world-map__graph-edge-shadow{stroke-width:9px!important;opacity:.8!important}
+.world-map__graph-edge.primary-route{stroke-width:4.5px!important;opacity:1!important}
+.world-map__side-edge-shadow{stroke:rgba(0,0,0,.62)!important;stroke-width:7px!important;stroke-linecap:round!important;vector-effect:non-scaling-stroke!important}
+.world-map__side-edge{stroke:#8d99a4!important;stroke-width:2.2px!important;stroke-linecap:round!important;stroke-dasharray:4 5!important;opacity:.72!important;vector-effect:non-scaling-stroke!important}
+.world-map__side-edge.completed{stroke:#45d99a!important;opacity:.85!important}
+.world-map__location--graph.side-mission{width:24px!important;height:24px!important;z-index:31!important}
+.world-map__location--graph.side-mission .world-map__location-icon{width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;border-radius:7px!important;transform:rotate(45deg)!important;border-color:rgba(202,211,219,.65)!important;background:rgba(7,13,19,.96)!important}
+.world-map__location--graph.side-mission .world-map__location-icon::after{content:"◆";transform:rotate(-45deg)!important;color:#d7c16f!important;font-size:10px!important}
+.world-map__location--graph.side-mission .world-map__location-icon{font-size:0!important}
+.world-map__location--graph.side-mission .world-map__mission-number{top:-12px!important;right:-20px!important;background:#111922!important;color:#d9c36c!important}
+.world-map__location--graph.side-complete .world-map__location-icon{border-color:#44db9a!important;box-shadow:0 0 13px rgba(68,219,154,.42)!important}
+.world-map__location--graph.side-mission .world-map__location-label{top:34px!important;min-width:132px!important}
+.world-map__side-mission-card{position:absolute!important;left:18px!important;top:430px!important;z-index:97!important;width:220px!important;padding:12px!important;border-radius:12px!important;background:rgba(4,10,15,.95)!important;border:1px solid rgba(221,190,84,.35)!important;box-shadow:0 16px 42px rgba(0,0,0,.42)!important}
+.world-map__side-mission-card>span{display:block!important;color:#e4c45f!important;font-size:7px!important;font-weight:900!important;letter-spacing:.13em!important}.world-map__side-mission-card strong{display:block!important;margin:5px 0 3px!important;color:#fff!important;font-size:12px!important}.world-map__side-mission-card small{display:block!important;color:#9ba8b3!important;font-size:7px!important;line-height:1.35!important}.world-map__side-mission-card button{width:100%!important;margin-top:9px!important;height:34px!important;border-radius:8px!important;border:1px solid rgba(226,190,75,.4)!important;background:#4d3a0d!important;color:#fff!important;font-size:8px!important;font-weight:900!important}.world-map__side-mission-card.completed{border-color:rgba(65,216,150,.34)!important}.world-map__side-mission-card.completed>span{color:#47dc9a!important}
+
+/* HUD separated into fixed zones so information never sits on buttons. */
+.world-map__top{padding-left:250px!important;padding-right:455px!important;min-height:72px!important;gap:8px!important}
+.world-map__inventory-button{left:16px!important;top:82px!important;width:210px!important;z-index:102!important}
+.world-map__active-quest{top:82px!important;left:50%!important;transform:translateX(-50%)!important;width:420px!important;max-width:calc(100vw - 760px)!important;z-index:101!important}
+.world-strategy__status{top:82px!important;right:16px!important;z-index:101!important}
+.world-map__back-top-center{top:16px!important;left:50%!important;transform:translateX(-50%)!important;z-index:105!important}
+.world-map__turn-activities{top:178px!important;left:16px!important}
+.world-map__route-legend{left:18px!important;bottom:120px!important}
+.world-map__turn-banner{bottom:74px!important;left:50%!important;transform:translateX(-50%)!important;width:min(560px,48vw)!important}
+.world-map__end-turn{bottom:14px!important;left:50%!important;transform:translateX(-50%)!important;min-width:250px!important}
+.world-map__upgrade-toast{right:18px!important;bottom:18px!important;width:260px!important}
+.world-map__reset-corner{left:18px!important;bottom:18px!important}
+
+@media(max-width:1500px){.world-map__top{padding-left:225px!important;padding-right:420px!important}.world-map__active-quest{width:360px!important;max-width:360px!important}.world-map__side-mission-card{top:410px!important}.world-map__turn-activities{top:166px!important}}

@@ -1,0 +1,16 @@
+.profile-card h2,
+.analytics-card h2,
+.about-card h2,
+.stat-card h2{
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:white;
+
+    margin-bottom:20px;
+
+    letter-spacing:.3px;
+
+}

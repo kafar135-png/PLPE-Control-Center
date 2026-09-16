@@ -1,0 +1,434 @@
+/* =========================================================
+   PLPE ARENA — GAMEPLAY LAYER
+   Additive layout + inventory + turn controls.
+   Does not replace WorldMapHub.css or WorldStrategyLayer.css.
+========================================================= */
+
+/* =========================================================
+   PLAYER HUD / INVENTORY — TOP LEFT
+========================================================= */
+
+.world-map__inventory-button {
+  position: fixed !important;
+  top: 18px !important;
+  left: 20px !important;
+  z-index: 205000 !important;
+  width: 220px !important;
+  min-height: 66px !important;
+  display: grid !important;
+  grid-template-columns: 48px 1fr !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  border: 1px solid rgba(65, 229, 154, 0.38) !important;
+  border-radius: 11px !important;
+  background: linear-gradient(180deg, rgba(8, 35, 25, 0.97), rgba(4, 17, 13, 0.97)) !important;
+  color: #fff !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.world-map__inventory-button > span {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(71, 226, 155, 0.08);
+  font-size: 25px;
+}
+
+.world-map__inventory-button > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.world-map__inventory-button small {
+  color: #69e5a8 !important;
+  font-size: 8px !important;
+  font-weight: 900 !important;
+}
+
+.world-map__inventory-button strong {
+  margin-top: 1px !important;
+  font-size: 15px !important;
+  line-height: 1.1 !important;
+}
+
+.world-map__inventory-button b {
+  margin-top: 3px !important;
+  color: #adc0b8 !important;
+  font-size: 8px !important;
+}
+
+/* =========================================================
+   ORIGINAL LEFT TOP HUD — SHIFT RIGHT
+========================================================= */
+
+.world-map__top {
+  left: 252px !important;
+  right: 560px !important;
+  top: 18px !important;
+  min-height: 66px !important;
+}
+
+/* Hide old map title block; Inventory replaces player's main card. */
+.world-map__top-title {
+  display: none !important;
+}
+
+/* =========================================================
+   BACK — TOP CENTER
+========================================================= */
+
+.world-map__back-top-center {
+  position: fixed !important;
+  top: 18px !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 205500 !important;
+  min-width: 150px !important;
+  min-height: 50px !important;
+  padding: 0 18px !important;
+  border: 1px solid rgba(225, 180, 85, 0.4) !important;
+  border-radius: 10px !important;
+  background: rgba(5, 9, 14, 0.95) !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  box-shadow: 0 8px 25px rgba(0,0,0,.32) !important;
+}
+
+/* =========================================================
+   RESET — BOTTOM LEFT
+========================================================= */
+
+.world-map__reset-corner {
+  position: fixed !important;
+  left: 18px !important;
+  bottom: 18px !important;
+  top: auto !important;
+  right: auto !important;
+  z-index: 205500 !important;
+  min-width: 125px !important;
+  min-height: 44px !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(217, 81, 70, 0.38) !important;
+  border-radius: 9px !important;
+  background: rgba(38, 11, 12, 0.94) !important;
+  color: #ffd5cf !important;
+  font-size: 9px !important;
+  font-weight: 900 !important;
+}
+
+/* =========================================================
+   END TURN — BOTTOM CENTER
+========================================================= */
+
+.world-map__end-turn-button {
+  position: fixed !important;
+  left: 50% !important;
+  bottom: 20px !important;
+  top: auto !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  z-index: 206000 !important;
+  min-width: 260px !important;
+  min-height: 58px !important;
+  padding: 0 28px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(69, 229, 157, .56) !important;
+  background: linear-gradient(180deg, rgba(26, 144, 88, .98), rgba(12, 87, 52, .98)) !important;
+  color: #effff7 !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  letter-spacing: .2px !important;
+  box-shadow: 0 0 24px rgba(53, 222, 142, .25), 0 12px 35px rgba(0,0,0,.42) !important;
+}
+
+.world-map__end-turn-button.enemy-turn {
+  border-color: rgba(221, 85, 72, .56) !important;
+  background: linear-gradient(180deg, rgba(134, 37, 31, .98), rgba(74, 18, 17, .98)) !important;
+  color: #ffe1dc !important;
+}
+
+/* =========================================================
+   TURN BANNER — JUST ABOVE END TURN
+========================================================= */
+
+.world-map__turn-banner {
+  position: fixed !important;
+  top: auto !important;
+  left: 50% !important;
+  bottom: 89px !important;
+  transform: translateX(-50%) !important;
+  z-index: 205800 !important;
+  width: min(610px, calc(100vw - 360px)) !important;
+  min-height: 48px !important;
+  padding: 9px 14px !important;
+  box-sizing: border-box !important;
+  border-radius: 10px !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.world-map__turn-banner span {
+  font-size: 8px !important;
+}
+
+.world-map__turn-banner strong {
+  font-size: 10px !important;
+}
+
+/* =========================================================
+   ENEMY HUD — TOP RIGHT
+========================================================= */
+
+.world-strategy__status {
+  top: 18px !important;
+  right: 18px !important;
+  width: 500px !important;
+  gap: 8px !important;
+}
+
+.world-strategy__status > div {
+  min-height: 66px !important;
+  padding: 10px 13px !important;
+}
+
+.world-strategy__status span {
+  font-size: 8px !important;
+}
+
+.world-strategy__status strong {
+  margin-top: 5px !important;
+  font-size: 16px !important;
+}
+
+/* =========================================================
+   ACTIVE QUEST — CENTER TOP, UNDER BACK
+========================================================= */
+
+.world-map__active-quest {
+  top: 82px !important;
+  width: 480px !important;
+  min-height: 72px !important;
+  padding: 12px 16px !important;
+}
+
+/* =========================================================
+   UPGRADE READY TOAST
+========================================================= */
+
+.world-map__upgrade-toast {
+  position: fixed;
+  left: 18px;
+  bottom: 78px;
+  z-index: 205600;
+  width: 300px;
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  border: 1px solid rgba(67, 226, 151, .38);
+  border-radius: 10px;
+  background: rgba(5, 25, 18, .96);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 12px 35px rgba(0,0,0,.4);
+}
+
+.world-map__upgrade-toast span {
+  color: #6ce7aa;
+  font-size: 8px;
+  font-weight: 950;
+}
+
+.world-map__upgrade-toast strong {
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.world-map__upgrade-toast small {
+  margin-top: 3px;
+  color: #9facb6;
+  font-size: 8px;
+}
+
+/* =========================================================
+   STATIC WORLD GEOMETRY
+========================================================= */
+
+.world-map__location,
+.world-map__location--graph {
+  transition: opacity 140ms ease, filter 140ms ease, box-shadow 140ms ease, border-color 140ms ease !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.world-map__location--graph:hover,
+.world-map__location--graph.current,
+.world-map__location--graph.connected,
+.world-map__location--graph.visited,
+.world-map__location--graph.locked,
+.world-map__location--graph.region-locked,
+.world-map__location--graph.quest-target {
+  transform: translate(-50%, -50%) !important;
+}
+
+.world-map__location-label {
+  transform: translateX(-50%) !important;
+  transition: none !important;
+}
+
+.world-map__activity-badge {
+  transition: none !important;
+}
+
+.world-map__route,
+.world-map__route--graph,
+.world-map__graph-edge {
+  transform: none !important;
+  transition: stroke 160ms ease, opacity 160ms ease !important;
+}
+
+.world-map__hidden-discovery {
+  transition: opacity 150ms ease, filter 150ms ease, box-shadow 150ms ease !important;
+}
+
+.world-map__pepe,
+.world-strategy__bot,
+.world-map__strategy-bot,
+.world-map__bot {
+  transition: left 700ms ease, top 700ms ease, opacity 160ms ease !important;
+}
+
+/* =========================================================
+   MAP READABILITY
+========================================================= */
+
+.world-map__location--graph {
+  width: 41px !important;
+  height: 41px !important;
+}
+
+.world-map__location-label {
+  top: 46px !important;
+  min-width: 122px !important;
+  padding: 5px 7px !important;
+}
+
+.world-map__location-label strong {
+  font-size: 8px !important;
+}
+
+.world-map__location-label small {
+  font-size: 6px !important;
+}
+
+.world-map__hidden-discovery {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+/* =========================================================
+   LARGE SIDE PANELS
+========================================================= */
+
+.world-map__panel,
+.world-map__discovery-panel {
+  width: 445px !important;
+  padding: 20px !important;
+}
+
+.world-strategy__panel {
+  width: 540px !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1500px) {
+  .world-map__inventory-button { width: 190px !important; }
+  .world-map__top { left: 220px !important; right: 470px !important; }
+  .world-strategy__status { width: 445px !important; }
+}
+
+@media (max-width: 1100px) {
+  .world-map__inventory-button { top: 10px !important; left: 10px !important; width: 175px !important; min-height: 54px !important; }
+  .world-strategy__status { top: 10px !important; right: 10px !important; width: 400px !important; }
+  .world-map__top { left: 195px !important; right: 425px !important; top: 10px !important; }
+  .world-map__back-top-center { top: 72px !important; }
+  .world-map__active-quest { top: 126px !important; }
+  .world-map__turn-banner { width: calc(100vw - 40px) !important; bottom: 82px !important; }
+}
+
+/* =========================================================
+   CLEAN MAP HUD V4
+   Row 1: exploration stats. Row 2: inventory only.
+========================================================= */
+
+.world-map__top {
+  top: 12px !important;
+  left: 16px !important;
+  right: 555px !important;
+  gap: 7px !important;
+  min-height: 52px !important;
+}
+
+.world-map__top-stat {
+  min-width: 86px !important;
+  min-height: 52px !important;
+  padding: 8px 11px !important;
+}
+
+.world-map__top-stat span {
+  font-size: 8px !important;
+}
+
+.world-map__top-stat strong {
+  font-size: 15px !important;
+}
+
+.world-map__inventory-button {
+  top: 72px !important;
+  left: 16px !important;
+  width: 220px !important;
+  min-height: 58px !important;
+}
+
+.world-map__back-top-center {
+  top: 12px !important;
+  min-height: 52px !important;
+}
+
+.world-strategy__status {
+  top: 12px !important;
+  right: 16px !important;
+}
+
+/* During tactical combat the world HUD must disappear completely. */
+.world-map--battle-open .world-map__top,
+.world-map--battle-open .world-map__active-quest,
+.world-map--battle-open .world-map__inventory-button,
+.world-map--battle-open .world-strategy__status,
+.world-map--battle-open .world-map__turn-banner,
+.world-map--battle-open .world-map__end-turn-button,
+.world-map--battle-open .world-map__reset-corner,
+.world-map--battle-open .world-map__back-top-center,
+.world-map--battle-open .world-map__upgrade-toast,
+.world-map--battle-open .world-map__region,
+.world-map--battle-open .world-strategy__turn-phase,
+.world-map--battle-open .world-map__war-button,
+.world-map--battle-open .world-map__journal-button {
+  display: none !important;
+}
+
+/* Inventory is the only second-row command hub. */
+.world-map__war-button,
+.world-map__journal-button {
+  display: none !important;
+}

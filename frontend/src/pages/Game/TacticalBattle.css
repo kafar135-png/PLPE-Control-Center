@@ -1,0 +1,1659 @@
+.tactical-battle {
+  position: fixed;
+  inset: 0;
+  z-index: 300000;
+  overflow: hidden;
+  color: #fff;
+  background-position: center 62%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  isolation: isolate;
+}
+
+.tactical-battle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(180deg, rgba(4, 7, 10, .16), rgba(4, 7, 10, .42)),
+    radial-gradient(circle at 22% 55%, rgba(33, 135, 88, .08), transparent 28%),
+    radial-gradient(circle at 78% 55%, rgba(164, 48, 39, .09), transparent 28%);
+  pointer-events: none;
+}
+
+.tactical-battle__backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, .22) 0%, transparent 22%, transparent 70%, rgba(0, 0, 0, .28) 100%),
+    linear-gradient(90deg, rgba(0,0,0,.18), transparent 22%, transparent 78%, rgba(0,0,0,.18));
+}
+
+.tactical-battle--shake {
+  animation: battleShake .42s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes battleShake {
+  0%, 100% { transform: translate3d(0,0,0); }
+  12% { transform: translate3d(-6px, 2px, 0) rotate(-.15deg); }
+  25% { transform: translate3d(7px, -3px, 0) rotate(.18deg); }
+  38% { transform: translate3d(-9px, 2px, 0) rotate(-.22deg); }
+  52% { transform: translate3d(8px, 3px, 0) rotate(.18deg); }
+  68% { transform: translate3d(-5px, -2px, 0); }
+  84% { transform: translate3d(4px, 1px, 0); }
+}
+
+.tactical-battle__topbar {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  right: 18px;
+  z-index: 80;
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 96px 220px auto;
+  gap: 9px;
+}
+
+.tactical-battle__battle-title,
+.tactical-battle__round,
+.tactical-battle__turn,
+.tactical-battle__retreat {
+  min-height: 58px;
+  border: 1px solid rgba(224, 176, 80, .34);
+  border-radius: 10px;
+  background: rgba(3, 7, 11, .84);
+  box-shadow: 0 10px 28px rgba(0,0,0,.22);
+  backdrop-filter: blur(10px);
+}
+
+.tactical-battle__battle-title,
+.tactical-battle__round,
+.tactical-battle__turn {
+  padding: 9px 13px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tactical-battle__battle-title span,
+.tactical-battle__round small,
+.tactical-battle__turn small {
+  color: #e7bd6d;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.tactical-battle__battle-title strong {
+  margin-top: 2px;
+  font-size: 17px;
+}
+
+.tactical-battle__round strong {
+  margin-top: 1px;
+  font-size: 22px;
+}
+
+.tactical-battle__turn strong {
+  margin-top: 2px;
+  font-size: 12px;
+}
+
+.tactical-battle__retreat {
+  padding: 0 18px;
+  color: #f3cec7;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.tactical-battle__retreat:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+.tactical-battle__initiative {
+  position: absolute;
+  top: 84px;
+  left: 50%;
+  z-index: 75;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 999px;
+  background: rgba(3,7,11,.76);
+  backdrop-filter: blur(8px);
+}
+
+.tactical-battle__initiative-unit {
+  width: 36px;
+  height: 29px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 999px;
+  display: grid;
+  grid-template-columns: 10px 1fr;
+  place-items: center;
+  background: rgba(255,255,255,.035);
+  opacity: .46;
+}
+
+.tactical-battle__initiative-unit.active {
+  opacity: 1;
+  border-color: rgba(255,205,94,.85);
+  box-shadow: 0 0 16px rgba(255,190,52,.28);
+}
+
+.tactical-battle__initiative-unit.player {
+  border-left-color: #58e6a8;
+}
+
+.tactical-battle__initiative-unit.enemy {
+  border-left-color: #e46c61;
+}
+
+.tactical-battle__initiative-unit span {
+  color: #8d9aa3;
+  font-size: 7px;
+}
+
+.tactical-battle__initiative-unit b {
+  font-size: 13px;
+}
+
+.tactical-battle__target-prompt {
+  position: absolute;
+  top: 124px;
+  left: 50%;
+  z-index: 90;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 205, 96, .5);
+  border-radius: 999px;
+  background: rgba(5,8,12,.88);
+  color: #ffd676;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  animation: targetPromptPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes targetPromptPulse {
+  to { box-shadow: 0 0 24px rgba(255,199,76,.3); }
+}
+
+.tactical-battle__field {
+  position: absolute;
+  inset: 118px 18px 118px;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: minmax(360px, 1fr) 90px minmax(480px, 1.25fr);
+  align-items: end;
+  gap: 16px;
+}
+
+.tactical-battle__formation {
+  min-height: 100%;
+  display: grid;
+  align-items: end;
+  gap: 10px;
+}
+
+.tactical-battle__formation--player {
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  max-width: 330px;
+  padding-left: 42px;
+}
+
+.tactical-battle__formation--enemy {
+  grid-template-columns: repeat(2, minmax(190px, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  padding-right: 24px;
+}
+
+.tactical-battle__versus {
+  align-self: center;
+  justify-self: center;
+  color: #efc472;
+  font-size: 34px;
+  font-weight: 1000;
+  text-shadow: 0 0 22px rgba(255, 184, 60, .32);
+  pointer-events: none;
+}
+
+.tactical-battle__fighter {
+  position: relative;
+  min-height: 220px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  cursor: default;
+  overflow: visible;
+}
+
+.tactical-battle__fighter.targetable,
+.tactical-battle__fighter--enemy {
+  cursor: pointer;
+}
+
+.tactical-battle__fighter.targetable .tactical-battle__body::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  width: 72%;
+  height: 24px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 214, 110, .62);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(255, 198, 70, .28);
+  animation: targetRing 1s ease-in-out infinite alternate;
+}
+
+@keyframes targetRing {
+  to { transform: translateX(-50%) scale(1.08); opacity: .72; }
+}
+
+.tactical-battle__fighter--enemy.selected-enemy .tactical-battle__body::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 7px;
+  width: 64%;
+  height: 21px;
+  transform: translateX(-50%);
+  border: 2px solid rgba(245, 87, 67, .82);
+  border-radius: 50%;
+  box-shadow: 0 0 22px rgba(236, 70, 53, .35);
+}
+
+.tactical-battle__overhead {
+  position: absolute;
+  z-index: 15;
+  top: 0;
+  left: 50%;
+  width: min(220px, 94%);
+  transform: translateX(-50%);
+  text-align: left;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.85));
+}
+
+.tactical-battle__name-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tactical-battle__name-row strong {
+  font-size: 11px;
+  font-weight: 950;
+  text-shadow: 0 2px 7px rgba(0,0,0,.95);
+}
+
+.tactical-battle__name-row small {
+  color: #e7c06d;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.tactical-battle__hpbar {
+  height: 8px;
+  margin-top: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.65);
+  border-radius: 999px;
+  background: rgba(12,17,20,.78);
+  box-shadow: 0 2px 7px rgba(0,0,0,.5);
+}
+
+.tactical-battle__hpbar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #2ecc7f, #66f2b4);
+  transition: width 260ms ease;
+}
+
+.tactical-battle__hpbar--enemy i {
+  background: linear-gradient(90deg, #d84239, #f27668);
+}
+
+.tactical-battle__mini-row {
+  margin-top: 3px;
+  display: flex;
+  justify-content: space-between;
+  gap: 7px;
+  color: rgba(235,239,242,.9);
+  font-size: 7px;
+  font-weight: 800;
+  text-shadow: 0 2px 6px rgba(0,0,0,.9);
+}
+
+.tactical-battle__statuses {
+  margin-top: 3px;
+  display: flex;
+  gap: 3px;
+}
+
+.tactical-battle__statuses span {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(3,7,11,.74);
+  border: 1px solid rgba(255,255,255,.14);
+  font-size: 10px;
+}
+
+.tactical-battle__body {
+  position: absolute;
+  inset: 32px 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.tactical-battle__body > img,
+.tactical-battle__enemy-sprite,
+.tactical-battle__emoji-unit {
+  position: relative;
+  z-index: 5;
+}
+
+.tactical-battle__body > img {
+  width: 100%;
+  height: 100%;
+  max-height: 250px;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 13px 8px rgba(0,0,0,.62));
+}
+
+.tactical-battle__fighter--player:nth-child(1) .tactical-battle__body > img {
+  max-height: 255px;
+}
+
+.tactical-battle__fighter--player:nth-child(2) .tactical-battle__body > img {
+  max-height: 245px;
+}
+
+.tactical-battle__enemy-sprite {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.tactical-battle__enemy-sprite img {
+  width: 100%;
+  height: 100%;
+  max-height: 225px;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 12px 8px rgba(0,0,0,.65));
+}
+
+.tactical-battle__enemy-sprite > span {
+  position: absolute;
+  right: 12%;
+  top: 34px;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(228,92,75,.4);
+  background: rgba(77,17,15,.82);
+  font-size: 15px;
+}
+
+.tactical-battle__enemy-sprite--bear-archer img {
+  filter: sepia(.25) hue-rotate(330deg) drop-shadow(0 12px 8px rgba(0,0,0,.65));
+  transform: scale(.96);
+}
+
+.tactical-battle__enemy-sprite--bear-elite img {
+  filter: contrast(1.2) brightness(.8) saturate(.85) drop-shadow(0 12px 8px rgba(0,0,0,.65));
+  transform: scale(1.08);
+}
+
+.tactical-battle__enemy-sprite--bear-commander img {
+  filter: saturate(1.35) contrast(1.18) drop-shadow(0 0 14px rgba(255,78,44,.32));
+  transform: scale(1.12);
+}
+
+.tactical-battle__enemy-sprite--wild-bear img {
+  filter: saturate(.72) sepia(.22) drop-shadow(0 12px 8px rgba(0,0,0,.65));
+}
+
+.tactical-battle__enemy-sprite--mountain-bear img {
+  filter: brightness(1.2) saturate(.55) drop-shadow(0 12px 8px rgba(0,0,0,.65));
+}
+
+.tactical-battle__emoji-unit {
+  align-self: flex-end;
+  padding-bottom: 28px;
+  font-size: 88px;
+  filter: drop-shadow(0 12px 9px rgba(0,0,0,.68));
+}
+
+.tactical-battle__emoji-unit--harpy,
+.tactical-battle__emoji-unit--harpy-matriarch {
+  animation: enemyHover 1.7s ease-in-out infinite;
+}
+
+@keyframes enemyHover {
+  50% { transform: translateY(-8px); }
+}
+
+.tactical-battle__ground-shadow {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 8px;
+  width: 58%;
+  height: 18px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(0,0,0,.58);
+  filter: blur(5px);
+}
+
+.tactical-battle__fighter.impact .tactical-battle__body {
+  animation: fighterImpact .34s cubic-bezier(.36,.07,.19,.97);
+}
+
+@keyframes fighterImpact {
+  0%,100% { transform: translateX(0) scale(1); }
+  25% { transform: translateX(-10px) scale(1.04); filter: brightness(1.5); }
+  50% { transform: translateX(9px) scale(.98); filter: brightness(1.8); }
+  75% { transform: translateX(-4px) scale(1.02); }
+}
+
+.tactical-battle__shield-visual {
+  position: absolute;
+  z-index: 12;
+  left: 50%;
+  bottom: 42px;
+  width: 92px;
+  height: 112px;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  border-radius: 48% 48% 55% 55%;
+  background: radial-gradient(circle, rgba(137,229,255,.22), rgba(52,151,236,.08) 55%, transparent 72%);
+  filter: drop-shadow(0 0 20px rgba(83,199,255,.9));
+  animation: shieldAppear .7s ease both;
+}
+
+.tactical-battle__shield-visual svg {
+  width: 82px;
+  height: 96px;
+  fill: rgba(71,172,231,.18);
+  stroke: #9ae6ff;
+  stroke-width: 4;
+}
+
+@keyframes shieldAppear {
+  0% { opacity: 0; transform: translateX(-50%) scale(.5); }
+  40% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+  100% { opacity: .92; transform: translateX(-50%) scale(1); }
+}
+
+.tactical-battle__action-dock {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  z-index: 100;
+  transform: translateX(-50%);
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border: 1px solid rgba(221,177,86,.26);
+  border-radius: 18px;
+  background: rgba(3,7,11,.88);
+  box-shadow: 0 18px 42px rgba(0,0,0,.32);
+  backdrop-filter: blur(12px);
+}
+
+.tactical-battle__active-hero {
+  min-width: 68px;
+  padding: 0 10px;
+  display: grid;
+  place-items: center;
+  color: #72edb4;
+  font-size: 9px;
+  font-weight: 950;
+  letter-spacing: .08em;
+}
+
+.tactical-battle__action-button {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  padding: 12px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 32%, rgba(255,255,255,.12), transparent 44%),
+    rgba(11,16,20,.92);
+  color: #eef4f6;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,.02), 0 8px 20px rgba(0,0,0,.28);
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.tactical-battle__action-button:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.04);
+  border-color: rgba(255,209,99,.7);
+  box-shadow: 0 0 23px rgba(255,191,56,.18), 0 9px 22px rgba(0,0,0,.35);
+}
+
+.tactical-battle__action-button.active {
+  border-color: rgba(255,209,99,.92);
+  box-shadow: 0 0 25px rgba(255,194,59,.32), inset 0 0 22px rgba(255,197,70,.09);
+}
+
+.tactical-battle__action-button:disabled {
+  opacity: .28;
+  cursor: not-allowed;
+}
+
+.tactical-battle__action-button > svg:not(.tactical-battle__charge-ring) {
+  width: 42px;
+  height: 42px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tactical-battle__spirit-button {
+  width: 82px;
+  height: 82px;
+  color: #91dfff;
+}
+
+.tactical-battle__spirit-button.ready {
+  color: #fff5a8;
+  border-color: rgba(255,224,91,.9);
+  box-shadow: 0 0 36px rgba(255,221,65,.42), inset 0 0 30px rgba(112,205,255,.12);
+  animation: spiritReadyPulse .85s ease-in-out infinite alternate;
+}
+
+@keyframes spiritReadyPulse {
+  to { transform: scale(1.06); filter: brightness(1.18); }
+}
+
+.tactical-battle__charge-ring {
+  position: absolute;
+  inset: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.tactical-battle__charge-ring circle {
+  fill: none;
+  stroke: rgba(255,255,255,.08);
+  stroke-width: 5;
+}
+
+.tactical-battle__charge-ring .tactical-battle__charge-ring-value {
+  stroke: #64d8ff;
+  stroke-linecap: round;
+  transition: stroke-dashoffset .3s ease;
+}
+
+.tactical-battle__spirit-button.ready .tactical-battle__charge-ring-value {
+  stroke: #ffe36b;
+}
+
+.tactical-battle__charge-number {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  font-weight: 950;
+  color: #beeefe;
+  text-shadow: 0 2px 8px rgba(0,0,0,.9);
+}
+
+.tactical-battle__reaction {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  z-index: 110;
+  transform: translateX(-50%);
+  min-width: 420px;
+  min-height: 104px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 10px 18px;
+  border: 1px solid rgba(255,102,82,.36);
+  border-radius: 18px;
+  background: rgba(4,8,12,.92);
+  box-shadow: 0 0 34px rgba(191,52,39,.15);
+  backdrop-filter: blur(12px);
+}
+
+.tactical-battle__reaction-shield {
+  width: 64px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  animation: reactionShieldPulse .7s ease-in-out infinite alternate;
+}
+
+.tactical-battle__reaction-shield svg {
+  width: 62px;
+  height: 72px;
+  fill: rgba(66,168,228,.14);
+  stroke: #8edfff;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 12px rgba(85,201,255,.8));
+}
+
+@keyframes reactionShieldPulse {
+  to { transform: scale(1.1); filter: brightness(1.25); }
+}
+
+.tactical-battle__reaction-targets {
+  display: flex;
+  gap: 12px;
+}
+
+.tactical-battle__reaction-targets button {
+  width: 116px;
+  height: 82px;
+  padding: 6px;
+  border: 1px solid rgba(116,220,255,.3);
+  border-radius: 12px;
+  background: rgba(10,19,25,.78);
+  color: #fff;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  gap: 4px;
+}
+
+.tactical-battle__reaction-targets button:hover:not(:disabled) {
+  border-color: rgba(139,229,255,.85);
+  box-shadow: 0 0 22px rgba(77,200,255,.22);
+}
+
+.tactical-battle__reaction-targets button img {
+  width: 44px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.tactical-battle__reaction-targets button span {
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.tactical-battle__enemy-phase {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  z-index: 95;
+  transform: translateX(-50%);
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+}
+
+.tactical-battle__enemy-phase-pulse {
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(243,91,72,.72);
+  border-radius: 50%;
+  animation: enemyPulse 1s ease-out infinite;
+}
+
+@keyframes enemyPulse {
+  from { transform: scale(.6); opacity: 1; }
+  to { transform: scale(2.2); opacity: 0; }
+}
+
+.tactical-battle__result {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 150;
+  width: min(520px, calc(100vw - 42px));
+  transform: translate(-50%, -50%);
+  padding: 28px;
+  box-sizing: border-box;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 18px;
+  background: rgba(3,7,11,.97);
+  box-shadow: 0 30px 100px rgba(0,0,0,.75);
+}
+
+.tactical-battle__result--player {
+  border-color: rgba(78,225,156,.48);
+}
+
+.tactical-battle__result--enemy {
+  border-color: rgba(229,95,79,.48);
+}
+
+.tactical-battle__result > span {
+  color: #e6bd6d;
+  font-size: 10px;
+  font-weight: 950;
+}
+
+.tactical-battle__result h2 {
+  margin: 7px 0 16px;
+}
+
+.tactical-battle__rewards {
+  margin: 14px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+}
+
+.tactical-battle__rewards b {
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(226,178,81,.08);
+  color: #efc979;
+  font-size: 10px;
+}
+
+.tactical-battle__result button {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid rgba(77,227,156,.3);
+  border-radius: 9px;
+  background: rgba(35,126,82,.55);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.tactical-battle__fx {
+  position: absolute;
+  inset: 0;
+  z-index: 105;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.tactical-battle__fx::before,
+.tactical-battle__fx::after,
+.tactical-battle__fx span {
+  content: "";
+  position: absolute;
+}
+
+.tactical-battle__fx--player-to-enemy span {
+  left: 23%;
+  top: 48%;
+}
+
+.tactical-battle__fx--enemy-to-player span {
+  right: 23%;
+  top: 48%;
+}
+
+.tactical-battle__fx--self span {
+  left: 50%;
+  top: 49%;
+}
+
+.tactical-battle__fx--slash span {
+  width: 130px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, transparent, #fff 28%, #ffd46d 58%, transparent);
+  box-shadow: 0 0 14px #fff, 0 0 34px rgba(255,197,76,.92);
+  transform: rotate(-25deg);
+}
+
+.tactical-battle__fx--player-to-enemy.tactical-battle__fx--slash span {
+  animation: slashRight .58s cubic-bezier(.16,.8,.2,1) forwards;
+}
+
+.tactical-battle__fx--enemy-to-player.tactical-battle__fx--slash span {
+  animation: slashLeft .58s cubic-bezier(.16,.8,.2,1) forwards;
+}
+
+.tactical-battle__fx--lightning::before {
+  inset: 0;
+  background:
+    repeating-linear-gradient(112deg, transparent 0 12%, rgba(143,224,255,.12) 13%, transparent 14% 24%);
+  animation: lightningFlash .7s ease-out both;
+}
+
+.tactical-battle__fx--lightning span,
+.tactical-battle__fx--bolt span {
+  width: 72px;
+  height: 72px;
+  background: #a2efff;
+  box-shadow: 0 0 24px #67ddff, 0 0 70px #6277ff;
+  clip-path: polygon(42% 0, 70% 0, 55% 34%, 86% 34%, 30% 100%, 43% 54%, 17% 54%);
+}
+
+.tactical-battle__fx--player-to-enemy.tactical-battle__fx--lightning span,
+.tactical-battle__fx--player-to-enemy.tactical-battle__fx--bolt span {
+  animation: boltRight .75s cubic-bezier(.1,.8,.2,1) forwards;
+}
+
+.tactical-battle__fx--arrow span {
+  width: 110px;
+  height: 7px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #d7c198, #fff 70%, #ffc970);
+  box-shadow: 0 0 10px rgba(255,255,255,.45);
+  animation: arrowLeft .62s cubic-bezier(.12,.72,.18,1) forwards;
+}
+
+.tactical-battle__fx--fire span {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 36%, #fff7ae, #ff9a31 36%, #ef3c1f 67%, transparent 72%);
+  box-shadow: 0 0 28px #ff6d21, 0 0 70px rgba(255,69,24,.55);
+  animation: fireLeft .68s cubic-bezier(.12,.72,.18,1) forwards;
+}
+
+.tactical-battle__fx--poison span {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: radial-gradient(circle,#c9ff9c,#59bd52 52%,#143d21 70%, transparent 74%);
+  box-shadow: 0 0 30px #75da62;
+  animation: fireLeft .68s cubic-bezier(.12,.72,.18,1) forwards;
+}
+
+.tactical-battle__fx--heal span,
+.tactical-battle__fx--blessing span,
+.tactical-battle__fx--shield span,
+.tactical-battle__fx--block span,
+.tactical-battle__fx--freeze span,
+.tactical-battle__fx--sleep span {
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+}
+
+.tactical-battle__fx--heal span {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle,#fff 0 8%,#75f2b9 9% 30%,rgba(91,225,163,.2) 31% 56%,transparent 58%);
+  box-shadow: 0 0 40px rgba(94,238,174,.72);
+  animation: pulseFx .72s ease-out both;
+}
+
+.tactical-battle__fx--shield span,
+.tactical-battle__fx--block span {
+  width: 118px;
+  height: 138px;
+  border: 6px solid #9ae5ff;
+  border-radius: 48% 48% 58% 58%;
+  background: rgba(74,180,235,.12);
+  box-shadow: 0 0 42px rgba(83,199,255,.9), inset 0 0 28px rgba(118,219,255,.22);
+  clip-path: polygon(50% 0, 92% 18%, 86% 68%, 50% 100%, 14% 68%, 8% 18%);
+  animation: shieldFx .72s ease-out both;
+}
+
+.tactical-battle__fx--block span {
+  border-color: #ffe5a1;
+  box-shadow: 0 0 45px rgba(255,198,78,.95), inset 0 0 30px rgba(255,216,112,.22);
+}
+
+.tactical-battle__fx--freeze span {
+  width: 125px;
+  height: 125px;
+  background:
+    linear-gradient(45deg, transparent 45%, #c7f4ff 46% 54%, transparent 55%),
+    linear-gradient(-45deg, transparent 45%, #c7f4ff 46% 54%, transparent 55%),
+    radial-gradient(circle, rgba(143,224,255,.62), rgba(76,164,255,.12) 58%, transparent 62%);
+  filter: drop-shadow(0 0 18px #85ddff);
+  animation: pulseFx .82s ease-out both;
+}
+
+.tactical-battle__fx--sleep span {
+  width: 120px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(150,122,255,.38), rgba(89,65,184,.1) 60%, transparent 65%);
+  box-shadow: 0 0 34px rgba(143,118,255,.55);
+  animation: pulseFx .85s ease-out both;
+}
+
+.tactical-battle__fx--sleep::after {
+  content: "Z Z Z";
+  left: 50%;
+  top: 40%;
+  color: #c9bcff;
+  font-size: 28px;
+  font-weight: 1000;
+  letter-spacing: 8px;
+  text-shadow: 0 0 15px rgba(126,98,255,.9);
+  animation: sleepRise .9s ease-out both;
+}
+
+.tactical-battle__fx--blessing span {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background:
+    conic-gradient(from 0deg, transparent, rgba(255,226,118,.75), transparent, rgba(255,226,118,.75), transparent);
+  box-shadow: 0 0 45px rgba(255,218,91,.48);
+  animation: blessingSpin .85s ease-out both;
+}
+
+.tactical-battle__fx--death::before {
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,.95), rgba(255,213,116,.45) 12%, transparent 38%);
+  animation: deathFlash .8s ease-out both;
+}
+
+.tactical-battle__fx--death span {
+  left: 50%;
+  top: 48%;
+  width: 180px;
+  height: 180px;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  border: 5px solid rgba(255,226,139,.95);
+  box-shadow: 0 0 50px rgba(255,210,103,.9);
+  animation: deathRing .8s ease-out both;
+}
+
+@keyframes slashRight {
+  from { transform: translateX(0) rotate(-25deg) scale(.65); opacity: .3; }
+  45% { opacity: 1; }
+  to { transform: translateX(48vw) rotate(-25deg) scale(1.35); opacity: 0; }
+}
+
+@keyframes slashLeft {
+  from { transform: translateX(0) rotate(25deg) scale(.65); opacity: .3; }
+  45% { opacity: 1; }
+  to { transform: translateX(-48vw) rotate(25deg) scale(1.35); opacity: 0; }
+}
+
+@keyframes boltRight {
+  from { transform: translateX(0) scale(.65); opacity: .4; }
+  36% { opacity: 1; }
+  to { transform: translateX(50vw) scale(1.5); opacity: 0; }
+}
+
+@keyframes arrowLeft {
+  from { transform: translateX(0) scale(.8); opacity: .3; }
+  30% { opacity: 1; }
+  to { transform: translateX(-50vw) scale(1.05); opacity: 0; }
+}
+
+@keyframes fireLeft {
+  from { transform: translateX(0) scale(.55); opacity: .4; }
+  30% { opacity: 1; }
+  to { transform: translateX(-49vw) scale(1.25); opacity: 0; }
+}
+
+@keyframes lightningFlash {
+  0% { opacity: 0; }
+  12% { opacity: 1; background-color: rgba(190,235,255,.3); }
+  24% { opacity: .1; }
+  38% { opacity: .9; background-color: rgba(213,243,255,.25); }
+  100% { opacity: 0; }
+}
+
+@keyframes pulseFx {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(.35); }
+  45% { opacity: 1; transform: translate(-50%,-50%) scale(1.18); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.65); }
+}
+
+@keyframes shieldFx {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(.45); }
+  35% { opacity: 1; transform: translate(-50%,-50%) scale(1.18); }
+  72% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.08); }
+}
+
+@keyframes sleepRise {
+  from { transform: translate(-50%, 30px); opacity: 0; }
+  to { transform: translate(-50%, -65px); opacity: 0; }
+}
+
+@keyframes blessingSpin {
+  from { transform: translate(-50%,-50%) rotate(0deg) scale(.35); opacity: 0; }
+  45% { opacity: 1; }
+  to { transform: translate(-50%,-50%) rotate(210deg) scale(1.6); opacity: 0; }
+}
+
+@keyframes deathFlash {
+  0% { opacity: 0; }
+  16% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes deathRing {
+  from { opacity: 1; transform: translate(-50%,-50%) scale(.25); }
+  to { opacity: 0; transform: translate(-50%,-50%) scale(3.8); }
+}
+
+/* NIGDY NIE WYŚWIETLAMY STAREGO LOGU WALKI */
+.tactical-battle__battle-log,
+.tactical-battle__center-log,
+.battle-log,
+.combat-log {
+  display: none !important;
+}
+
+@media (max-width: 1200px) {
+  .tactical-battle__field {
+    grid-template-columns: 280px 60px 1fr;
+  }
+
+  .tactical-battle__formation--enemy {
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+  }
+
+  .tactical-battle__action-button {
+    width: 62px;
+    height: 62px;
+  }
+
+  .tactical-battle__spirit-button {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+/* =========================================================
+   PLPE TACTICAL BATTLE v8 — GROUND FORMATION + HERO CHOICE
+   Final overrides: every living unit stands on the same ground line.
+========================================================= */
+
+.tactical-battle__field {
+  inset: 118px 22px 112px;
+  grid-template-columns: minmax(420px, .95fr) 64px minmax(560px, 1.25fr);
+  align-items: end;
+}
+
+.tactical-battle__formation {
+  height: 100%;
+  min-height: 0;
+  align-items: end;
+}
+
+.tactical-battle__formation--player {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(170px, 240px));
+  grid-template-rows: 1fr;
+  align-items: end;
+  justify-content: start;
+  gap: clamp(12px, 2vw, 34px);
+  max-width: 560px;
+  padding: 0 0 0 24px;
+}
+
+.tactical-battle__formation--enemy {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: clamp(8px, 1.25vw, 22px);
+  min-width: 0;
+  padding: 0 20px 0 0;
+}
+
+.tactical-battle__fighter {
+  height: clamp(260px, 42vh, 430px);
+  min-height: 250px;
+  align-self: end;
+}
+
+.tactical-battle__fighter--player {
+  width: min(220px, 22vw);
+}
+
+.tactical-battle__fighter--enemy {
+  flex: 1 1 0;
+  min-width: 118px;
+  max-width: 220px;
+}
+
+.tactical-battle__body {
+  inset: 40px 0 0;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.tactical-battle__body > img,
+.tactical-battle__enemy-sprite img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: 50% 100%;
+}
+
+.tactical-battle__body > img {
+  max-height: clamp(250px, 38vh, 385px);
+}
+
+.tactical-battle__enemy-sprite img {
+  max-height: clamp(220px, 34vh, 345px);
+}
+
+.tactical-battle__ground-shadow {
+  bottom: 2px;
+  width: 72%;
+  height: 18px;
+}
+
+.tactical-battle__overhead {
+  top: 0;
+  width: min(205px, 96%);
+}
+
+.tactical-battle__fighter--player.selected-actor .tactical-battle__body::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: -1px;
+  width: 80%;
+  height: 27px;
+  transform: translateX(-50%);
+  border: 2px solid rgba(93, 246, 173, .96);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(65, 235, 153, .2), transparent 68%);
+  box-shadow: 0 0 14px rgba(73, 239, 162, .55), 0 0 34px rgba(73, 239, 162, .28);
+  animation: selectedHeroPulse .8s ease-in-out infinite alternate;
+}
+
+@keyframes selectedHeroPulse {
+  to {
+    transform: translateX(-50%) scale(1.08);
+    filter: brightness(1.25);
+  }
+}
+
+.tactical-battle__fighter--player.acted {
+  filter: saturate(.72) brightness(.82);
+}
+
+.tactical-battle__fighter--player.acted .tactical-battle__overhead::after {
+  content: "RUCH WYKONANY";
+  display: inline-block;
+  margin-top: 3px;
+  color: rgba(255,255,255,.58);
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+
+.tactical-battle__fighter--player:not(.acted):hover .tactical-battle__body {
+  filter: brightness(1.08);
+}
+
+.tactical-battle__target-prompt {
+  top: 116px;
+  max-width: min(720px, 70vw);
+  text-align: center;
+}
+
+.tactical-battle__enemy-sprite > span {
+  top: 44px;
+  right: 4%;
+  width: 25px;
+  height: 25px;
+  font-size: 13px;
+}
+
+/* Distinguish bear classes visually until dedicated sprites are added. */
+.tactical-battle__enemy-sprite--bear-warrior img {
+  transform: scale(1.03);
+  filter: saturate(.92) contrast(1.12) drop-shadow(0 12px 8px rgba(0,0,0,.7));
+}
+
+.tactical-battle__enemy-sprite--bear-archer img {
+  transform: scale(.9) translateY(2px);
+  filter: sepia(.32) hue-rotate(332deg) brightness(.9) drop-shadow(0 12px 8px rgba(0,0,0,.7));
+}
+
+.tactical-battle__enemy-sprite--bear-elite img {
+  transform: scale(1.12);
+  filter: contrast(1.28) brightness(.73) saturate(.78) drop-shadow(0 13px 9px rgba(0,0,0,.74));
+}
+
+.tactical-battle__enemy-sprite--bear-commander img {
+  transform: scale(1.17);
+  filter: saturate(1.4) contrast(1.18) drop-shadow(0 0 18px rgba(255,75,43,.42));
+}
+
+@media (max-width: 1250px) {
+  .tactical-battle__field {
+    grid-template-columns: minmax(320px, .9fr) 44px minmax(450px, 1.2fr);
+    gap: 8px;
+  }
+
+  .tactical-battle__formation--player {
+    grid-template-columns: repeat(2, minmax(135px, 190px));
+    gap: 8px;
+    padding-left: 8px;
+  }
+
+  .tactical-battle__formation--enemy {
+    gap: 4px;
+    padding-right: 4px;
+  }
+
+  .tactical-battle__fighter--enemy {
+    min-width: 96px;
+  }
+}
+
+/* =========================================================
+   PLPE TACTICAL BATTLE v11 — HEROES-LIKE BATTLEFIELD FINAL
+   - no portrait cards/background rectangles
+   - transparent sprites stand directly on the terrain
+   - overhead HP only
+   - clearer formations and ground shadows
+========================================================= */
+
+.tactical-battle {
+  overflow: hidden;
+  background-position: center center !important;
+  background-size: cover !important;
+}
+
+.tactical-battle__backdrop {
+  background:
+    linear-gradient(180deg, rgba(3,7,10,.05) 0%, rgba(3,7,10,.08) 52%, rgba(2,4,6,.34) 100%) !important;
+}
+
+.tactical-battle__field {
+  inset: 108px 26px 106px !important;
+  grid-template-columns: minmax(420px, .9fr) 66px minmax(620px, 1.25fr) !important;
+  align-items: end !important;
+  pointer-events: none;
+}
+
+.tactical-battle__field::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 1.5%;
+  right: 1.5%;
+  bottom: 0;
+  height: 42%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center bottom, rgba(0,0,0,.2), transparent 66%),
+    repeating-linear-gradient(90deg, transparent 0 94px, rgba(255,255,255,.025) 95px 96px),
+    repeating-linear-gradient(0deg, transparent 0 67px, rgba(255,255,255,.018) 68px 69px);
+  mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,.65) 55%, transparent 100%);
+}
+
+.tactical-battle__formation,
+.tactical-battle__versus {
+  position: relative;
+  z-index: 2;
+}
+
+.tactical-battle__formation--player {
+  grid-template-columns: repeat(2, minmax(175px, 250px)) !important;
+  align-items: end !important;
+  gap: clamp(16px, 2.4vw, 48px) !important;
+  padding-left: clamp(12px, 2vw, 48px) !important;
+  max-width: 650px !important;
+}
+
+.tactical-battle__formation--enemy {
+  justify-content: flex-end !important;
+  align-items: flex-end !important;
+  gap: clamp(10px, 1.5vw, 30px) !important;
+  padding-right: clamp(10px, 2vw, 42px) !important;
+}
+
+.tactical-battle__fighter {
+  pointer-events: auto;
+  min-height: 310px !important;
+  height: clamp(330px, 46vh, 500px) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.tactical-battle__fighter::before,
+.tactical-battle__fighter::after {
+  background: transparent;
+}
+
+.tactical-battle__fighter--player {
+  width: min(245px, 23vw) !important;
+}
+
+.tactical-battle__fighter--enemy {
+  min-width: 125px !important;
+  max-width: 230px !important;
+}
+
+.tactical-battle__body {
+  inset: 44px 0 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.tactical-battle__sprite-image,
+.tactical-battle__body > img,
+.tactical-battle__enemy-sprite img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 15px 10px rgba(0,0,0,.72)) !important;
+}
+
+.tactical-battle__fighter--player .tactical-battle__sprite-image {
+  max-height: clamp(300px, 43vh, 450px) !important;
+}
+
+.tactical-battle__fighter--enemy .tactical-battle__sprite-image {
+  max-height: clamp(250px, 37vh, 390px) !important;
+}
+
+.tactical-battle__enemy-sprite {
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.tactical-battle__enemy-sprite > span {
+  display: none !important;
+}
+
+.tactical-battle__creature-sprite {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-size: clamp(105px, 10vw, 180px);
+  line-height: 1;
+  filter: drop-shadow(0 14px 9px rgba(0,0,0,.72));
+  transform-origin: center bottom;
+}
+
+.tactical-battle__creature-sprite--water-serpent,
+.tactical-battle__creature-sprite--ancient-serpent {
+  transform: scale(1.16);
+}
+
+.tactical-battle__creature-sprite--harpy,
+.tactical-battle__creature-sprite--harpy-matriarch {
+  transform: translateY(-12px) scale(1.08);
+}
+
+.tactical-battle__ground-shadow {
+  z-index: 1 !important;
+  bottom: 2px !important;
+  width: 72% !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(ellipse, rgba(0,0,0,.74), rgba(0,0,0,.38) 48%, transparent 72%) !important;
+  filter: blur(2px);
+}
+
+.tactical-battle__overhead {
+  z-index: 20 !important;
+  top: 0 !important;
+  width: min(220px, 98%) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-shadow: 0 2px 6px #000, 0 0 7px #000;
+}
+
+.tactical-battle__name-row strong {
+  font-size: 13px !important;
+}
+
+.tactical-battle__name-row small,
+.tactical-battle__mini-row {
+  font-size: 9px !important;
+}
+
+.tactical-battle__hpbar {
+  height: 9px !important;
+  border: 1px solid rgba(0,0,0,.92) !important;
+  background: rgba(5,8,10,.82) !important;
+  box-shadow: 0 2px 7px rgba(0,0,0,.8) !important;
+}
+
+.tactical-battle__versus {
+  align-self: center !important;
+  margin-bottom: 80px;
+  opacity: .82;
+}
+
+.tactical-battle__fighter--player.selected-actor .tactical-battle__body::before,
+.tactical-battle__fighter--enemy.selected-enemy .tactical-battle__body::before,
+.tactical-battle__fighter.targetable .tactical-battle__body::after {
+  bottom: -4px !important;
+  height: 27px !important;
+}
+
+.tactical-battle__battle-log,
+.tactical-battle__center-log,
+.battle-log,
+.combat-log {
+  display: none !important;
+}
+
+@media (max-width: 1250px) {
+  .tactical-battle__field {
+    grid-template-columns: minmax(330px, .85fr) 46px minmax(500px, 1.2fr) !important;
+  }
+
+  .tactical-battle__formation--player {
+    grid-template-columns: repeat(2, minmax(140px, 190px)) !important;
+  }
+
+  .tactical-battle__fighter--enemy {
+    min-width: 105px !important;
+  }
+}
+
+/* =========================================================
+   v12 — WATER / ANCIENT SERPENT ASSETS
+========================================================= */
+.tactical-battle__enemy-sprite--water-serpent,
+.tactical-battle__enemy-sprite--ancient-serpent {
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform-origin: center bottom;
+}
+
+.tactical-battle__enemy-sprite--water-serpent img {
+  width: 118% !important;
+  height: 118% !important;
+  max-height: clamp(275px, 39vh, 410px) !important;
+  object-position: center bottom !important;
+}
+
+.tactical-battle__enemy-sprite--ancient-serpent img {
+  width: 132% !important;
+  height: 132% !important;
+  max-height: clamp(310px, 43vh, 455px) !important;
+  object-position: center bottom !important;
+  filter:
+    drop-shadow(0 15px 10px rgba(0,0,0,.75))
+    drop-shadow(0 0 16px rgba(105,73,255,.22)) !important;
+}
+
+/* PolishPepe specialization marker. Final class-specific artwork can replace the
+   shared portrait without changing battle logic. */
+.tactical-battle__pepe-class{position:relative;height:100%;display:flex;align-items:flex-end;justify-content:center}.tactical-battle__pepe-class>span{position:absolute;right:2%;top:8%;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(4,9,14,.88);border:1px solid rgba(255,255,255,.18);font-size:19px;box-shadow:0 5px 16px rgba(0,0,0,.35)}.tactical-battle__pepe-class--warrior>span{border-color:rgba(224,177,86,.55)}.tactical-battle__pepe-class--ranger>span{border-color:rgba(104,215,132,.6)}.tactical-battle__pepe-class--mage>span{border-color:rgba(150,116,255,.65)}.tactical-battle__class-glyph{font-size:28px;line-height:1}
+.tactical-battle__cooldown{position:absolute;right:3px;top:2px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;display:grid;place-items:center;background:rgba(5,8,12,.9);border:1px solid rgba(255,207,92,.8);color:#ffd56a;font-size:10px;font-weight:900;line-height:1}
+
+/* =========================================================
+   PRE-DEPLOY COMBAT POLISH — CLASS SPRITES / FX / HARPIES
+========================================================= */
+.tactical-battle__pepe-class{
+  position:relative;
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  isolation:isolate;
+}
+.tactical-battle__pepe-class .tactical-battle__sprite-image{
+  position:relative;
+  z-index:3;
+  width:auto !important;
+  max-width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center bottom !important;
+}
+.tactical-battle__class-aura{
+  position:absolute;
+  z-index:1;
+  left:12%;
+  right:12%;
+  bottom:5%;
+  height:48%;
+  border-radius:50%;
+  filter:blur(18px);
+  opacity:.42;
+  pointer-events:none;
+}
+.tactical-battle__pepe-class--warrior .tactical-battle__class-aura{background:radial-gradient(circle,rgba(255,189,72,.75),transparent 67%)}
+.tactical-battle__pepe-class--ranger .tactical-battle__class-aura{background:radial-gradient(circle,rgba(52,229,126,.75),transparent 67%)}
+.tactical-battle__pepe-class--mage .tactical-battle__class-aura{background:radial-gradient(circle,rgba(129,93,255,.82),transparent 67%)}
+.tactical-battle__class-badge{
+  position:absolute !important;
+  z-index:7;
+  right:4% !important;
+  top:9% !important;
+  width:34px !important;
+  height:34px !important;
+  border-radius:50% !important;
+  display:grid !important;
+  place-items:center !important;
+  background:rgba(4,9,14,.88) !important;
+  border:1px solid rgba(255,255,255,.22) !important;
+  font-size:18px !important;
+  box-shadow:0 5px 16px rgba(0,0,0,.45) !important;
+}
+.tactical-battle__class-weapon{
+  position:absolute !important;
+  z-index:6;
+  left:2% !important;
+  top:30% !important;
+  width:auto !important;
+  height:auto !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  font-size:clamp(34px,3.2vw,58px) !important;
+  filter:drop-shadow(0 0 9px rgba(255,255,255,.32)) drop-shadow(0 7px 6px rgba(0,0,0,.72));
+  transform:rotate(-14deg);
+  opacity:.9;
+}
+.tactical-battle__pepe-class--ranger .tactical-battle__class-weapon{color:#75f2aa;transform:rotate(-8deg)}
+.tactical-battle__pepe-class--mage .tactical-battle__class-weapon{color:#9c7cff;filter:drop-shadow(0 0 14px rgba(134,94,255,.9));animation:plpeMagePulse 1.8s ease-in-out infinite alternate}
+@keyframes plpeMagePulse{from{transform:scale(.94) rotate(-10deg);opacity:.7}to{transform:scale(1.08) rotate(-4deg);opacity:1}}
+
+.tactical-battle__enemy-sprite--harpy img,
+.tactical-battle__enemy-sprite--harpy-matriarch img{
+  width:115% !important;
+  height:115% !important;
+  max-height:clamp(285px,40vh,425px) !important;
+  object-position:center bottom !important;
+  filter:drop-shadow(0 15px 10px rgba(0,0,0,.76)) drop-shadow(0 0 14px rgba(106,72,132,.3)) !important;
+}
+.tactical-battle__enemy-sprite--harpy-matriarch img{
+  width:130% !important;
+  height:130% !important;
+  max-height:clamp(315px,44vh,470px) !important;
+  filter:drop-shadow(0 16px 11px rgba(0,0,0,.8)) drop-shadow(0 0 20px rgba(177,57,103,.38)) !important;
+}
+
+.tactical-battle__combat-text{
+  position:absolute;
+  z-index:40;
+  left:50%;
+  top:28%;
+  transform:translate(-50%,0);
+  font-size:clamp(18px,1.6vw,29px);
+  font-weight:1000;
+  letter-spacing:.8px;
+  text-shadow:0 3px 4px #000,0 0 10px #000;
+  pointer-events:none;
+  animation:plpeCombatText .9s ease-out forwards;
+  white-space:nowrap;
+}
+.tactical-battle__combat-text--damage{color:#ff767f}
+.tactical-battle__combat-text--heal{color:#5ff3ae}
+.tactical-battle__combat-text--block{color:#8dd8ff}
+.tactical-battle__combat-text--status{color:#d9bcff}
+@keyframes plpeCombatText{
+  0%{opacity:0;transform:translate(-50%,12px) scale(.82)}
+  18%{opacity:1;transform:translate(-50%,-4px) scale(1.12)}
+  100%{opacity:0;transform:translate(-50%,-58px) scale(.96)}
+}
+
+.tactical-battle__fighter.impact .tactical-battle__sprite-image{
+  animation:plpeSpriteImpact .34s cubic-bezier(.36,.07,.19,.97);
+}
+@keyframes plpeSpriteImpact{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px) rotate(-1deg);filter:brightness(1.5) drop-shadow(0 15px 10px rgba(0,0,0,.72))}
+  45%{transform:translateX(7px) rotate(1deg)}
+  70%{transform:translateX(-3px)}
+}
+.tactical-battle__class-equipment{position:absolute;z-index:5;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;filter:drop-shadow(0 6px 6px rgba(0,0,0,.55))}
+.tactical-battle__class-equipment--ranger{filter:drop-shadow(0 6px 6px rgba(0,0,0,.6)) drop-shadow(0 0 9px rgba(54,215,126,.22))}
+.tactical-battle__class-equipment--mage{filter:drop-shadow(0 6px 6px rgba(0,0,0,.6)) drop-shadow(0 0 12px rgba(126,88,255,.45))}

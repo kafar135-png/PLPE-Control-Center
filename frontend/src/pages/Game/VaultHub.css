@@ -1,0 +1,262 @@
+.vault-hub {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-size: cover;
+  background-position: center;
+
+  overflow: hidden;
+
+  color: #ffffff;
+
+  z-index: 9999;
+}
+
+.vault-hub__shade {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 5, 8, 0.75),
+      rgba(3, 5, 8, 0.12),
+      rgba(3, 5, 8, 0.75)
+    );
+}
+
+.vault-hub__top {
+  position: absolute;
+
+  top: 18px;
+  left: 20px;
+  right: 20px;
+
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+}
+
+.vault-hub__top > div,
+.vault-hub__top button {
+  padding:
+    10px 15px;
+
+  border-radius: 9px;
+
+  border:
+    1px solid
+    rgba(87, 171, 235, 0.30);
+
+  background:
+    rgba(5, 9, 14, 0.88);
+
+  color: white;
+}
+
+.vault-hub__top > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.vault-hub__top span {
+  color: #71c9ff;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.vault-hub__top button {
+  margin-left: auto;
+
+  cursor: pointer;
+}
+
+.vault-hub__locked {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  z-index: 10;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  width: 480px;
+
+  padding: 28px;
+
+  text-align: center;
+
+  border-radius: 14px;
+
+  background:
+    rgba(5, 9, 14, 0.92);
+
+  border:
+    1px solid
+    rgba(83, 175, 238, 0.30);
+}
+
+.vault-hub__locked span {
+  font-size: 45px;
+}
+
+.vault-hub__locked h1 {
+  font-size: 26px;
+}
+
+.vault-hub__locked p {
+  color: #aab8c6;
+
+  font-size: 13px;
+}
+
+.vault-hub__intro {
+  position: absolute;
+
+  left: 5%;
+  top: 22%;
+
+  z-index: 10;
+
+  padding: 18px;
+
+  background:
+    rgba(5, 9, 14, 0.88);
+
+  border-radius: 12px;
+}
+
+.vault-hub__intro span {
+  color: #70c9ff;
+
+  font-size: 11px;
+}
+
+.vault-hub__intro h1 {
+  margin:
+    4px 0 0;
+
+  font-size: 34px;
+}
+
+.vault-hub__resources {
+  position: absolute;
+
+  left: 5%;
+  right: 5%;
+  top: 39%;
+
+  z-index: 10;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      1fr
+    );
+
+  gap: 10px;
+}
+
+.vault-hub__resources article {
+  min-height: 130px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background:
+    rgba(5, 9, 14, 0.90);
+
+  border:
+    1px solid
+    rgba(90, 176, 236, 0.18);
+}
+
+.vault-hub__resources span {
+  font-size: 30px;
+}
+
+.vault-hub__resources strong {
+  font-size: 28px;
+}
+
+.vault-hub__resources small {
+  color: #8ea3b6;
+
+  font-size: 10px;
+}
+
+.vault-hub__rewards {
+  position: absolute;
+
+  left: 5%;
+  right: 5%;
+  bottom: 6%;
+
+  z-index: 10;
+
+  display: grid;
+
+  grid-template-columns:
+    190px 1fr 1fr;
+
+  gap: 10px;
+}
+
+.vault-hub__rewards h2,
+.vault-hub__rewards article {
+  padding: 15px;
+
+  border-radius: 10px;
+
+  background:
+    rgba(5, 9, 14, 0.90);
+}
+
+.vault-hub__rewards article {
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+}
+
+.vault-hub__rewards article strong {
+  font-size: 14px;
+}
+
+.vault-hub__rewards article span {
+  color: #75ceff;
+}
+
+.vault-hub__rewards button {
+  margin-left: auto;
+
+  height: 36px;
+
+  border-radius: 7px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.1);
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  color: #7f91a2;
+}

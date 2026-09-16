@@ -1,0 +1,1213 @@
+/* =========================================================
+   MONASTERY HUB
+========================================================= */
+
+.monastery-world {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  color: #ffffff;
+
+  z-index: 9999;
+}
+
+/* =========================================================
+   SHADE
+========================================================= */
+
+.monastery-world__shade {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3, 6, 10, 0.42) 0%,
+      rgba(3, 6, 10, 0.01) 20%,
+      rgba(3, 6, 10, 0.00) 73%,
+      rgba(3, 6, 10, 0.32) 100%
+    );
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.monastery-world__topbar {
+  position: absolute;
+
+  top: 16px;
+  left: 20px;
+  right: 20px;
+
+  z-index: 40;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  pointer-events: none;
+}
+
+.monastery-world__identity {
+  min-width: 220px;
+
+  padding:
+    9px 14px;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 10px;
+
+  border:
+    1px solid
+    rgba(210, 166, 83, 0.45);
+
+  background:
+    rgba(7, 11, 16, 0.82);
+
+  backdrop-filter:
+    blur(8px);
+}
+
+.monastery-world__identity span {
+  color: #e0ba6c;
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.1em;
+}
+
+.monastery-world__identity strong {
+  margin-top: 3px;
+
+  font-size: 15px;
+}
+
+/* =========================================================
+   RESOURCES
+========================================================= */
+
+.monastery-world__resources {
+  display: flex;
+
+  gap: 7px;
+}
+
+.monastery-world__resources div {
+  min-width: 62px;
+  height: 40px;
+
+  padding:
+    0 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border-radius: 9px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.11);
+
+  background:
+    rgba(7, 11, 16, 0.82);
+
+  backdrop-filter:
+    blur(8px);
+}
+
+/* =========================================================
+   BACK
+========================================================= */
+
+.monastery-world__back {
+  margin-left: auto;
+
+  min-height: 42px;
+
+  padding:
+    0 15px;
+
+  border-radius: 9px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.16);
+
+  background:
+    rgba(7, 11, 16, 0.86);
+
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  pointer-events: auto;
+
+  backdrop-filter:
+    blur(8px);
+
+  transition:
+    filter 150ms ease,
+    border-color 150ms ease;
+}
+
+.monastery-world__back:hover {
+  filter:
+    brightness(1.2);
+
+  border-color:
+    rgba(89, 231, 157, 0.60);
+}
+
+/* =========================================================
+   LOCATION BUTTONS
+
+   Małe tabliczki.
+   Nie zasłaniają grafiki.
+========================================================= */
+
+.monastery-world__location {
+  position: absolute;
+
+  z-index: 20;
+
+  min-width: 130px;
+
+  padding:
+    8px 12px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  border-radius: 9px;
+
+  border:
+    1px solid
+    rgba(218, 174, 92, 0.48);
+
+  background:
+    rgba(7, 10, 14, 0.78);
+
+  color: #ffffff;
+
+  cursor: pointer;
+
+  backdrop-filter:
+    blur(5px);
+
+  box-shadow:
+    0 9px 24px
+    rgba(0, 0, 0, 0.26);
+
+  transition:
+    transform 150ms ease,
+    filter 150ms ease,
+    border-color 150ms ease;
+}
+
+.monastery-world__location:hover {
+  transform:
+    translateY(-2px);
+
+  filter:
+    brightness(1.22);
+
+  border-color:
+    rgba(239, 196, 111, 0.90);
+}
+
+.monastery-world__location span {
+  color: #dbb36a;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.12em;
+}
+
+.monastery-world__location strong {
+  margin-top: 2px;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   BOOK
+========================================================= */
+
+.monastery-world__location--book {
+  left: 5.8%;
+  top: 39%;
+}
+
+/* =========================================================
+   MAP
+========================================================= */
+
+.monastery-world__location--map {
+  left: 48%;
+  top: 53%;
+
+  transform:
+    translateX(-50%);
+}
+
+.monastery-world__location--map:hover {
+  transform:
+    translateX(-50%)
+    translateY(-2px);
+}
+
+/* =========================================================
+   BUILDINGS
+========================================================= */
+
+.monastery-world__location--buildings {
+  right: 20%;
+  top: 45%;
+}
+
+/* =========================================================
+   UPGRADE
+========================================================= */
+
+.monastery-world__location--upgrade {
+  right: 5.5%;
+  top: 36%;
+}
+
+/* =========================================================
+   HINT
+========================================================= */
+
+.monastery-world__hint {
+  position: absolute;
+
+  left: 50%;
+  bottom: 18px;
+
+  z-index: 10;
+
+  transform:
+    translateX(-50%);
+
+  padding:
+    7px 12px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(5, 9, 13, 0.65);
+
+  color:
+    rgba(255, 255, 255, 0.62);
+
+  font-size: 9px;
+
+  backdrop-filter:
+    blur(5px);
+}
+
+/* =========================================================
+   WINDOW
+========================================================= */
+
+.monastery-world__window {
+  position: absolute;
+
+  right: 5%;
+  top: 50%;
+
+  z-index: 80;
+
+  width: min(
+    390px,
+    calc(100vw - 40px)
+  );
+
+  transform:
+    translateY(-50%);
+
+  padding:
+    18px;
+
+  box-sizing:
+    border-box;
+
+  border-radius: 14px;
+
+  border:
+    1px solid
+    rgba(215, 170, 87, 0.55);
+
+  background:
+    rgba(5, 9, 14, 0.94);
+
+  color: #ffffff;
+
+  backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 25px 80px
+    rgba(0, 0, 0, 0.55);
+}
+
+/* =========================================================
+   WIDE WINDOW
+========================================================= */
+
+.monastery-world__window--wide {
+  width: min(
+    570px,
+    calc(100vw - 40px)
+  );
+}
+
+/* =========================================================
+   UPGRADE WINDOW
+========================================================= */
+
+.monastery-world__window--upgrade {
+  width: min(
+    610px,
+    calc(100vw - 40px)
+  );
+}
+
+/* =========================================================
+   WINDOW HEADER
+========================================================= */
+
+.monastery-world__window-header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding-bottom: 12px;
+
+  margin-bottom: 13px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.09);
+}
+
+.monastery-world__window-header span {
+  color: #dfb668;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.13em;
+}
+
+.monastery-world__window-header h2 {
+  margin:
+    3px 0 0;
+
+  font-size: 22px;
+}
+
+.monastery-world__window-header button {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 8px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  color: #ffffff;
+
+  cursor: pointer;
+}
+
+.monastery-world__window-header button:hover {
+  background:
+    rgba(255, 80, 80, 0.14);
+
+  border-color:
+    rgba(255, 95, 95, 0.45);
+}
+
+/* =========================================================
+   RANK
+========================================================= */
+
+.monastery-world__mentor-rank {
+  width: 104px;
+  height: 104px;
+
+  margin:
+    12px auto 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  border:
+    1px solid
+    rgba(84, 230, 157, 0.45);
+
+  background:
+    rgba(32, 104, 69, 0.17);
+
+  box-shadow:
+    0 0 30px
+    rgba(65, 226, 149, 0.13);
+}
+
+.monastery-world__mentor-rank span {
+  color: #79e8b2;
+
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.monastery-world__mentor-rank strong {
+  font-size: 38px;
+}
+
+/* =========================================================
+   WINDOW SECTIONS
+========================================================= */
+
+.monastery-world__window-section {
+  margin-top: 14px;
+}
+
+.monastery-world__window-section h3 {
+  margin:
+    0 0 7px;
+
+  color: #e0bd79;
+
+  font-size: 11px;
+}
+
+.monastery-world__window-section p {
+  margin: 0;
+
+  color: #aab6c5;
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.monastery-world__window-section ul {
+  margin:
+    7px 0 0;
+
+  padding: 0;
+
+  list-style: none;
+}
+
+.monastery-world__window-section li {
+  position: relative;
+
+  margin-bottom: 6px;
+
+  padding-left: 17px;
+
+  color: #c5ced9;
+
+  font-size: 10px;
+}
+
+.monastery-world__window-section li::before {
+  content: "✦";
+
+  position: absolute;
+
+  left: 0;
+
+  color: #5de3a0;
+}
+
+/* =========================================================
+   CHAPTER
+========================================================= */
+
+.monastery-world__chapter-title {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  padding:
+    12px;
+
+  border-radius: 9px;
+
+  background:
+    rgba(223, 180, 100, 0.08);
+
+  border:
+    1px solid
+    rgba(223, 180, 100, 0.18);
+}
+
+.monastery-world__chapter-title span {
+  color: #dcb36a;
+
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.monastery-world__chapter-title strong {
+  font-size: 15px;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.monastery-world__progress {
+  width: 100%;
+  height: 7px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+}
+
+.monastery-world__progress div {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #32d98b,
+      #72efb6
+    );
+}
+
+/* =========================================================
+   BUILDINGS LIST
+========================================================= */
+
+.monastery-world__building-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 9px;
+}
+
+.monastery-world__building-list > div {
+  min-height: 72px;
+
+  padding:
+    10px;
+
+  display: grid;
+
+  grid-template-columns:
+    36px 1fr auto;
+
+  align-items: center;
+
+  gap: 8px;
+
+  border-radius: 9px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.09);
+
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+.monastery-world__building-list > div > span {
+  font-size: 20px;
+}
+
+.monastery-world__building-list strong {
+  font-size: 10px;
+}
+
+.monastery-world__building-list b {
+  color: #71e4ad;
+
+  font-size: 9px;
+}
+
+.monastery-world__building-list .locked {
+  opacity: 0.42;
+}
+
+.monastery-world__building-list .locked b {
+  color: #e18775;
+}
+
+/* =========================================================
+   UPGRADE COLUMNS
+========================================================= */
+
+.monastery-world__upgrade-columns {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 20px;
+}
+
+.monastery-world__upgrade-columns h3 {
+  margin:
+    0 0 10px;
+
+  color: #dfb86d;
+
+  font-size: 11px;
+}
+
+.monastery-world__upgrade-columns ul {
+  margin: 0;
+
+  padding: 0;
+
+  list-style: none;
+}
+
+.monastery-world__upgrade-columns li {
+  position: relative;
+
+  margin-bottom: 7px;
+
+  padding-left: 17px;
+
+  color: #c3cdd9;
+
+  font-size: 10px;
+}
+
+.monastery-world__upgrade-columns li::before {
+  content: "✦";
+
+  position: absolute;
+
+  left: 0;
+
+  color: #5ee2a1;
+}
+
+/* =========================================================
+   REQUIREMENTS
+========================================================= */
+
+.monastery-world__requirement {
+  min-height: 34px;
+
+  margin-bottom: 7px;
+
+  padding:
+    0 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+
+  color: #c9d2dd;
+
+  font-size: 9px;
+}
+
+.monastery-world__requirement b {
+  color: #e78372;
+}
+
+.monastery-world__requirement.complete b {
+  color: #66e4a7;
+}
+
+/* =========================================================
+   ACTION
+========================================================= */
+
+.monastery-world__action {
+  width: 100%;
+  min-height: 40px;
+
+  margin-top: 16px;
+
+  border-radius: 8px;
+
+  border:
+    1px solid
+    rgba(220, 175, 91, 0.45);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(119, 79, 27, 0.96),
+      rgba(59, 35, 11, 0.96)
+    );
+
+  color: #fff0c9;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.monastery-world__action:hover:not(:disabled) {
+  filter:
+    brightness(1.18);
+}
+
+.monastery-world__action:disabled {
+  opacity: 0.35;
+
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .monastery-world__resources {
+    display: none;
+  }
+
+  .monastery-world__identity {
+    min-width: 170px;
+  }
+
+  .monastery-world__back {
+    font-size: 0;
+  }
+
+  .monastery-world__back::after {
+    content: "←";
+
+    font-size: 17px;
+  }
+
+  .monastery-world__location {
+    min-width: 100px;
+
+    padding:
+      7px 9px;
+  }
+
+  .monastery-world__location strong {
+    font-size: 10px;
+  }
+
+  .monastery-world__location--book {
+    left: 2%;
+  }
+
+  .monastery-world__location--upgrade {
+    right: 2%;
+  }
+
+  .monastery-world__location--buildings {
+    right: 7%;
+  }
+
+  .monastery-world__window {
+    left: 10px;
+    right: 10px;
+    top: auto;
+    bottom: 10px;
+
+    width: auto;
+
+    max-height: 70vh;
+
+    overflow-y: auto;
+
+    transform: none;
+  }
+
+  .monastery-world__upgrade-columns {
+    grid-template-columns:
+      1fr;
+  }
+  .monastery-world__mentor-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin: 10px 0 20px;
+}
+
+.monastery-world__mentor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.monastery-world__mentor-info span {
+  color: #dfb86d;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.monastery-world__mentor-info strong {
+  font-size: 26px;
+}
+
+.monastery-world__mentor-info small {
+  max-width: 150px;
+  color: #8998aa;
+  font-size: 9px;
+}
+
+.monastery-world__section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 7px;
+}
+
+.monastery-world__section-heading h3 {
+  margin: 0;
+}
+
+.monastery-world__section-heading span {
+  color: #7ae6b2;
+  font-size: 9px;
+}
+
+.monastery-world__support-level {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.monastery-world__support-level strong {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(75, 224, 151, 0.12);
+  color: #75e7af;
+  font-size: 22px;
+}
+
+.monastery-world__support-level span {
+  color: #aab6c5;
+  font-size: 9px;
+}
+
+.monastery-world__notice {
+  margin-top: 13px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(218, 174, 92, 0.18);
+  background: rgba(218, 174, 92, 0.06);
+  color: #b8c2cf;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.monastery-world__objectives {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.monastery-world__objectives > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 8px 10px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.monastery-world__objectives > div > span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 10px;
+}
+
+.monastery-world__objectives div div {
+  display: flex;
+  flex-direction: column;
+}
+
+.monastery-world__objectives strong {
+  font-size: 10px;
+}
+
+.monastery-world__objectives small {
+  margin-top: 2px;
+  color: #8f9dac;
+  font-size: 8px;
+}
+
+.monastery-world__objectives .completed {
+  border-color: rgba(74, 225, 150, 0.18);
+}
+
+.monastery-world__objectives .completed > span {
+  background: rgba(74, 225, 150, 0.15);
+  color: #63e5a8;
+}
+
+.monastery-world__reward-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.monastery-world__reward-grid > div {
+  display: flex;
+  flex-direction: column;
+  padding: 9px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.monastery-world__reward-grid span {
+  color: #8494a7;
+  font-size: 8px;
+}
+
+.monastery-world__reward-grid strong {
+  margin-top: 3px;
+  color: #e3bd72;
+  font-size: 13px;
+}
+
+.monastery-world__completed-banner {
+  margin-top: 14px;
+  padding: 9px;
+  text-align: center;
+  border-radius: 8px;
+  background: rgba(57, 217, 142, 0.10);
+  border: 1px solid rgba(57, 217, 142, 0.25);
+  color: #72ebb3;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.monastery-world__building-list > div > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.monastery-world__building-list small {
+  margin-top: 2px;
+  color: #8392a4;
+  font-size: 8px;
+}
+
+.monastery-world__regions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.monastery-world__regions span {
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: rgba(65, 226, 149, 0.09);
+  border: 1px solid rgba(65, 226, 149, 0.18);
+  color: #71e7ae;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.monastery-world__current-bonus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 13px;
+  border-radius: 9px;
+  background: rgba(58, 222, 143, 0.07);
+  border: 1px solid rgba(58, 222, 143, 0.16);
+}
+
+.monastery-world__current-bonus span {
+  color: #9ba9b8;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.monastery-world__current-bonus strong {
+  color: #6ee7ad;
+  font-size: 18px;
+}
+
+.monastery-world__upgrade-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px 0 12px;
+}
+
+.monastery-world__upgrade-title span {
+  color: #d9b36e;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.monastery-world__upgrade-title strong {
+  font-size: 15px;
+}
+
+.monastery-world__level-complete {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 10px;
+  background: rgba(63, 222, 147, 0.07);
+  border: 1px solid rgba(63, 222, 147, 0.18);
+}
+
+.monastery-world__level-complete > span {
+  color: #6fe9ae;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.monastery-world__level-complete > strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 25px;
+}
+
+.monastery-world__level-complete p {
+  color: #aab6c5;
+  font-size: 9px;
+  line-height: 1.55;
+}
+}
+/* =========================================================
+   TOP ACTIONS / RESET GAME
+========================================================= */
+
+.monastery-world__top-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  pointer-events: auto;
+}
+
+.monastery-world__top-actions .monastery-world__back {
+  margin-left: 0;
+}
+
+.monastery-world__reset {
+  min-height: 42px;
+  padding: 0 15px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 93, 93, 0.48);
+  background: rgba(92, 16, 20, 0.88);
+  color: #ffdada;
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  pointer-events: auto;
+  backdrop-filter: blur(8px);
+  transition: filter 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.monastery-world__reset:hover {
+  filter: brightness(1.18);
+  border-color: rgba(255, 126, 126, 0.8);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 760px) {
+  .monastery-world__top-actions {
+    gap: 6px;
+  }
+
+  .monastery-world__reset,
+  .monastery-world__top-actions .monastery-world__back {
+    min-height: 38px;
+    padding: 0 10px;
+    font-size: 9px;
+  }
+}

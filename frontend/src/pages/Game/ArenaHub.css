@@ -1,0 +1,1318 @@
+/* =========================================================
+   PLPE ARENA HUB
+========================================================= */
+
+.arena-hub {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  color: #ffffff;
+
+  z-index: 9999;
+}
+
+/* =========================================================
+   SHADE
+========================================================= */
+
+.arena-hub__shade {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 6, 10, 0.62) 0%,
+      rgba(3, 6, 10, 0.18) 42%,
+      rgba(3, 6, 10, 0.30) 65%,
+      rgba(3, 6, 10, 0.72) 100%
+    );
+}
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.arena-hub__topbar {
+  position: absolute;
+
+  top: 16px;
+  left: 18px;
+  right: 18px;
+
+  z-index: 40;
+
+  min-height: 60px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.arena-hub__brand {
+  min-width: 290px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    10px 15px;
+
+  border-radius: 11px;
+
+  border:
+    1px solid
+    rgba(219, 171, 82, 0.45);
+
+  background:
+    rgba(7, 10, 15, 0.88);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.arena-hub__brand-icon {
+  font-size: 28px;
+
+  color: #e7bb67;
+}
+
+.arena-hub__brand div {
+  display: flex;
+  flex-direction: column;
+}
+
+.arena-hub__brand strong {
+  font-size: 19px;
+}
+
+.arena-hub__brand small {
+  margin-top: 2px;
+
+  color: #ca9f58;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   RESOURCES
+========================================================= */
+
+.arena-hub__resources {
+  margin-left: auto;
+
+  display: flex;
+
+  gap: 8px;
+}
+
+.arena-hub__resources > div {
+  min-width: 84px;
+  height: 46px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto 1fr;
+
+  grid-template-rows:
+    1fr 1fr;
+
+  align-items: center;
+
+  gap:
+    0 7px;
+
+  padding:
+    0 11px;
+
+  border-radius: 9px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.11);
+
+  background:
+    rgba(7, 10, 15, 0.88);
+
+  backdrop-filter:
+    blur(9px);
+}
+
+.arena-hub__resources > div > span {
+  grid-row:
+    1 / 3;
+
+  font-size: 20px;
+}
+
+.arena-hub__resources strong {
+  align-self: end;
+
+  font-size: 14px;
+}
+
+.arena-hub__resources small {
+  align-self: start;
+
+  color: #8e9bab;
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+.arena-hub__player {
+  width: 170px;
+
+  padding:
+    8px 12px;
+
+  border-radius: 9px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.10);
+
+  background:
+    rgba(7, 10, 15, 0.88);
+}
+
+.arena-hub__player > div:first-child {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 6px;
+}
+
+.arena-hub__player strong {
+  font-size: 13px;
+}
+
+.arena-hub__player span {
+  color: #79e5af;
+
+  font-size: 10px;
+}
+
+.arena-hub__player small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #8493a5;
+
+  font-size: 9px;
+}
+
+.arena-hub__xp {
+  height: 5px;
+
+  margin-top: 6px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+}
+
+.arena-hub__xp div {
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #46d895,
+      #72edb4
+    );
+}
+
+/* =========================================================
+   BACK
+========================================================= */
+
+.arena-hub__back {
+  height: 45px;
+
+  padding:
+    0 14px;
+
+  border-radius: 9px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.14);
+
+  background:
+    rgba(7, 10, 15, 0.90);
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.arena-hub__back:hover {
+  filter:
+    brightness(1.2);
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.arena-hub__main {
+  position: absolute;
+
+  left: 5%;
+  right: 28%;
+  top: 21%;
+  bottom: 6%;
+
+  z-index: 20;
+}
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.arena-hub__intro {
+  max-width: 590px;
+}
+
+.arena-hub__intro > span {
+  color: #e0b465;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.12em;
+}
+
+.arena-hub__intro h1 {
+  margin:
+    5px 0 7px;
+
+  font-size: 45px;
+  line-height: 1;
+}
+
+.arena-hub__intro p {
+  max-width: 520px;
+
+  margin: 0;
+
+  color: #c0c8d2;
+
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* =========================================================
+   MODES
+========================================================= */
+
+.arena-hub__modes {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 12px;
+}
+
+.arena-hub__mode {
+  min-height: 285px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding:
+    18px;
+
+  box-sizing:
+    border-box;
+
+  border-radius: 12px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  background:
+    rgba(7, 10, 15, 0.88);
+
+  backdrop-filter:
+    blur(11px);
+
+  box-shadow:
+    0 18px 50px
+    rgba(0, 0, 0, 0.32);
+}
+
+.arena-hub__mode--active {
+  border-color:
+    rgba(236, 91, 58, 0.78);
+
+  box-shadow:
+    0 0 30px
+      rgba(229, 68, 43, 0.18),
+    0 18px 50px
+      rgba(0, 0, 0, 0.36);
+}
+
+.arena-hub__mode--locked {
+  opacity: 0.58;
+}
+
+.arena-hub__mode-icon {
+  font-size: 30px;
+
+  margin-bottom: 10px;
+}
+
+.arena-hub__mode > span {
+  color: #d7a95a;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.08em;
+}
+
+.arena-hub__mode h2 {
+  margin:
+    5px 0 8px;
+
+  font-size: 20px;
+}
+
+.arena-hub__mode p {
+  margin: 0;
+
+  color: #aeb8c4;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   MODE REWARDS
+========================================================= */
+
+.arena-hub__mode-rewards {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap: 6px;
+
+  margin-top: auto;
+  margin-bottom: 10px;
+}
+
+.arena-hub__mode-rewards div {
+  padding:
+    8px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+}
+
+.arena-hub__mode-rewards span {
+  color: #8f9cac;
+
+  font-size: 9px;
+}
+
+.arena-hub__mode-rewards strong {
+  margin-top: 2px;
+
+  color: #e1b66a;
+
+  font-size: 14px;
+}
+
+/* =========================================================
+   FIGHT BUTTON
+========================================================= */
+
+.arena-hub__fight {
+  width: 100%;
+
+  min-height: 44px;
+
+  border-radius: 8px;
+
+  border:
+    1px solid
+    rgba(255, 94, 65, 0.75);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(160, 43, 27, 0.96),
+      rgba(93, 24, 17, 0.96)
+    );
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 0 20px
+    rgba(234, 72, 44, 0.17);
+}
+
+.arena-hub__fight:hover {
+  filter:
+    brightness(1.18);
+}
+
+.arena-hub__attempts {
+  display: block;
+
+  margin-top: 7px;
+
+  text-align: center;
+
+  color: #8d9aaa;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   LOCK
+========================================================= */
+
+.arena-hub__lock {
+  margin-top: auto;
+
+  padding:
+    10px;
+
+  text-align: center;
+
+  border-radius: 7px;
+
+  background:
+    rgba(0, 0, 0, 0.25);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  color: #adb6c1;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   RANK
+========================================================= */
+
+.arena-hub__rank {
+  position: absolute;
+
+  top: 21%;
+  right: 3%;
+
+  z-index: 25;
+
+  width: 315px;
+
+  padding:
+    18px;
+
+  box-sizing:
+    border-box;
+
+  border-radius: 12px;
+
+  border:
+    1px solid
+    rgba(215, 168, 83, 0.45);
+
+  background:
+    rgba(6, 9, 14, 0.92);
+
+  backdrop-filter:
+    blur(12px);
+}
+
+.arena-hub__eyebrow {
+  color: #dfb464;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.1em;
+}
+
+.arena-hub__rank-main {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-top: 12px;
+}
+
+.arena-hub__rank-badge {
+  width: 70px;
+  height: 70px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  border:
+    1px solid
+    rgba(212, 156, 79, 0.60);
+
+  background:
+    rgba(135, 73, 27, 0.30);
+
+  font-size: 32px;
+}
+
+.arena-hub__rank-main > div:last-child {
+  flex: 1;
+}
+
+.arena-hub__rank-main strong {
+  font-size: 24px;
+}
+
+.arena-hub__rank-progress {
+  height: 7px;
+
+  margin-top: 8px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+}
+
+.arena-hub__rank-progress div {
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #a55b2d,
+      #e2a260
+    );
+}
+
+.arena-hub__rank-main small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #a9b3c0;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   RECORD
+========================================================= */
+
+.arena-hub__record {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 8px;
+
+  margin-top: 16px;
+}
+
+.arena-hub__record > div {
+  padding:
+    10px;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+.arena-hub__record span {
+  color: #8997a7;
+
+  font-size: 9px;
+}
+
+.arena-hub__record strong {
+  margin-top: 2px;
+
+  font-size: 17px;
+}
+
+/* =========================================================
+   RANKING BUTTON
+========================================================= */
+
+.arena-hub__ranking-button {
+  width: 100%;
+
+  height: 40px;
+
+  margin-top: 12px;
+
+  border-radius: 8px;
+
+  border:
+    1px solid
+    rgba(216, 170, 83, 0.35);
+
+  background:
+    rgba(216, 170, 83, 0.06);
+
+  color: #c6ad80;
+
+  font-size: 11px;
+
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   NEXT RANK
+========================================================= */
+
+.arena-hub__next-rank {
+  margin-top: 18px;
+
+  padding-top: 14px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+}
+
+.arena-hub__next-rank > span {
+  color: #dcb263;
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.arena-hub__next-rank > strong {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 16px;
+}
+
+.arena-hub__next-rewards {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap: 6px;
+
+  margin-top: 10px;
+}
+
+.arena-hub__next-rewards div {
+  padding:
+    8px 5px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: #c8d0da;
+
+  font-size: 10px;
+}
+
+.arena-hub__next-rewards b {
+  margin-top: 3px;
+
+  color: #e3b86c;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   SEASON
+========================================================= */
+
+.arena-hub__season {
+  position: absolute;
+
+  right: 3%;
+  bottom: 6%;
+
+  z-index: 25;
+
+  width: 315px;
+
+  padding:
+    15px 18px;
+
+  box-sizing:
+    border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 11px;
+
+  border:
+    1px solid
+    rgba(215, 168, 83, 0.35);
+
+  background:
+    rgba(6, 9, 14, 0.90);
+}
+
+.arena-hub__season span {
+  color: #ddb264;
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.arena-hub__season strong {
+  margin-top: 3px;
+
+  font-size: 14px;
+}
+
+.arena-hub__season small {
+  margin-top: 5px;
+
+  color: #8996a6;
+
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1150px) {
+  .arena-hub__resources {
+    display: none;
+  }
+
+  .arena-hub__main {
+    right: 34%;
+  }
+
+  .arena-hub__rank,
+  .arena-hub__season {
+    width: 285px;
+  }
+
+  .arena-hub__modes {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .arena-hub__mode:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .arena-hub__player {
+    display: none;
+  }
+
+  .arena-hub__brand {
+    min-width: 210px;
+  }
+
+  .arena-hub__main {
+    left: 15px;
+    right: 15px;
+    top: 115px;
+  }
+
+  .arena-hub__rank,
+  .arena-hub__season {
+    display: none;
+  }
+
+  .arena-hub__modes {
+    grid-template-columns:
+      1fr;
+  }
+
+  .arena-hub__mode--locked {
+    display: none;
+  }
+}
+
+/* =========================================================
+   MULTIPLAYER STAGE 1
+========================================================= */
+
+.arena-multiplayer .building-hub__content {
+  max-width: 1500px;
+}
+
+.arena-multiplayer__top-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.arena-multiplayer__resources {
+  justify-content: flex-end;
+}
+
+.arena-message {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.arena-message.success {
+  border: 1px solid rgba(72, 232, 160, .42);
+  background: rgba(19, 103, 69, .34);
+  color: #a8f7d3;
+}
+
+.arena-message.error {
+  border: 1px solid rgba(255, 104, 104, .42);
+  background: rgba(115, 23, 23, .38);
+  color: #ffb7b7;
+}
+
+.arena-login-panel {
+  width: min(680px, 100%);
+}
+
+.arena-login-panel h2 {
+  margin-top: 0;
+}
+
+.arena-login-panel p {
+  color: #aebac6;
+  line-height: 1.55;
+}
+
+.arena-wallet-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.arena-wallet-buttons .building-action {
+  width: auto;
+  min-width: 190px;
+}
+
+.arena-pvp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 16px;
+  align-items: start;
+}
+
+.arena-pvp-main {
+  display: grid;
+  gap: 16px;
+}
+
+.arena-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.arena-panel-heading h2 {
+  margin: 4px 0 0;
+}
+
+.arena-panel-heading p {
+  max-width: 760px;
+  color: #aebac6;
+  line-height: 1.5;
+}
+
+.arena-online-count {
+  white-space: nowrap;
+  padding: 8px 11px;
+  border: 1px solid rgba(72, 232, 160, .28);
+  border-radius: 9px;
+  background: rgba(24, 104, 70, .26);
+  color: #9bf1c8;
+  font-weight: 900;
+}
+
+.arena-player-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.arena-player-row {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.3fr) repeat(3, minmax(80px, .55fr)) 92px 116px;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(139, 158, 178, .14);
+  background: rgba(12, 22, 31, .82);
+}
+
+.arena-player-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.arena-player-identity div {
+  min-width: 0;
+}
+
+.arena-player-identity strong,
+.arena-player-identity small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arena-player-identity small {
+  margin-top: 2px;
+  color: #7f8f9f;
+  font-size: 10px;
+}
+
+.arena-presence-dot {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+  border-radius: 50%;
+  background: #4ae6a0;
+  box-shadow: 0 0 12px rgba(74, 230, 160, .8);
+}
+
+.arena-presence-dot.busy {
+  background: #f5ba54;
+  box-shadow: 0 0 12px rgba(245, 186, 84, .65);
+}
+
+.arena-player-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.arena-player-stat span {
+  color: #7f8f9f;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.arena-player-stat b {
+  margin-top: 2px;
+  font-size: 13px;
+}
+
+.arena-status {
+  text-align: center;
+  color: #7beab2;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.arena-status.busy {
+  color: #f2bd62;
+}
+
+.arena-small-button {
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.arena-small-button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.arena-small-button.challenge,
+.arena-small-button.accept {
+  border: 1px solid rgba(72, 232, 160, .45);
+  background: rgba(16, 108, 70, .75);
+}
+
+.arena-small-button.decline {
+  border: 1px solid rgba(255, 105, 105, .4);
+  background: rgba(114, 29, 29, .74);
+}
+
+.arena-challenge-row small {
+  display: block;
+  margin-top: 3px;
+  color: #8fa0b0;
+}
+
+.arena-row-actions {
+  display: flex;
+  gap: 7px;
+}
+
+.arena-profile-card {
+  position: sticky;
+  top: 105px;
+}
+
+.arena-profile-card h2 {
+  margin: 5px 0 0;
+}
+
+.arena-profile-card > small {
+  color: #8191a1;
+}
+
+.arena-profile-rating {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 18px 0 12px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(230, 185, 76, .28);
+  background: rgba(92, 62, 12, .28);
+}
+
+.arena-profile-rating span {
+  color: #d5b266;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.arena-profile-rating strong {
+  font-size: 32px;
+  color: #ffd977;
+}
+
+.arena-profile-stats {
+  grid-template-columns: 1fr 1fr;
+}
+
+.arena-nickname-label {
+  display: block;
+  margin: 16px 0 6px;
+  color: #9dabb9;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.arena-nickname-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid rgba(144, 164, 184, .25);
+  border-radius: 9px;
+  outline: none;
+  background: rgba(4, 9, 14, .85);
+  color: #fff;
+}
+
+.arena-nickname-input:focus {
+  border-color: rgba(230, 185, 76, .62);
+}
+
+.arena-logout {
+  width: 100%;
+  margin-top: 8px;
+  border: 0;
+  background: transparent;
+  color: #8493a2;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.arena-match-lobby {
+  border-color: rgba(72, 232, 160, .5);
+  box-shadow: 0 0 32px rgba(72, 232, 160, .08);
+}
+
+.arena-match-lobby h2 {
+  margin: 4px 0 8px;
+}
+
+.arena-match-lobby p {
+  color: #aebac6;
+  line-height: 1.5;
+}
+
+.arena-ranking-table {
+  display: grid;
+  gap: 7px;
+  margin-top: 18px;
+}
+
+.arena-ranking-row {
+  display: grid;
+  grid-template-columns: 52px minmax(190px, 1fr) 80px 130px 100px 70px;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border-radius: 9px;
+  border: 1px solid rgba(139, 158, 178, .13);
+  background: rgba(12, 22, 31, .78);
+}
+
+.arena-ranking-row > strong {
+  color: #ffd66b;
+  font-size: 18px;
+}
+
+.arena-ranking-row div b,
+.arena-ranking-row div small {
+  display: block;
+}
+
+.arena-ranking-row div small {
+  margin-top: 2px;
+  color: #7f8f9f;
+  font-size: 10px;
+}
+
+@media (max-width: 1150px) {
+  .arena-pvp-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .arena-profile-card {
+    position: static;
+  }
+
+  .arena-player-row {
+    grid-template-columns: minmax(180px, 1.4fr) 80px 80px 105px 110px;
+  }
+
+  .arena-player-stat:nth-of-type(4) {
+    display: none;
+  }
+
+  .arena-ranking-row {
+    grid-template-columns: 45px minmax(180px, 1fr) 80px 120px 95px;
+  }
+
+  .arena-ranking-row > span:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .arena-multiplayer__resources {
+    display: none;
+  }
+
+  .arena-player-row {
+    grid-template-columns: 1fr 90px;
+  }
+
+  .arena-player-stat,
+  .arena-status {
+    display: none;
+  }
+
+  .arena-ranking-row {
+    grid-template-columns: 38px 1fr 90px;
+  }
+
+  .arena-ranking-row > span:not(:nth-last-child(2)) {
+    display: none;
+  }
+}

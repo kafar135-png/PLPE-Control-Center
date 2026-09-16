@@ -1,0 +1,1711 @@
+/* =========================================================
+   PLPE ARENA — WORLD MAP GRAPH V4
+========================================================= */
+
+.world-map {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 99999;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: #fff;
+}
+
+.world-map__shade {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(2, 5, 8, 0.04) 0%,
+      rgba(2, 5, 8, 0.02) 50%,
+      rgba(2, 5, 8, 0.2) 75%,
+      rgba(2, 5, 8, 0.45) 100%
+    );
+}
+
+/* =========================================================
+   TOP HUD
+========================================================= */
+
+.world-map__top {
+  position: absolute;
+
+  top: 12px;
+  left: 14px;
+  right: 14px;
+
+  z-index: 120;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  pointer-events: none;
+}
+
+.world-map__top > div,
+.world-map__top > button {
+  min-height: 43px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(219, 173, 83, 0.35);
+
+  border-radius: 8px;
+
+  background:
+    rgba(5, 9, 14, 0.91);
+
+  backdrop-filter:
+    blur(9px);
+}
+
+.world-map__top-title {
+  min-width: 165px;
+
+  padding: 6px 11px;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.world-map__top-stat {
+  min-width: 70px;
+
+  padding: 6px 9px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+}
+
+.world-map__top span {
+  color: #dcb367;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+.world-map__top strong {
+  margin-top: 1px;
+
+  font-size: 11px;
+}
+
+.world-map__top button {
+  padding: 0 11px;
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  pointer-events: auto;
+}
+
+.world-map__top button:first-of-type {
+  margin-left: auto;
+}
+
+/* =========================================================
+   QUEST HUD
+========================================================= */
+
+.world-map__active-quest {
+  position: absolute;
+
+  top: 64px;
+  left: 50%;
+
+  z-index: 110;
+
+  width: 390px;
+
+  transform: translateX(-50%);
+
+  padding: 9px 13px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  border:
+    1px solid
+    rgba(228, 181, 77, 0.46);
+
+  border-radius: 9px;
+
+  background:
+    rgba(4, 8, 13, 0.91);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.world-map__active-quest > span {
+  color: #dfb362;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+.world-map__active-quest > strong {
+  margin-top: 2px;
+
+  font-size: 11px;
+}
+
+.world-map__active-quest > small {
+  margin-top: 3px;
+
+  color: #65e5a5;
+
+  font-size: 9px;
+
+  font-weight: 800;
+}
+
+.world-map__active-quest > b {
+  margin-top: 2px;
+
+  color: #9ba7b2;
+
+  font-size: 8px;
+
+  font-weight: 500;
+}
+
+/* =========================================================
+   LOOT
+========================================================= */
+
+.world-map__loot {
+  position: absolute;
+
+  top: 63px;
+  right: 14px;
+
+  z-index: 100;
+
+  display: flex;
+
+  gap: 4px;
+}
+
+.world-map__loot > div {
+  min-width: 54px;
+
+  padding: 5px 6px;
+
+  display: grid;
+
+  grid-template-columns:
+    16px 1fr;
+
+  grid-template-rows:
+    auto auto;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 6px;
+
+  background:
+    rgba(5, 9, 14, 0.81);
+}
+
+.world-map__loot span {
+  grid-row:
+    1 / 3;
+
+  display: grid;
+
+  place-items: center;
+
+  font-size: 11px;
+}
+
+.world-map__loot b {
+  font-size: 8px;
+}
+
+.world-map__loot small {
+  color: #85929d;
+
+  font-size: 5px;
+}
+
+/* =========================================================
+   REGION LABELS
+========================================================= */
+
+.world-map__region {
+  position: absolute;
+
+  z-index: 8;
+
+  display: flex;
+
+  flex-direction: column;
+
+  pointer-events: none;
+
+  text-shadow:
+    0 2px 8px #000;
+}
+
+.world-map__region--mountains {
+  top: 14%;
+  left: 4%;
+}
+
+.world-map__region--dark {
+  top: 14%;
+  right: 6%;
+}
+
+.world-map__region span {
+  color: #61e2a2;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+.world-map__region strong {
+  margin-top: 2px;
+
+  font-size: 16px;
+}
+
+.world-map__region small {
+  margin-top: 1px;
+
+  color: #bfc9d0;
+
+  font-size: 8px;
+}
+
+/* =========================================================
+   GRAPH ROUTES
+========================================================= */
+
+.world-map__route {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 4;
+
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+}
+
+.world-map__route--graph {
+  overflow: visible;
+}
+
+.world-map__graph-edge {
+  fill: none;
+
+  stroke:
+    rgba(220, 211, 179, 0.18);
+
+  stroke-width: 1.25px;
+
+  stroke-dasharray:
+    5 7;
+
+  vector-effect:
+    non-scaling-stroke;
+
+  stroke-linecap: round;
+}
+
+.world-map__graph-edge.visited {
+  stroke:
+    rgba(109, 226, 167, 0.36);
+}
+
+.world-map__graph-edge.current {
+  stroke:
+    rgba(255, 215, 119, 0.75);
+
+  stroke-width: 1.8px;
+
+  filter:
+    drop-shadow(
+      0 0 4px
+      rgba(255, 193, 63, 0.55)
+    );
+}
+
+/* =========================================================
+   GRAPH LOCATIONS
+========================================================= */
+
+.world-map__location {
+  position: absolute;
+
+  z-index: 25;
+
+  transform:
+    translate(-50%, -50%);
+
+  color: #fff;
+
+  cursor: pointer;
+
+  transition:
+    transform 140ms ease,
+    opacity 140ms ease,
+    filter 140ms ease;
+}
+
+.world-map__location--graph {
+  min-width: 0;
+  min-height: 0;
+
+  width: 34px;
+  height: 34px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(220, 177, 91, 0.48);
+
+  border-radius: 50%;
+
+  background:
+    rgba(6, 11, 16, 0.9);
+
+  box-shadow:
+    0 5px 14px
+    rgba(0, 0, 0, 0.45);
+}
+
+.world-map__location--graph:hover {
+  z-index: 80;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1.16);
+}
+
+.world-map__location--graph .world-map__location-icon {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  font-size: 13px;
+}
+
+.world-map__location-label {
+  position: absolute;
+
+  top: 38px;
+  left: 50%;
+
+  min-width: 108px;
+
+  transform:
+    translateX(-50%);
+
+  padding: 4px 6px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  text-align: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 5px;
+
+  background:
+    rgba(5, 9, 13, 0.78);
+
+  pointer-events: none;
+}
+
+.world-map__location-label small {
+  color: #83929e;
+
+  font-size: 5px;
+
+  font-weight: 900;
+}
+
+.world-map__location-label strong {
+  margin-top: 1px;
+
+  white-space: nowrap;
+
+  font-size: 7px;
+}
+
+.world-map__location--graph.visited {
+  border-color:
+    rgba(79, 231, 159, 0.68);
+}
+
+.world-map__location--graph.visited
+.world-map__location-label small {
+  color: #69e2a6;
+}
+
+.world-map__location--graph.connected {
+  border-color:
+    rgba(240, 193, 89, 0.82);
+
+  box-shadow:
+    0 0 13px
+    rgba(240, 193, 89, 0.22);
+}
+
+.world-map__location--graph.current {
+  border-color:
+    #52eba4;
+
+  box-shadow:
+    0 0 16px
+    rgba(69, 234, 157, 0.65);
+}
+
+.world-map__location--graph.current
+.world-map__location-label {
+  border-color:
+    rgba(80, 229, 157, 0.3);
+
+  background:
+    rgba(5, 17, 13, 0.91);
+}
+
+.world-map__location--graph.quest-target {
+  border-color:
+    #ffd15e;
+
+  animation:
+    graphQuestPulse
+    1.4s
+    ease-in-out
+    infinite;
+}
+
+@keyframes graphQuestPulse {
+  50% {
+    box-shadow:
+      0 0 24px
+      rgba(255, 201, 78, 0.85);
+  }
+}
+
+.world-map__location--graph.locked {
+  opacity: 0.36;
+
+  filter:
+    grayscale(0.45);
+}
+
+.world-map__location--graph.region-locked {
+  opacity: 0.18;
+}
+
+.world-map__activity-badge {
+  position: absolute;
+
+  top: -7px;
+  right: -7px;
+
+  width: 16px;
+  height: 16px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(255, 205, 95, 0.65);
+
+  border-radius: 50%;
+
+  background:
+    #111820;
+
+  color: #ffd776;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+/* =========================================================
+   PEPE
+========================================================= */
+
+.world-map__pepe {
+  position: absolute;
+
+  z-index: 65;
+
+  width: 48px;
+  height: 65px;
+
+  transform:
+    translate(-50%, -100%);
+
+  pointer-events: none;
+
+  transition:
+    left 750ms ease,
+    top 750ms ease;
+}
+
+.world-map__pepe img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 0 5px
+      rgba(72, 238, 161, 0.9)
+    )
+    drop-shadow(
+      0 7px 6px
+      rgba(0, 0, 0, 0.8)
+    );
+}
+
+.world-map__pepe > span {
+  position: absolute;
+
+  left: 50%;
+  bottom: -2px;
+
+  transform:
+    translateX(-50%);
+
+  padding: 2px 5px;
+
+  border-radius: 4px;
+
+  background:
+    rgba(4, 9, 13, 0.94);
+
+  color: #65e6aa;
+
+  font-size: 6px;
+
+  font-weight: 900;
+}
+
+/* =========================================================
+   DISCOVERIES
+========================================================= */
+
+.world-map__hidden-discovery {
+  position: absolute;
+
+  z-index: 70;
+
+  width: 29px;
+  height: 29px;
+
+  transform:
+    translate(-50%, -50%);
+
+  display: grid;
+
+  place-items: center;
+
+  padding: 0;
+
+  border:
+    1px solid
+    rgba(255, 216, 123, 0.55);
+
+  border-radius: 50%;
+
+  background:
+    rgba(5, 10, 14, 0.86);
+
+  color: #ffe1a0;
+
+  cursor: pointer;
+
+  animation:
+    discoveryPulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+@keyframes discoveryPulse {
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.12);
+
+    box-shadow:
+      0 0 13px
+      rgba(255, 207, 105, 0.6);
+  }
+}
+
+/* =========================================================
+   LOCATION PANEL
+========================================================= */
+
+.world-map__panel,
+.world-map__discovery-panel {
+  position: absolute;
+
+  top: 50%;
+  right: 22px;
+
+  z-index: 170;
+
+  width: 390px;
+
+  max-height:
+    calc(100vh - 150px);
+
+  overflow-y: auto;
+
+  transform:
+    translateY(-50%);
+
+  padding: 17px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(220, 174, 83, 0.46);
+
+  border-radius: 12px;
+
+  background:
+    rgba(4, 8, 13, 0.97);
+
+  backdrop-filter:
+    blur(14px);
+
+  box-shadow:
+    0 22px 70px
+    rgba(0, 0, 0, 0.58);
+}
+
+.world-map__panel-header {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-start;
+
+  gap: 10px;
+
+  padding-bottom: 10px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+}
+
+.world-map__panel-header span {
+  color: #dfb369;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+.world-map__panel-header h2 {
+  margin: 3px 0 0;
+
+  font-size: 21px;
+}
+
+.world-map__panel-header button {
+  width: 30px;
+  height: 30px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.1);
+
+  border-radius: 6px;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.world-map__panel > p,
+.world-map__discovery-panel > p {
+  color: #9daab5;
+
+  font-size: 10px;
+
+  line-height: 1.55;
+}
+
+/* =========================================================
+   TRAVEL
+========================================================= */
+
+.world-map__travel,
+.world-map__claim,
+.world-map__discovery-close,
+.world-map__mission-action {
+  width: 100%;
+
+  min-height: 39px;
+
+  margin-top: 10px;
+
+  border-radius: 7px;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.world-map__travel,
+.world-map__claim {
+  border:
+    1px solid
+    rgba(63, 225, 151, 0.38);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(35, 132, 83, 0.93),
+      rgba(18, 74, 48, 0.93)
+    );
+
+  color: #e2fff0;
+}
+
+.world-map__travel:disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+.world-map__discovery-close {
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.1);
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: #929faa;
+}
+
+.world-map__mission-action {
+  border:
+    1px solid
+    rgba(224, 174, 72, 0.42);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(151, 93, 24, 0.92),
+      rgba(83, 51, 15, 0.92)
+    );
+
+  color: #ffe2a4;
+}
+
+.world-map__already-here {
+  margin-top: 11px;
+
+  padding: 9px;
+
+  text-align: center;
+
+  border:
+    1px solid
+    rgba(65, 227, 151, 0.18);
+
+  border-radius: 7px;
+
+  background:
+    rgba(65, 227, 151, 0.06);
+
+  color: #65e5a7;
+
+  font-size: 8px;
+
+  font-weight: 900;
+}
+
+.world-map__connection-info {
+  margin-top: 8px;
+
+  padding: 7px 9px;
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  border-radius: 6px;
+
+  background:
+    rgba(255, 255, 255, 0.03);
+
+  color: #8897a3;
+
+  font-size: 7px;
+}
+
+/* =========================================================
+   QUEST TARGET
+========================================================= */
+
+.world-map__mission-target {
+  margin-top: 11px;
+
+  padding: 10px;
+
+  border:
+    1px solid
+    rgba(225, 178, 77, 0.23);
+
+  border-radius: 7px;
+
+  background:
+    rgba(225, 178, 77, 0.06);
+}
+
+.world-map__mission-target > span {
+  color: #dfb368;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+.world-map__mission-target > strong {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 11px;
+}
+
+.world-map__mission-target > p {
+  margin:
+    4px 0 0;
+
+  color: #95a4af;
+
+  font-size: 9px;
+
+  line-height: 1.45;
+}
+
+/* =========================================================
+   ACTIVITIES
+========================================================= */
+
+.world-map__activities {
+  margin-top: 13px;
+
+  padding-top: 11px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+}
+
+.world-map__activities-title {
+  margin-bottom: 7px;
+
+  color: #dfb56d;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+.world-map__activity-row {
+  margin-bottom: 6px;
+
+  padding: 8px;
+
+  display: grid;
+
+  grid-template-columns:
+    28px
+    1fr
+    47px;
+
+  align-items: center;
+
+  gap: 8px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.world-map__activity-row.completed {
+  opacity: 0.55;
+}
+
+.world-map__activity-icon {
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 6px;
+
+  background:
+    rgba(225, 177, 76, 0.08);
+
+  font-size: 13px;
+}
+
+.world-map__activity-copy {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.world-map__activity-copy strong {
+  font-size: 9px;
+}
+
+.world-map__activity-copy small {
+  margin-top: 2px;
+
+  color: #84939f;
+
+  font-size: 7px;
+
+  line-height: 1.35;
+}
+
+.world-map__activity-copy b {
+  margin-top: 3px;
+
+  color: #dfb369;
+
+  font-size: 7px;
+}
+
+.world-map__activity-row > button {
+  min-height: 29px;
+
+  border:
+    1px solid
+    rgba(72, 222, 151, 0.25);
+
+  border-radius: 5px;
+
+  background:
+    rgba(32, 120, 77, 0.23);
+
+  color: #73e7af;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.world-map__activity-row > button:disabled {
+  opacity: 0.3;
+
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   DISCOVERY PANEL
+========================================================= */
+
+.world-map__discovery-panel {
+  text-align: center;
+}
+
+.world-map__discovery-icon {
+  width: 54px;
+  height: 54px;
+
+  margin:
+    0 auto 9px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(223, 178, 83, 0.3);
+
+  border-radius: 50%;
+
+  background:
+    rgba(223, 178, 83, 0.08);
+
+  font-size: 25px;
+}
+
+.world-map__discovery-panel > span {
+  color: #deb268;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+.world-map__discovery-panel h2 {
+  margin:
+    4px 0 7px;
+
+  font-size: 21px;
+}
+
+.world-map__npc-rescue {
+  margin-top: 10px;
+
+  padding: 9px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  border:
+    1px solid
+    rgba(65, 227, 151, 0.18);
+
+  border-radius: 7px;
+
+  background:
+    rgba(65, 227, 151, 0.05);
+}
+
+.world-map__npc-rescue small {
+  color: #65e4a8;
+
+  font-size: 7px;
+}
+
+.world-map__npc-rescue strong {
+  margin-top: 2px;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   MISSIONS
+========================================================= */
+
+.world-map__missions-panel {
+  position: absolute;
+
+  top: 65px;
+  right: 20px;
+  bottom: 20px;
+
+  z-index: 220;
+
+  width: 440px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(219, 173, 84, 0.42);
+
+  border-radius: 12px;
+
+  background:
+    rgba(4, 8, 13, 0.98);
+
+  backdrop-filter:
+    blur(16px);
+}
+
+.world-map__missions-header {
+  padding: 14px 15px;
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items: center;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+}
+
+.world-map__missions-header span {
+  color: #ddb16a;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+.world-map__missions-header h2 {
+  margin:
+    2px 0 0;
+
+  font-size: 19px;
+}
+
+.world-map__missions-header button {
+  width: 30px;
+  height: 30px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.1);
+
+  border-radius: 6px;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.world-map__mission-list {
+  height:
+    calc(100% - 61px);
+
+  overflow-y: auto;
+
+  padding: 10px;
+
+  box-sizing: border-box;
+}
+
+.world-map__mission-card {
+  margin-bottom: 7px;
+
+  padding: 10px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.world-map__mission-card > span {
+  color: #7f8e99;
+
+  font-size: 6px;
+
+  font-weight: 900;
+}
+
+.world-map__mission-card > strong {
+  margin-top: 2px;
+
+  font-size: 11px;
+}
+
+.world-map__mission-card > p {
+  margin:
+    3px 0 6px;
+
+  color: #8998a4;
+
+  font-size: 8px;
+
+  line-height: 1.4;
+}
+
+.world-map__mission-card > div {
+  font-size: 7px;
+
+  color: #b8c2ca;
+}
+
+.world-map__mission-card > b {
+  margin-top: 5px;
+
+  font-size: 7px;
+}
+
+.world-map__mission-card.active {
+  border-color:
+    rgba(226, 178, 78, 0.37);
+
+  background:
+    rgba(226, 178, 78, 0.055);
+}
+
+.world-map__mission-card.active > b {
+  color: #e1b56b;
+}
+
+.world-map__mission-card.completed {
+  border-color:
+    rgba(67, 222, 148, 0.2);
+}
+
+.world-map__mission-card.completed > b {
+  color: #65e3a7;
+}
+
+/* =========================================================
+   STORY EVENT
+========================================================= */
+
+.world-event {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 400;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 5, 8, 0.25),
+      rgba(2, 5, 8, 0.72)
+    );
+}
+
+.world-event__scene-label {
+  position: absolute;
+
+  top: 22px;
+  left: 50%;
+
+  z-index: 5;
+
+  transform:
+    translateX(-50%);
+
+  padding:
+    7px 14px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  border:
+    1px solid
+    rgba(221, 175, 84, 0.35);
+
+  border-radius: 7px;
+
+  background:
+    rgba(5, 9, 13, 0.85);
+}
+
+.world-event__scene-label span {
+  color: #ddb16a;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+.world-event__scene-label strong {
+  font-size: 13px;
+}
+
+.world-event__character {
+  position: absolute;
+
+  bottom: 110px;
+
+  z-index: 4;
+
+  opacity: 0.7;
+}
+
+.world-event__character img {
+  display: block;
+
+  max-height: 66vh;
+  max-width: 31vw;
+
+  object-fit: contain;
+}
+
+.world-event__character--pepe {
+  left: 7%;
+}
+
+.world-event__character--bocian {
+  right: 8%;
+}
+
+.world-event__character.active {
+  opacity: 1;
+
+  filter:
+    drop-shadow(
+      0 0 7px
+      rgba(65, 236, 154, 0.95)
+    );
+}
+
+.world-event__dialogue {
+  position: absolute;
+
+  left: 50%;
+  bottom: 25px;
+
+  z-index: 10;
+
+  width:
+    min(
+      830px,
+      calc(100vw - 35px)
+    );
+
+  min-height: 95px;
+
+  transform:
+    translateX(-50%);
+
+  padding:
+    14px 18px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  border-radius: 10px;
+
+  background:
+    rgba(4, 8, 13, 0.95);
+}
+
+.world-event__dialogue strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #64e4a7;
+
+  font-size: 12px;
+}
+
+.world-event__dialogue p {
+  margin: 0;
+
+  color: #edf2f6;
+
+  font-size: 15px;
+
+  line-height: 1.5;
+}
+
+.world-event__reward {
+  position: absolute;
+
+  top: 48%;
+  left: 50%;
+
+  z-index: 30;
+
+  width: 360px;
+
+  transform:
+    translate(-50%, -50%);
+
+  padding: 19px;
+
+  text-align: center;
+
+  border:
+    1px solid
+    rgba(221, 176, 86, 0.48);
+
+  border-radius: 11px;
+
+  background:
+    rgba(4, 8, 13, 0.98);
+}
+
+.world-event__reward button {
+  width: 100%;
+
+  min-height: 38px;
+
+  margin-top: 10px;
+
+  border:
+    1px solid
+    rgba(65, 225, 151, 0.35);
+
+  border-radius: 7px;
+
+  background:
+    rgba(30, 123, 77, 0.55);
+
+  color: #dcfff0;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (
+  max-width: 1200px
+) {
+  .world-map__location-label {
+    min-width: 88px;
+  }
+
+  .world-map__location-label strong {
+    font-size: 6px;
+  }
+
+  .world-map__panel,
+  .world-map__discovery-panel {
+    width: 340px;
+  }
+}
+
+@media (
+  max-width: 900px
+) {
+  .world-map__active-quest,
+  .world-map__loot,
+  .world-map__region {
+    display: none;
+  }
+
+  .world-map__top-stat {
+    display: none;
+  }
+
+  .world-map__location-label {
+    display: none;
+  }
+
+  .world-map__location--graph {
+    width: 29px;
+    height: 29px;
+  }
+
+  .world-map__panel,
+  .world-map__discovery-panel {
+    top: auto;
+    left: 10px;
+    right: 10px;
+    bottom: 12px;
+
+    width: auto;
+
+    max-height: 55vh;
+
+    transform: none;
+  }
+
+  .world-map__missions-panel {
+    top: 60px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+
+    width: auto;
+  }
+  /* =========================================================
+   HUD SIZE UPGRADE
+   ONLY APPEND TO EXISTING WorldMapHub.css
+========================================================= */
+
+.world-map__top {
+  top: 18px;
+  left: 22px;
+  right: 22px;
+
+  gap: 9px;
+}
+
+.world-map__top > div,
+.world-map__top > button {
+  min-height: 58px;
+
+  border-radius: 10px;
+}
+
+.world-map__top-title {
+  min-width: 215px;
+
+  padding: 9px 16px;
+}
+
+.world-map__top-stat {
+  min-width: 90px;
+
+  padding: 9px 13px;
+}
+
+.world-map__top span {
+  font-size: 9px;
+}
+
+.world-map__top strong {
+  margin-top: 3px;
+
+  font-size: 14px;
+}
+
+.world-map__top button {
+  padding: 0 17px;
+
+  font-size: 10px;
+}
+
+.world-map__loot {
+  top: 88px;
+  right: 22px;
+
+  gap: 7px;
+}
+
+.world-map__loot > div {
+  min-width: 77px;
+
+  padding: 8px 9px;
+
+  grid-template-columns:
+    23px
+    1fr;
+
+  border-radius: 8px;
+}
+
+.world-map__loot span {
+  font-size: 16px;
+}
+
+.world-map__loot b {
+  font-size: 12px;
+}
+
+.world-map__loot small {
+  margin-top: 1px;
+
+  font-size: 7px;
+}
+
+.world-map__active-quest {
+  top: 18px;
+
+  width: 420px;
+
+  min-height: 70px;
+
+  padding: 11px 16px;
+}
+
+.world-map__active-quest > span {
+  font-size: 8px;
+}
+
+.world-map__active-quest > strong {
+  font-size: 14px;
+}
+
+.world-map__active-quest > small {
+  font-size: 10px;
+}
+
+.world-map__active-quest > b {
+  font-size: 9px;
+}
+}

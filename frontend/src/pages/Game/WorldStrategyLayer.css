@@ -1,0 +1,1230 @@
+/* =========================================================
+   PLPE ARENA — WORLD STRATEGY LAYER
+   Additive stylesheet. Does not replace WorldMapHub.css.
+========================================================= */
+
+.world-map__top-stat--war {
+  border-color: rgba(214, 78, 67, 0.42) !important;
+  background: rgba(31, 9, 10, 0.9) !important;
+}
+
+.world-map__war-button {
+  border-color: rgba(214, 78, 67, 0.45) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(102, 27, 24, 0.95),
+      rgba(55, 16, 15, 0.95)
+    ) !important;
+  color: #ffd4ce !important;
+}
+
+/* =========================================================
+   STRATEGY STATUS BAR
+========================================================= */
+
+.world-strategy__status {
+  position: absolute;
+  top: 150px;
+  right: 22px;
+  z-index: 105;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(72px, 1fr));
+  gap: 6px;
+
+  width: min(430px, calc(100vw - 44px));
+}
+
+.world-strategy__status > div {
+  min-height: 48px;
+  padding: 7px 9px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border: 1px solid rgba(202, 72, 61, 0.28);
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(34, 8, 10, 0.88),
+      rgba(12, 8, 10, 0.88)
+    );
+
+  backdrop-filter: blur(8px);
+}
+
+.world-strategy__status span {
+  color: #d88a80;
+  font-size: 6px;
+  font-weight: 900;
+}
+
+.world-strategy__status strong {
+  margin-top: 2px;
+  color: #fff0ed;
+  font-size: 11px;
+}
+
+/* =========================================================
+   ENEMY TERRITORY
+========================================================= */
+
+.world-map__location--graph.bear-controlled {
+  border-color: rgba(225, 75, 63, 0.92) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(202, 53, 45, 0.12),
+    0 0 17px rgba(221, 61, 49, 0.44) !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      rgba(105, 18, 18, 0.98),
+      rgba(31, 8, 10, 0.98)
+    ) !important;
+}
+
+.world-map__location--graph.bear-controlled
+.world-map__location-label {
+  border-color: rgba(208, 69, 58, 0.24);
+  background: rgba(31, 8, 10, 0.88);
+}
+
+.world-map__location--graph.bear-controlled
+.world-map__location-label small {
+  color: #e17c72;
+}
+
+.world-map__location--graph.bear-fortified {
+  box-shadow:
+    0 0 0 3px rgba(221, 63, 49, 0.18),
+    0 0 0 6px rgba(221, 63, 49, 0.07),
+    0 0 22px rgba(221, 63, 49, 0.58) !important;
+}
+
+.world-map__location--graph.bear-fortified::after {
+  content: "▲";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  color: #ff8a7c;
+  font-size: 8px;
+  text-shadow: 0 0 8px rgba(255, 80, 66, 0.9);
+}
+
+/* =========================================================
+   MOVING BOTS
+========================================================= */
+
+.world-strategy__bot {
+  position: absolute;
+  z-index: 92;
+
+  width: 34px;
+  height: 34px;
+
+  transform: translate(-50%, -50%);
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  border-radius: 50%;
+  cursor: pointer;
+
+  transition:
+    transform 140ms ease,
+    filter 140ms ease,
+    left 550ms ease,
+    top 550ms ease;
+}
+
+.world-strategy__bot:hover {
+  z-index: 150;
+  transform: translate(-50%, -50%) scale(1.18);
+  filter: brightness(1.15);
+}
+
+.world-strategy__bot > span {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.world-strategy__bot > b {
+  position: absolute;
+  right: -5px;
+  bottom: -4px;
+
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  box-sizing: border-box;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 999px;
+
+  background: #0c1015;
+  color: #fff;
+
+  font-size: 6px;
+  font-weight: 900;
+}
+
+.world-strategy__bot--bear {
+  border: 1px solid rgba(239, 87, 72, 0.88);
+  background: rgba(62, 12, 14, 0.94);
+
+  box-shadow:
+    0 0 13px rgba(239, 69, 57, 0.48),
+    0 6px 14px rgba(0, 0, 0, 0.42);
+}
+
+.world-strategy__bot--wild {
+  border: 1px solid rgba(230, 177, 75, 0.78);
+  background: rgba(42, 31, 11, 0.94);
+
+  box-shadow:
+    0 0 12px rgba(226, 172, 67, 0.3),
+    0 6px 14px rgba(0, 0, 0, 0.42);
+}
+
+.world-strategy__bot--bear-elite {
+  width: 38px;
+  height: 38px;
+
+  border-width: 2px;
+
+  box-shadow:
+    0 0 18px rgba(246, 70, 56, 0.72),
+    0 0 0 4px rgba(246, 70, 56, 0.08);
+}
+
+.world-strategy__bot--harpy {
+  border-color: rgba(176, 142, 255, 0.8);
+  background: rgba(32, 18, 57, 0.94);
+}
+
+.world-strategy__bot--water-serpent {
+  border-color: rgba(71, 183, 229, 0.85);
+  background: rgba(10, 40, 55, 0.94);
+}
+
+.world-strategy__bot--wild-bear {
+  border-color: rgba(202, 147, 88, 0.85);
+  background: rgba(49, 28, 13, 0.94);
+}
+
+/* =========================================================
+   OCCUPATION PANEL
+========================================================= */
+
+.world-strategy__occupation {
+  margin-top: 10px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  border: 1px solid rgba(214, 73, 61, 0.34);
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(78, 16, 17, 0.18),
+      rgba(48, 10, 12, 0.18)
+    );
+}
+
+.world-strategy__occupation span {
+  color: #ef8a80;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.world-strategy__occupation strong {
+  color: #ffd3ce;
+  font-size: 9px;
+}
+
+.world-strategy__reclaim-button {
+  width: 100%;
+  min-height: 41px;
+  margin-top: 10px;
+
+  border: 1px solid rgba(224, 76, 63, 0.48);
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(122, 31, 27, 0.94),
+      rgba(68, 18, 17, 0.94)
+    );
+
+  color: #ffd5cf;
+  font-size: 9px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   STRATEGY PANEL
+========================================================= */
+
+.world-strategy__panel {
+  position: absolute;
+  top: 70px;
+  right: 22px;
+  bottom: 22px;
+  z-index: 235;
+
+  width: 470px;
+  max-width: calc(100vw - 44px);
+
+  overflow: hidden;
+
+  border: 1px solid rgba(211, 74, 62, 0.42);
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(17, 6, 9, 0.985),
+      rgba(5, 8, 12, 0.985)
+    );
+
+  backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.62),
+    0 0 25px rgba(197, 48, 40, 0.12);
+}
+
+.world-strategy__panel-header {
+  padding: 15px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.world-strategy__panel-header span {
+  color: #d77b72;
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.world-strategy__panel-header h2 {
+  margin: 3px 0 0;
+
+  font-size: 22px;
+}
+
+.world-strategy__panel-header button {
+  width: 31px;
+  height: 31px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.world-strategy__summary {
+  padding: 10px;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.world-strategy__summary > div {
+  min-height: 52px;
+  padding: 7px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 6px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.world-strategy__summary span {
+  color: #8e9ba6;
+  font-size: 6px;
+  font-weight: 900;
+}
+
+.world-strategy__summary strong {
+  margin-top: 2px;
+  color: #ffd0ca;
+  font-size: 11px;
+}
+
+.world-strategy__section {
+  padding: 10px 12px;
+}
+
+.world-strategy__section + .world-strategy__section {
+  padding-top: 3px;
+}
+
+.world-strategy__section h3 {
+  margin: 0 0 7px;
+
+  color: #d77e74;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.world-strategy__army-card {
+  width: 100%;
+  min-height: 48px;
+  margin-bottom: 6px;
+  padding: 7px 9px;
+
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  gap: 8px;
+
+  text-align: left;
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 7px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  color: #fff;
+  cursor: pointer;
+}
+
+.world-strategy__army-card--bear {
+  border-color: rgba(209, 67, 57, 0.2);
+}
+
+.world-strategy__army-card--wild {
+  border-color: rgba(216, 170, 82, 0.18);
+}
+
+.world-strategy__army-icon {
+  font-size: 18px;
+}
+
+.world-strategy__army-card div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.world-strategy__army-card strong {
+  font-size: 9px;
+}
+
+.world-strategy__army-card small {
+  margin-top: 2px;
+  color: #8f9da8;
+  font-size: 7px;
+}
+
+.world-strategy__history {
+  max-height: 230px;
+  overflow-y: auto;
+}
+
+.world-strategy__history > div {
+  padding: 6px 0;
+
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  gap: 7px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+}
+
+.world-strategy__history span {
+  color: #d37a71;
+  font-size: 6px;
+  font-weight: 900;
+}
+
+.world-strategy__history p {
+  margin: 0;
+  color: #98a5af;
+  font-size: 7px;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+  .world-strategy__status {
+    display: none;
+  }
+
+  .world-strategy__panel {
+    width: 410px;
+  }
+}
+
+@media (max-width: 750px) {
+  .world-strategy__panel {
+    top: 62px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+
+    width: auto;
+    max-width: none;
+  }
+
+  .world-strategy__summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* =========================================================
+   MANUAL TURN SYSTEM
+========================================================= */
+
+.world-map__end-turn-button {
+  min-width: 132px !important;
+  border-color: rgba(74, 224, 151, 0.5) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(27, 128, 79, 0.97),
+      rgba(13, 72, 46, 0.97)
+    ) !important;
+  color: #e8fff3 !important;
+  font-weight: 900 !important;
+}
+
+.world-map__end-turn-button:hover:not(:disabled) {
+  filter: brightness(1.14);
+}
+
+.world-map__end-turn-button:disabled,
+.world-map__end-turn-button.enemy-turn {
+  opacity: 0.72;
+  cursor: wait;
+  border-color: rgba(214, 78, 67, 0.45) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(102, 27, 24, 0.96),
+      rgba(55, 16, 15, 0.96)
+    ) !important;
+  color: #ffd4ce !important;
+}
+
+.world-map__turn-banner {
+  position: absolute;
+  top: 166px;
+  left: 50%;
+  z-index: 205;
+  width: min(520px, calc(100vw - 40px));
+  transform: translateX(-50%);
+  padding: 9px 14px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 9px;
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.world-map__turn-banner > span {
+  flex: 0 0 auto;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.45px;
+}
+
+.world-map__turn-banner > strong {
+  min-width: 0;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.world-map__turn-banner--player {
+  border: 1px solid rgba(68, 229, 151, 0.42);
+  background: rgba(5, 24, 17, 0.91);
+  color: #dffff0;
+}
+
+.world-map__turn-banner--player > span {
+  color: #64e6aa;
+}
+
+.world-map__turn-banner--enemy {
+  border: 1px solid rgba(220, 75, 62, 0.55);
+  background: rgba(41, 9, 11, 0.94);
+  color: #ffe7e3;
+}
+
+.world-map__turn-banner--enemy > span {
+  color: #ff8b7e;
+}
+
+.world-map__enemy-turn-lock {
+  position: absolute;
+  inset: 0;
+  z-index: 440;
+  display: grid;
+  place-items: center;
+  background: rgba(4, 7, 10, 0.32);
+  backdrop-filter: blur(1.5px);
+}
+
+.world-map__enemy-turn-lock > div {
+  width: min(430px, calc(100vw - 40px));
+  padding: 22px;
+  box-sizing: border-box;
+  text-align: center;
+  border: 1px solid rgba(226, 76, 63, 0.6);
+  border-radius: 12px;
+  background: rgba(24, 7, 9, 0.96);
+  box-shadow:
+    0 0 35px rgba(220, 61, 50, 0.18),
+    0 22px 70px rgba(0, 0, 0, 0.55);
+}
+
+.world-map__enemy-turn-lock span {
+  color: #df7d72;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+.world-map__enemy-turn-lock strong {
+  display: block;
+  margin-top: 5px;
+  color: #fff1ee;
+  font-size: 22px;
+}
+
+.world-map__enemy-turn-lock small {
+  display: block;
+  margin-top: 8px;
+  color: #bfa9a6;
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+@media (max-width: 1100px) {
+  .world-map__turn-banner {
+    top: 150px;
+    width: min(460px, calc(100vw - 30px));
+  }
+}
+
+/* =========================================================
+   TERRITORY OWNERSHIP V2
+========================================================= */
+
+.world-map__graph-edge.enemy-zone {
+  stroke: rgba(235, 77, 67, 0.72) !important;
+  stroke-width: 2px !important;
+  stroke-dasharray: 4 5 !important;
+  filter: drop-shadow(0 0 4px rgba(235, 63, 52, 0.32));
+}
+
+.world-map__graph-edge.player-zone {
+  stroke: rgba(67, 224, 151, 0.58) !important;
+  stroke-width: 1.8px !important;
+}
+
+.world-map__location--graph.bear-controlled {
+  border-color: rgba(239, 76, 64, 0.94) !important;
+  background: rgba(47, 8, 10, 0.94) !important;
+  box-shadow:
+    0 0 17px rgba(229, 58, 47, 0.38),
+    0 5px 16px rgba(0, 0, 0, 0.5) !important;
+}
+
+.world-map__location--graph.bear-controlled .world-map__location-label {
+  border-color: rgba(226, 74, 63, 0.34) !important;
+  background: rgba(32, 7, 9, 0.92) !important;
+}
+
+.world-map__location--graph.bear-controlled .world-map__location-label small {
+  color: #ef766c !important;
+}
+
+.world-map__location--graph.player-controlled:not(.bear-controlled) {
+  border-color: rgba(71, 228, 156, 0.9) !important;
+  background: rgba(6, 30, 21, 0.92) !important;
+  box-shadow:
+    0 0 12px rgba(65, 218, 148, 0.24),
+    0 5px 14px rgba(0, 0, 0, 0.42) !important;
+}
+
+.world-map__location--graph.player-controlled:not(.bear-controlled) .world-map__location-label {
+  border-color: rgba(68, 220, 150, 0.22) !important;
+  background: rgba(5, 23, 16, 0.87) !important;
+}
+
+.world-map__location--graph.bear-fortified::after {
+  content: "🛡";
+  position: absolute;
+  left: -9px;
+  top: -10px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(246, 108, 92, 0.65);
+  background: rgba(30, 8, 10, 0.96);
+  font-size: 9px;
+  z-index: 6;
+}
+
+.world-strategy__occupation--player {
+  border-color: rgba(61, 219, 147, 0.28) !important;
+  background: rgba(31, 128, 82, 0.08) !important;
+}
+
+.world-strategy__occupation--player span,
+.world-strategy__occupation--player strong {
+  color: #6de3aa !important;
+}
+
+/* Wild units are lairs/territorial monsters, not roaming armies. */
+.world-strategy__bot--wild {
+  box-shadow: 0 0 0 2px rgba(157, 110, 255, 0.14) !important;
+}
+
+/* =========================================================
+   UI LAYOUT V3 — PLAYER LEFT / ENEMY RIGHT / END TURN BOTTOM
+   Static map geometry remains fixed. Only player/enemy units move.
+========================================================= */
+
+/* ---------- KEEP ALL STATIC MAP ANCHORS FIXED ---------- */
+.world-map__location,
+.world-map__location--graph,
+.world-map__location-label,
+.world-map__activity-badge,
+.world-map__hidden-discovery,
+.world-map__route,
+.world-map__route--graph,
+.world-map__graph-edge {
+  will-change: auto !important;
+}
+
+.world-map__location--graph,
+.world-map__location--graph:hover,
+.world-map__location--graph.current,
+.world-map__location--graph.connected,
+.world-map__location--graph.visited,
+.world-map__location--graph.locked,
+.world-map__location--graph.region-locked,
+.world-map__location--graph.quest-target,
+.world-map__location--graph.bear-controlled,
+.world-map__location--graph.player-controlled {
+  transform: translate(-50%, -50%) !important;
+}
+
+.world-map__location,
+.world-map__location--graph {
+  transition:
+    opacity 140ms ease,
+    filter 140ms ease,
+    box-shadow 140ms ease,
+    border-color 140ms ease,
+    background 140ms ease !important;
+}
+
+.world-map__location-label {
+  transform: translateX(-50%) !important;
+  transition: none !important;
+}
+
+.world-map__activity-badge {
+  transform: none !important;
+  transition: none !important;
+}
+
+.world-map__route,
+.world-map__route--graph,
+.world-map__graph-edge {
+  transform: none !important;
+  transition:
+    stroke 180ms ease,
+    opacity 180ms ease !important;
+}
+
+/* Discovery icons may glow but never shift or scale. */
+.world-map__hidden-discovery {
+  transition:
+    opacity 150ms ease,
+    filter 150ms ease,
+    box-shadow 150ms ease !important;
+  animation: discoveryGlowOnly 1.8s ease-in-out infinite !important;
+}
+
+@keyframes discoveryGlowOnly {
+  0%,
+  100% {
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 7px rgba(255, 207, 105, 0.25);
+  }
+
+  50% {
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 16px rgba(255, 207, 105, 0.72);
+  }
+}
+
+/* Only these objects are allowed to animate their map position. */
+.world-map__pepe,
+.world-strategy__bot,
+.world-map__strategy-bot,
+.world-map__bot {
+  transition:
+    left 650ms ease,
+    top 650ms ease,
+    opacity 160ms ease !important;
+}
+
+/* ---------- PLAYER HUD — TOP LEFT ---------- */
+.world-map__top {
+  top: 18px !important;
+  left: 22px !important;
+  right: auto !important;
+  width: min(760px, calc(100vw - 620px)) !important;
+  min-width: 620px;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  pointer-events: none;
+}
+
+.world-map__top > div,
+.world-map__top > button {
+  min-height: 62px !important;
+  border-radius: 11px !important;
+}
+
+.world-map__top-title {
+  min-width: 220px !important;
+  padding: 10px 16px !important;
+}
+
+.world-map__top-stat {
+  min-width: 92px !important;
+  padding: 10px 12px !important;
+}
+
+.world-map__top span {
+  font-size: 9px !important;
+}
+
+.world-map__top strong {
+  margin-top: 4px !important;
+  font-size: 15px !important;
+}
+
+.world-map__top button:not(.world-map__end-turn-button) {
+  min-height: 46px !important;
+  padding: 0 15px !important;
+  font-size: 10px !important;
+  pointer-events: auto;
+}
+
+/* Put general action buttons in the second row on the left. */
+.world-map__war-button {
+  margin-left: 0 !important;
+}
+
+/* ---------- PLAYER RESOURCES — UNDER LEFT HUD ---------- */
+.world-map__loot {
+  top: 160px !important;
+  left: 22px !important;
+  right: auto !important;
+  z-index: 118 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(110px, 1fr)) !important;
+  width: 370px !important;
+  gap: 8px !important;
+}
+
+.world-map__loot > div {
+  min-width: 0 !important;
+  min-height: 58px !important;
+  padding: 9px 11px !important;
+  grid-template-columns: 28px 1fr !important;
+  border-radius: 9px !important;
+  background: rgba(5, 9, 14, 0.94) !important;
+}
+
+.world-map__loot span {
+  font-size: 19px !important;
+}
+
+.world-map__loot b {
+  font-size: 15px !important;
+}
+
+.world-map__loot small {
+  margin-top: 2px !important;
+  font-size: 8px !important;
+}
+
+/* ---------- ENEMY HUD — TOP RIGHT ---------- */
+.world-strategy__status {
+  position: absolute !important;
+  top: 18px !important;
+  right: 22px !important;
+  left: auto !important;
+  z-index: 180 !important;
+  width: 540px !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(118px, 1fr)) !important;
+  gap: 9px !important;
+}
+
+.world-strategy__status > div {
+  min-height: 70px !important;
+  padding: 11px 14px !important;
+  border-radius: 11px !important;
+  border: 1px solid rgba(214, 78, 67, 0.46) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(49, 10, 13, 0.96),
+      rgba(17, 7, 9, 0.96)
+    ) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35) !important;
+}
+
+.world-strategy__status span {
+  color: #e18d82 !important;
+  font-size: 9px !important;
+  line-height: 1.1 !important;
+  font-weight: 900 !important;
+}
+
+.world-strategy__status strong {
+  margin-top: 6px !important;
+  color: #fff3f0 !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+
+.world-strategy__status > div:first-child {
+  border-color: rgba(239, 78, 64, 0.76) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(88, 18, 21, 0.98),
+      rgba(31, 7, 10, 0.98)
+    ) !important;
+  box-shadow:
+    0 0 18px rgba(218, 59, 48, 0.24),
+    0 8px 28px rgba(0, 0, 0, 0.4) !important;
+}
+
+.world-strategy__status > div:first-child strong {
+  font-size: 21px !important;
+}
+
+/* ---------- TURN INFORMATION — BOTTOM CENTER ---------- */
+.world-map__turn-banner {
+  top: auto !important;
+  bottom: 88px !important;
+  left: 50% !important;
+  z-index: 250 !important;
+  width: min(650px, calc(100vw - 70px)) !important;
+  min-height: 54px !important;
+  transform: translateX(-50%) !important;
+  padding: 11px 17px !important;
+  gap: 12px !important;
+  border-radius: 11px !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.36);
+}
+
+.world-map__turn-banner > span {
+  font-size: 10px !important;
+}
+
+.world-map__turn-banner > strong {
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+}
+
+/* ---------- END TURN — CENTER BOTTOM ---------- */
+.world-map__end-turn-button {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 22px !important;
+  z-index: 310 !important;
+  width: 260px !important;
+  min-width: 260px !important;
+  min-height: 54px !important;
+  transform: translateX(-50%) !important;
+  padding: 0 22px !important;
+  border-radius: 12px !important;
+  font-size: 13px !important;
+  letter-spacing: 0.35px !important;
+  pointer-events: auto !important;
+  box-shadow:
+    0 0 0 1px rgba(98, 239, 170, 0.08),
+    0 12px 35px rgba(0, 0, 0, 0.42) !important;
+}
+
+.world-map__end-turn-button:hover:not(:disabled) {
+  transform: translateX(-50%) translateY(-2px) !important;
+}
+
+.world-map__end-turn-button:disabled,
+.world-map__end-turn-button.enemy-turn {
+  transform: translateX(-50%) !important;
+}
+
+/* ---------- BIGGER MAP POINTS AND LABELS ---------- */
+.world-map__location--graph {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.world-map__location--graph .world-map__location-icon {
+  font-size: 17px !important;
+}
+
+.world-map__activity-badge {
+  width: 20px !important;
+  height: 20px !important;
+  top: -8px !important;
+  right: -8px !important;
+  font-size: 8px !important;
+}
+
+.world-map__location-label {
+  top: 50px !important;
+  min-width: 132px !important;
+  padding: 6px 9px !important;
+  border-radius: 7px !important;
+  background: rgba(5, 9, 13, 0.9) !important;
+}
+
+.world-map__location-label small {
+  font-size: 7px !important;
+}
+
+.world-map__location-label strong {
+  margin-top: 2px !important;
+  font-size: 9px !important;
+  line-height: 1.2 !important;
+}
+
+.world-map__hidden-discovery {
+  width: 38px !important;
+  height: 38px !important;
+  font-size: 16px !important;
+}
+
+/* ---------- BIGGER STRATEGY BOTS ---------- */
+.world-strategy__bot {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.world-strategy__bot--bear-elite {
+  width: 48px !important;
+  height: 48px !important;
+}
+
+.world-strategy__bot > span {
+  font-size: 19px !important;
+}
+
+.world-strategy__bot > b {
+  min-width: 20px !important;
+  height: 20px !important;
+  right: -6px !important;
+  bottom: -6px !important;
+  font-size: 8px !important;
+}
+
+/* ---------- BIGGER SIDE PANELS ---------- */
+.world-map__panel,
+.world-map__discovery-panel {
+  width: 450px !important;
+  padding: 21px !important;
+}
+
+.world-map__panel-header h2,
+.world-map__discovery-panel h2 {
+  font-size: 25px !important;
+}
+
+.world-map__panel > p,
+.world-map__discovery-panel > p {
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+}
+
+.world-map__activity-row {
+  min-height: 62px !important;
+  grid-template-columns: 38px 1fr 62px !important;
+  gap: 10px !important;
+  padding: 10px !important;
+}
+
+.world-map__activity-icon {
+  width: 38px !important;
+  height: 38px !important;
+  font-size: 17px !important;
+}
+
+.world-map__activity-copy strong {
+  font-size: 11px !important;
+}
+
+.world-map__activity-copy small,
+.world-map__activity-copy b {
+  font-size: 8px !important;
+}
+
+.world-map__activity-row > button {
+  min-height: 36px !important;
+  font-size: 8px !important;
+}
+
+/* ---------- BIGGER WAR PANEL ---------- */
+.world-strategy__panel {
+  width: 560px !important;
+  max-width: calc(100vw - 40px) !important;
+}
+
+.world-strategy__panel-header h2 {
+  font-size: 24px !important;
+}
+
+.world-strategy__summary > div {
+  min-height: 70px !important;
+  padding: 11px 12px !important;
+}
+
+.world-strategy__summary span {
+  font-size: 8px !important;
+}
+
+.world-strategy__summary strong {
+  font-size: 16px !important;
+}
+
+.world-strategy__army-card {
+  min-height: 66px !important;
+  padding: 11px !important;
+}
+
+.world-strategy__army-icon {
+  font-size: 21px !important;
+}
+
+.world-strategy__army-card strong {
+  font-size: 11px !important;
+}
+
+.world-strategy__army-card small,
+.world-strategy__history p {
+  font-size: 8px !important;
+}
+
+/* ---------- DESKTOP FIT ---------- */
+@media (max-width: 1500px) {
+  .world-map__top {
+    width: min(650px, calc(100vw - 520px)) !important;
+    min-width: 560px;
+  }
+
+  .world-strategy__status {
+    width: 470px !important;
+    grid-template-columns: repeat(4, minmax(100px, 1fr)) !important;
+  }
+
+  .world-map__loot {
+    top: 164px !important;
+    width: 340px !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  .world-map__top {
+    min-width: 0;
+    width: calc(100vw - 44px) !important;
+  }
+
+  .world-strategy__status {
+    top: 172px !important;
+    right: 22px !important;
+    width: 470px !important;
+  }
+
+  .world-map__loot {
+    top: 172px !important;
+    left: 22px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .world-map__top {
+    width: calc(100vw - 20px) !important;
+    left: 10px !important;
+  }
+
+  .world-strategy__status {
+    display: none !important;
+  }
+
+  .world-map__loot {
+    display: none !important;
+  }
+
+  .world-map__turn-banner {
+    bottom: 82px !important;
+    width: calc(100vw - 24px) !important;
+  }
+
+  .world-map__end-turn-button {
+    bottom: 16px !important;
+    width: min(260px, calc(100vw - 40px)) !important;
+  }
+}

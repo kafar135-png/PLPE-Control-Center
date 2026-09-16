@@ -1,0 +1,33 @@
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+*.zip
+.env
+frontend/.env
+backend/.env
+dist/
+.vercel
+.env*
+
+# Secrets
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# Dependencies / build
+backend/node_modules/
+frontend/node_modules/
+frontend/dist/
+.vercel/
+
+# Temporary PLPE patch/work folders
+backend/backend/
+frontend/frontend/
+backend/src/midleware/
+PLPE_RANGER_HARPY_LECTOR_FIX/
+
+# Development leftovers
+frontend/public/audio/game/dialogue/voice-tests/
+frontend/src/pages/Game/*.bak
+frontend/src/pages/Game/TacticalBattle_full_no_log.*
+frontend/src/pages/Game/TacticalBattle_v6.*

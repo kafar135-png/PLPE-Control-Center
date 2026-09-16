@@ -1,0 +1,190 @@
+.expeditions-hub {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-size: cover;
+  background-position: center;
+
+  color: white;
+
+  overflow: hidden;
+
+  z-index: 9999;
+}
+
+.expeditions-hub__shade {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 7, 10, 0.72),
+      rgba(4, 7, 10, 0.08) 55%,
+      rgba(4, 7, 10, 0.46)
+    );
+}
+
+.expeditions-hub__top {
+  position: absolute;
+
+  top: 18px;
+  left: 20px;
+  right: 20px;
+
+  z-index: 20;
+
+  display: flex;
+}
+
+.expeditions-hub__top > div,
+.expeditions-hub__top button {
+  padding:
+    10px 15px;
+
+  border-radius: 9px;
+
+  border:
+    1px solid
+    rgba(220, 175, 89, 0.35);
+
+  background:
+    rgba(6, 10, 15, 0.86);
+
+  color: white;
+}
+
+.expeditions-hub__top > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.expeditions-hub__top span {
+  color: #e0b76d;
+
+  font-size: 11px;
+}
+
+.expeditions-hub__top button {
+  margin-left: auto;
+
+  cursor: pointer;
+}
+
+.expeditions-hub__intro {
+  position: absolute;
+
+  left: 6%;
+  top: 26%;
+
+  z-index: 10;
+
+  width: 470px;
+
+  padding: 22px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(6, 10, 15, 0.88);
+
+  border:
+    1px solid
+    rgba(220, 175, 89, 0.30);
+}
+
+.expeditions-hub__intro > span {
+  color: #dfb46a;
+
+  font-size: 11px;
+}
+
+.expeditions-hub__intro h1 {
+  margin:
+    5px 0 8px;
+
+  font-size: 38px;
+}
+
+.expeditions-hub__intro p {
+  color: #b9c3ce;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.expeditions-hub__intro button {
+  margin-top: 12px;
+
+  min-height: 44px;
+
+  padding:
+    0 18px;
+
+  border-radius: 8px;
+
+  border:
+    1px solid
+    rgba(71, 226, 153, 0.35);
+
+  background:
+    rgba(37, 127, 84, 0.38);
+
+  color: #78e9b2;
+
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.expeditions-hub__regions {
+  position: absolute;
+
+  right: 5%;
+  bottom: 8%;
+
+  z-index: 10;
+
+  width: 380px;
+
+  padding: 16px;
+
+  border-radius: 12px;
+
+  background:
+    rgba(6, 10, 15, 0.88);
+}
+
+.expeditions-hub__regions h2 {
+  font-size: 18px;
+}
+
+.expeditions-hub__regions article {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 8px;
+
+  padding: 10px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+}
+
+.expeditions-hub__regions article span,
+.expeditions-hub__regions article small {
+  color: #8e9bab;
+
+  font-size: 10px;
+}
+
+.expeditions-hub__regions article strong {
+  font-size: 18px;
+}

@@ -1,0 +1,27 @@
+.app-icon {
+
+    color: var(--plpe-green);
+
+    flex-shrink: 0;
+
+    transition: .25s ease;
+
+    filter:
+        drop-shadow(0 0 5px rgba(0,255,140,.25));
+
+}
+
+.profile-card:hover .app-icon,
+.analytics-card:hover .app-icon,
+.topbar-box:hover .app-icon,
+.sidebar-link:hover .app-icon,
+.hero-badge:hover .app-icon {
+
+    color:#6dffba;
+
+    transform:scale(1.08);
+
+    filter:
+        drop-shadow(0 0 10px rgba(0,255,140,.55));
+
+}

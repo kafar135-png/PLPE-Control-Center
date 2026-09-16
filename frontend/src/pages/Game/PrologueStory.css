@@ -1,0 +1,426 @@
+.prologue-cinematic {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: white;
+
+  cursor: pointer;
+
+  z-index: 10000;
+}
+
+.prologue-cinematic__overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 4, 7, 0.18) 0%,
+      rgba(2, 4, 7, 0.02) 45%,
+      rgba(2, 4, 7, 0.22) 68%,
+      rgba(2, 4, 7, 0.82) 100%
+    ),
+    radial-gradient(
+      circle at center,
+      transparent 30%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+}
+
+.prologue-cinematic__fade {
+  position: absolute;
+  inset: 0;
+
+  z-index: 100;
+
+  background: #000;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    opacity 350ms ease;
+}
+
+.prologue-cinematic__fade.active {
+  opacity: 1;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.prologue-cinematic__header {
+  position: absolute;
+
+  top: 24px;
+  left: 28px;
+  right: 28px;
+
+  z-index: 20;
+
+  display: flex;
+  align-items: flex-start;
+
+  pointer-events: none;
+}
+
+.prologue-cinematic__chapter {
+  padding:
+    11px 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 10px;
+
+  border:
+    1px solid
+    rgba(220, 175, 88, 0.35);
+
+  background:
+    rgba(4, 8, 12, 0.76);
+
+  backdrop-filter:
+    blur(8px);
+}
+
+.prologue-cinematic__chapter span {
+  color: #deb36a;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing:
+    0.12em;
+}
+
+.prologue-cinematic__chapter strong {
+  margin-top: 2px;
+
+  font-size: 25px;
+}
+
+.prologue-cinematic__chapter small {
+  margin-top: 2px;
+
+  color: #9aa8b6;
+
+  font-size: 10px;
+}
+
+.prologue-cinematic__progress {
+  margin-left: auto;
+
+  width: 160px;
+
+  padding:
+    9px 11px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(4, 8, 12, 0.75);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.09);
+
+  backdrop-filter:
+    blur(8px);
+}
+
+.prologue-cinematic__progress > div {
+  height: 5px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.1);
+}
+
+.prologue-cinematic__progress > div span {
+  display: block;
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #d7a250,
+      #f0cf88
+    );
+
+  transition:
+    width 350ms ease;
+}
+
+.prologue-cinematic__progress small {
+  display: block;
+
+  margin-top: 5px;
+
+  text-align: right;
+
+  color: #d9b36b;
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+/* =========================================================
+   DIALOGUE
+========================================================= */
+
+.prologue-cinematic__dialogue {
+  position: absolute;
+
+  left: 50%;
+  bottom: 28px;
+
+  z-index: 30;
+
+  width:
+    min(
+      930px,
+      calc(100vw - 50px)
+    );
+
+  min-height: 112px;
+
+  transform:
+    translateX(-50%);
+
+  box-sizing:
+    border-box;
+
+  padding:
+    17px 22px 14px;
+
+  border-radius: 13px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.14);
+
+  background:
+    rgba(4, 8, 13, 0.94);
+
+  backdrop-filter:
+    blur(13px);
+
+  box-shadow:
+    0 22px 65px
+    rgba(0, 0, 0, 0.58);
+}
+
+.prologue-cinematic__dialogue--pepe {
+  border-color:
+    rgba(67, 227, 151, 0.34);
+}
+
+.prologue-cinematic__dialogue--bocian {
+  border-color:
+    rgba(222, 176, 87, 0.40);
+}
+
+.prologue-cinematic__dialogue--narrator {
+  border-color:
+    rgba(180, 194, 207, 0.20);
+}
+
+.prologue-cinematic__dialogue > strong {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #70e8ad;
+
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.prologue-cinematic__dialogue--bocian > strong {
+  color: #e1b66c;
+}
+
+.prologue-cinematic__dialogue p {
+  min-height: 54px;
+
+  margin: 0;
+
+  color: #f2f5f8;
+
+  font-size: 18px;
+  line-height: 1.55;
+
+  text-shadow:
+    0 1px 3px
+    rgba(0, 0, 0, 0.9);
+}
+
+.prologue-cinematic__dialogue--narrator p {
+  color: #dce3e9;
+
+  font-style: italic;
+}
+
+.prologue-cinematic__dialogue > small {
+  display: block;
+
+  margin-top: 8px;
+
+  text-align: right;
+
+  color: #6f7c89;
+
+  font-size: 8px;
+}
+
+/* =========================================================
+   CURSOR
+========================================================= */
+
+.prologue-cinematic__cursor {
+  margin-left: 2px;
+
+  animation:
+    prologueCursorBlink
+    0.8s
+    steps(1)
+    infinite;
+}
+
+@keyframes prologueCursorBlink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 800px
+) {
+  .prologue-cinematic {
+    background-position: center;
+  }
+
+  .prologue-cinematic__header {
+    top: 14px;
+    left: 14px;
+    right: 14px;
+  }
+
+  .prologue-cinematic__chapter strong {
+    font-size: 18px;
+  }
+
+  .prologue-cinematic__progress {
+    width: 105px;
+  }
+
+  .prologue-cinematic__dialogue {
+    bottom: 12px;
+
+    width:
+      calc(100vw - 20px);
+
+    min-height: 125px;
+
+    padding:
+      14px 16px;
+  }
+
+  .prologue-cinematic__dialogue p {
+    font-size: 15px;
+  }
+}
+/* =========================================================
+   RELIABLE PROLOGUE CONTROLS
+========================================================= */
+
+.prologue-cinematic__dialogue {
+  cursor: default;
+}
+
+.prologue-cinematic__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.prologue-cinematic__actions > small {
+  color: #7f8b96;
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+.prologue-cinematic__next {
+  flex: 0 0 auto;
+  min-width: 150px;
+  padding: 10px 18px;
+  border: 1px solid rgba(233, 188, 101, 0.55);
+  border-radius: 9px;
+  background: linear-gradient(180deg, rgba(211, 157, 69, 0.98), rgba(151, 103, 37, 0.98));
+  color: #fff7e8;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.34);
+  transition: transform 120ms ease, filter 120ms ease, opacity 120ms ease;
+}
+
+.prologue-cinematic__next:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.prologue-cinematic__next:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.prologue-cinematic__next:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+@media (max-width: 800px) {
+  .prologue-cinematic__actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .prologue-cinematic__next {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.prologue-cinematic__voice{position:absolute;right:118px;top:18px;z-index:8;height:40px;padding:0 14px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:rgba(4,10,15,.78);color:#aeb9c5;font-size:11px;font-weight:900;letter-spacing:.7px;cursor:pointer}.prologue-cinematic__voice.active{color:#4ce5a2;border-color:rgba(76,229,162,.48);box-shadow:0 0 18px rgba(34,211,143,.12)}@media(max-width:700px){.prologue-cinematic__voice{right:18px;top:72px}}

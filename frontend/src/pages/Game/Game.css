@@ -1,0 +1,1426 @@
+/* =========================================================
+   PLPE ARENA — BASE
+========================================================= */
+
+.plpe-game {
+  min-height: 100vh;
+  padding: 24px;
+  color: #ffffff;
+}
+
+.plpe-game__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.plpe-game__eyebrow,
+.plpe-game__chapter span {
+  color: #45d483;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.plpe-game__header h1,
+.plpe-game__chapter h2 {
+  margin: 5px 0;
+}
+
+.plpe-game__header p,
+.plpe-game__chapter p {
+  margin: 0;
+  color: #9ca7b8;
+}
+
+.plpe-game__resources {
+  display: flex;
+  gap: 12px;
+}
+
+.plpe-game__resource {
+  min-width: 120px;
+  padding: 12px 16px;
+  background: #161d2d;
+  border: 1px solid #2b3650;
+  border-radius: 12px;
+}
+
+.plpe-game__resource span {
+  display: block;
+  color: #9ca7b8;
+  font-size: 12px;
+}
+
+.plpe-game__resource strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 18px;
+}
+
+/* =========================================================
+   HERO CARDS
+========================================================= */
+
+.plpe-game__hero {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.plpe-game__character-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 180px;
+  padding: 18px;
+  overflow: hidden;
+
+  background: linear-gradient(
+    180deg,
+    #1a2233 0%,
+    #161d2d 100%
+  );
+
+  border: 1px solid #2b3650;
+  border-radius: 16px;
+}
+
+.plpe-game__character-image {
+  width: 150px;
+  height: 150px;
+  flex-shrink: 0;
+
+  object-fit: cover;
+  object-position: top center;
+
+  border: 1px solid #34425f;
+  border-radius: 14px;
+}
+
+.plpe-game__character-card span,
+.plpe-game__character-card p,
+.plpe-game__character-card small {
+  color: #9ca7b8;
+}
+
+.plpe-game__character-card h2 {
+  margin: 4px 0;
+}
+
+.plpe-game__character-card p {
+  margin: 0 0 10px;
+}
+
+.plpe-game__xp {
+  width: 220px;
+  max-width: 100%;
+  height: 8px;
+  margin-bottom: 5px;
+  overflow: hidden;
+
+  background: #0f1520;
+  border-radius: 999px;
+}
+
+.plpe-game__xp-fill {
+  height: 100%;
+  background: #45d483;
+}
+
+/* =========================================================
+   MONASTERY HUB
+========================================================= */
+
+.plpe-game__monastery {
+  margin-bottom: 24px;
+  overflow: hidden;
+
+  background: #121826;
+
+  border: 1px solid #2b3650;
+  border-radius: 16px;
+}
+
+.plpe-game__monastery-hero {
+  min-height: 350px;
+  padding: 28px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.plpe-game__monastery-hero h2 {
+  margin: 6px 0;
+  font-size: 30px;
+}
+
+.plpe-game__monastery-hero strong {
+  padding: 10px 14px;
+
+  color: #45d483;
+  background: rgba(7, 14, 22, 0.82);
+
+  border: 1px solid rgba(69, 212, 131, 0.4);
+  border-radius: 10px;
+}
+
+.plpe-game__buildings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+  padding: 16px;
+}
+
+.plpe-game__building {
+  min-height: 210px;
+  padding: 0;
+  overflow: hidden;
+
+  text-align: left;
+
+  color: #ffffff;
+  background: #151c2a;
+
+  border: 1px solid #34425f;
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.plpe-game__building:hover {
+  transform: translateY(-2px);
+  border-color: #45d483;
+}
+
+.plpe-game__building img {
+  display: block;
+
+  width: 100%;
+  height: 145px;
+
+  object-fit: cover;
+}
+
+.plpe-game__building > div {
+  padding: 13px;
+}
+
+.plpe-game__building strong {
+  display: block;
+  font-size: 16px;
+}
+
+.plpe-game__arena-placeholder {
+  height: 145px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0 !important;
+
+  color: #45d483;
+
+  background: radial-gradient(
+    circle at center,
+    rgba(69, 212, 131, 0.18),
+    rgba(10, 15, 24, 0.96)
+  );
+
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 3px;
+}
+
+/* =========================================================
+   CHAPTER
+========================================================= */
+
+.plpe-game__chapter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+  padding: 20px;
+
+  background: linear-gradient(
+    135deg,
+    #162438 0%,
+    #172d2a 100%
+  );
+
+  border: 1px solid #2e5748;
+  border-radius: 16px;
+}
+
+.plpe-game__chapter button {
+  min-width: 200px;
+  padding: 14px 20px;
+
+  color: #07110c;
+  background: #45d483;
+
+  border: 0;
+  border-radius: 10px;
+
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.plpe-game__reset {
+  margin-bottom: 20px;
+  padding: 10px 14px;
+
+  color: #ffffff;
+  background: #ef5350;
+
+  border: 0;
+  border-radius: 8px;
+
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.plpe-welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  width: 100vw;
+  height: 100vh;
+
+  display: grid;
+  place-items: center;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  color: #ffffff;
+}
+
+.plpe-welcome__content {
+  width: min(760px, 88vw);
+  padding: 40px 44px;
+
+  text-align: center;
+
+  background: rgba(5, 11, 18, 0.88);
+
+  border: 1px solid rgba(69, 212, 131, 0.4);
+  border-radius: 22px;
+
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.65);
+
+  backdrop-filter: blur(10px);
+}
+
+.plpe-welcome__eyebrow {
+  color: #45d483;
+
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.plpe-welcome__content h1 {
+  margin: 12px 0 18px;
+
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: 1.08;
+}
+
+.plpe-welcome__content p {
+  max-width: 640px;
+  margin: 10px auto;
+
+  color: #d3dbe7;
+
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.plpe-welcome__content button {
+  min-width: 280px;
+  margin-top: 26px;
+  padding: 16px 30px;
+
+  color: #031309;
+
+  background: linear-gradient(
+    180deg,
+    #39e987 0%,
+    #159c54 100%
+  );
+
+  border: 1px solid #76ffb4;
+  border-radius: 12px;
+
+  box-shadow: 0 0 35px rgba(69, 212, 131, 0.4);
+
+  font-size: 17px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   STORY FULLSCREEN
+========================================================= */
+
+.plpe-story {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  width: 100vw;
+  height: 100vh;
+
+  overflow: hidden;
+
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
+
+  color: #ffffff;
+}
+
+.plpe-story::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 100;
+
+  background: #000000;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition: opacity 0.5s ease;
+}
+
+.plpe-story--transition::after {
+  opacity: 1;
+}
+
+/* =========================================================
+   CHARACTERS
+========================================================= */
+
+.plpe-story__characters {
+  position: absolute;
+  inset: 0;
+
+  z-index: 3;
+
+  pointer-events: none;
+}
+
+.plpe-story__speaker {
+  position: absolute;
+
+  bottom: 0;
+
+  opacity: 0.42;
+
+  filter:
+    brightness(0.72)
+    saturate(0.8);
+
+  transition:
+    opacity 0.35s ease,
+    filter 0.35s ease,
+    transform 0.35s ease;
+}
+
+.plpe-story__speaker img {
+  display: block;
+
+  width: auto;
+  height: auto;
+
+  max-height: 80vh;
+
+  object-fit: contain;
+
+  background: transparent;
+
+  filter: drop-shadow(
+    0 20px 40px rgba(0, 0, 0, 0.7)
+  );
+}
+
+.plpe-story__speaker--active {
+  opacity: 1;
+
+  filter:
+    brightness(1)
+    saturate(1);
+
+  transform:
+    scale(1.015);
+}
+
+.plpe-story__speaker--pepe {
+  left: 3%;
+}
+
+.plpe-story__speaker--bocian {
+  right: 3%;
+}
+
+.plpe-story__speaker--bear {
+  right: 3%;
+}
+
+/* =========================================================
+   STORY DIALOGUE
+========================================================= */
+
+.plpe-story__dialogue-box {
+  position: absolute;
+
+  z-index: 10;
+
+  width: min(560px, 42vw);
+  padding: 20px 24px;
+
+  color: #ffffff;
+  background: rgba(5, 13, 21, 0.92);
+
+  border: 1px solid rgba(69, 212, 131, 0.45);
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+
+  backdrop-filter: blur(10px);
+}
+
+.plpe-story__dialogue-box strong {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #45d483;
+
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.plpe-story__typed-text {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(18px, 1.35vw, 23px);
+  font-weight: 500;
+
+  line-height: 1.55;
+}
+
+.plpe-story__dialogue-box--pepe {
+  left: 29%;
+  bottom: 15%;
+}
+
+.plpe-story__dialogue-box--bocian {
+  right: 29%;
+  bottom: 15%;
+}
+
+.plpe-story__dialogue-box--bear {
+  right: 23%;
+  bottom: 15%;
+}
+
+/* =========================================================
+   PROLOGUE / NARRATOR
+========================================================= */
+
+.plpe-story__dialogue-box--narrator {
+  top: 50%;
+  left: 50%;
+
+  width: min(1000px, 84vw);
+  padding: 36px 44px;
+
+  transform: translate(-50%, -50%);
+
+  text-align: center;
+
+  background: rgba(3, 7, 12, 0.84);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.plpe-story__dialogue-box--narrator .plpe-story__typed-text {
+  font-size: clamp(28px, 2.4vw, 42px);
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+/* =========================================================
+   CURSOR
+========================================================= */
+
+.plpe-story__cursor {
+  display: inline-block;
+
+  margin-left: 3px;
+
+  color: #45d483;
+
+  animation: plpeCursor 0.7s steps(1) infinite;
+}
+
+@keyframes plpeCursor {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   STORY ACTION
+========================================================= */
+
+.plpe-story__action {
+  position: absolute;
+
+  left: 50%;
+  bottom: 6%;
+
+  z-index: 20;
+
+  min-width: 300px;
+  padding: 17px 34px;
+
+  transform: translateX(-50%);
+
+  color: #031309;
+
+  background: linear-gradient(
+    180deg,
+    #39e987 0%,
+    #159c54 100%
+  );
+
+  border: 1px solid #76ffb4;
+  border-radius: 12px;
+
+  box-shadow: 0 0 35px rgba(69, 212, 131, 0.45);
+
+  font-size: 17px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.plpe-story__action--battle {
+  color: #ffffff;
+
+  background: linear-gradient(
+    180deg,
+    #ff6554 0%,
+    #bf2925 100%
+  );
+
+  border-color: #ff9d91;
+
+  box-shadow: 0 0 35px rgba(255, 70, 60, 0.45);
+}
+
+/* =========================================================
+   BATTLE — FULL SCREEN
+========================================================= */
+
+.plpe-game--battle {
+  position: fixed;
+  inset: 0;
+
+  z-index: 99999;
+
+  width: 100vw;
+  height: 100vh;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
+}
+
+.plpe-game--battle::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    180deg,
+    rgba(2, 6, 10, 0.04) 0%,
+    rgba(2, 6, 10, 0.08) 55%,
+    rgba(2, 6, 10, 0.58) 100%
+  );
+}
+
+.plpe-game--battle .plpe-game__battle {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+}
+
+/* =========================================================
+   BATTLE TITLE
+========================================================= */
+
+.plpe-game--battle .plpe-game__battle-title {
+  position: absolute;
+
+  top: 18px;
+  left: 50%;
+
+  z-index: 10;
+
+  transform: translateX(-50%);
+
+  margin: 0;
+  padding: 10px 18px;
+
+  text-align: center;
+
+  background: rgba(5, 11, 18, 0.75);
+
+  border: 1px solid rgba(69, 212, 131, 0.3);
+  border-radius: 12px;
+}
+
+/* =========================================================
+   BATTLE CHARACTERS
+========================================================= */
+
+.plpe-game--battle .plpe-game__battle-field {
+  position: absolute;
+  inset: 0;
+
+  display: block;
+
+  z-index: 3;
+}
+
+.plpe-game--battle .plpe-game__fighter {
+  position: absolute;
+
+  bottom: 155px;
+
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+}
+
+.plpe-game--battle .plpe-game__fighter:first-child {
+  left: 4%;
+}
+
+.plpe-game--battle .plpe-game__fighter:last-child {
+  right: 4%;
+}
+
+.plpe-game--battle .plpe-game__fighter img {
+  display: block;
+
+  width: auto;
+  height: auto;
+
+  max-width: none;
+  max-height: 65vh;
+
+  object-fit: contain;
+
+  background: transparent;
+
+  border: 0;
+
+  filter: drop-shadow(
+    0 22px 40px rgba(0, 0, 0, 0.75)
+  );
+}
+
+.plpe-game--battle .plpe-game__battle-support {
+  position: absolute;
+
+  left: 27%;
+  bottom: 155px;
+
+  z-index: 4;
+}
+
+.plpe-game--battle .plpe-game__battle-support img {
+  display: block;
+
+  width: auto;
+  height: auto;
+
+  max-height: 49vh;
+
+  object-fit: contain;
+
+  background: transparent;
+
+  filter: drop-shadow(
+    0 20px 38px rgba(0, 0, 0, 0.7)
+  );
+}
+
+/* =========================================================
+   BATTLE HUD
+========================================================= */
+
+.plpe-game--battle .plpe-game__battle-cards {
+  position: absolute;
+
+  left: 50%;
+  bottom: 16px;
+
+  z-index: 20;
+
+  width: min(1500px, calc(100vw - 40px));
+
+  transform: translateX(-50%);
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(250px, 1fr)
+    minmax(400px, 1.35fr)
+    minmax(250px, 1fr);
+
+  gap: 14px;
+
+  margin: 0;
+}
+
+.plpe-game--battle .plpe-game__combat-card {
+  min-height: 130px;
+  padding: 15px 18px;
+
+  color: #ffffff;
+
+  background: rgba(5, 13, 22, 0.92);
+
+  border: 1px solid rgba(80, 104, 145, 0.65);
+  border-radius: 14px;
+
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.42);
+
+  backdrop-filter: blur(8px);
+}
+
+.plpe-game--battle .plpe-game__combat-card h3 {
+  margin: 0 0 8px;
+}
+
+.plpe-game--battle .plpe-game__combat-card p {
+  display: inline-block;
+
+  margin: 4px 16px 4px 0;
+}
+
+.plpe-game--battle .plpe-game__combat-card hr {
+  margin: 10px 0;
+
+  border: 0;
+  border-top: 1px solid #34425f;
+}
+
+.plpe-game--battle .plpe-game__combat-card strong {
+  color: #45d483;
+}
+
+.plpe-game--battle .plpe-game__combat-card small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #9ca7b8;
+}
+
+/* =========================================================
+   BATTLE BUTTONS
+========================================================= */
+
+.plpe-game--battle .plpe-game__battle-actions {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 10px;
+}
+
+.plpe-game--battle .plpe-game__battle-actions button {
+  padding: 16px 12px;
+
+  color: #ffffff;
+
+  background: rgba(17, 29, 47, 0.96);
+
+  border: 1px solid #40506c;
+  border-radius: 12px;
+
+  font-size: 15px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.plpe-game--battle .plpe-game__battle-actions button:hover {
+  transform: translateY(-2px);
+
+  border-color: #45d483;
+}
+
+/* =========================================================
+   BATTLE MESSAGE
+========================================================= */
+
+.plpe-game--battle .plpe-game__battle-message {
+  position: absolute;
+
+  left: 50%;
+  bottom: 175px;
+
+  z-index: 25;
+
+  min-width: 320px;
+
+  transform: translateX(-50%);
+
+  padding: 10px 16px;
+
+  color: #ffffff;
+
+  background: rgba(5, 13, 22, 0.92);
+
+  border: 1px solid rgba(69, 212, 131, 0.3);
+  border-radius: 10px;
+
+  text-align: center;
+}
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.plpe-game--battle .plpe-game__battle-result {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  z-index: 50;
+
+  width: min(450px, calc(100vw - 40px));
+
+  transform: translate(-50%, -50%);
+
+  padding: 28px;
+
+  text-align: center;
+
+  color: #ffffff;
+
+  background: rgba(5, 13, 20, 0.97);
+
+  border: 1px solid rgba(69, 212, 131, 0.55);
+  border-radius: 18px;
+
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+}
+
+.plpe-game--battle .plpe-game__battle-result h2 {
+  color: #45d483;
+}
+
+.plpe-game--battle .plpe-game__battle-result button {
+  padding: 12px 20px;
+
+  color: #07110c;
+  background: #45d483;
+
+  border: 0;
+  border-radius: 10px;
+
+  font-weight: 900;
+  cursor: pointer;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+  .plpe-game__header {
+    flex-direction: column;
+  }
+
+  .plpe-game__hero {
+    grid-template-columns: 1fr;
+  }
+
+  .plpe-game__buildings {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .plpe-game--battle .plpe-game__battle-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .plpe-game--battle .plpe-game__combat-card {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .plpe-story__speaker img {
+    max-height: 63vh;
+  }
+
+  .plpe-story__speaker--pepe {
+    left: -7%;
+  }
+
+  .plpe-story__speaker--bocian {
+    right: -7%;
+  }
+
+  .plpe-story__dialogue-box,
+  .plpe-story__dialogue-box--pepe,
+  .plpe-story__dialogue-box--bocian,
+  .plpe-story__dialogue-box--bear {
+    left: 5%;
+    right: 5%;
+    bottom: 14%;
+
+    width: auto;
+  }
+
+  .plpe-story__dialogue-box--narrator {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+
+    width: 88vw;
+
+    transform: translate(-50%, -50%);
+  }
+
+  .plpe-game--battle .plpe-game__fighter img {
+    max-height: 52vh;
+  }
+
+  .plpe-game--battle .plpe-game__battle-support {
+    left: 22%;
+  }
+
+  .plpe-game--battle .plpe-game__battle-support img {
+    max-height: 38vh;
+  }
+}
+
+@media (max-width: 700px) {
+  .plpe-game {
+    padding: 14px;
+  }
+
+  .plpe-game__buildings {
+    grid-template-columns: 1fr;
+  }
+
+  .plpe-game__chapter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .plpe-game__chapter button {
+    width: 100%;
+  }
+
+  .plpe-welcome__content {
+    padding: 28px 22px;
+  }
+
+  .plpe-game--battle .plpe-game__battle-actions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .plpe-game--battle .plpe-game__battle-actions button {
+    padding: 12px 6px;
+
+    font-size: 12px;
+  }
+}
+/* =========================================================
+   FINAL CHARACTER VISIBILITY FIX
+========================================================= */
+
+/* STORY — wszystkie postacie cały czas widoczne */
+
+.plpe-story__speaker,
+.plpe-story__speaker--pepe,
+.plpe-story__speaker--bocian,
+.plpe-story__speaker--bear {
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  filter: none !important;
+
+  transition:
+    filter 0.25s ease,
+    transform 0.25s ease !important;
+}
+
+.plpe-story__speaker img {
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  background: transparent !important;
+}
+
+/* aktywnie mówiąca postać — tylko poświata */
+
+.plpe-story__speaker--active img {
+  filter:
+    drop-shadow(0 0 12px rgba(69, 212, 131, 0.95))
+    drop-shadow(0 0 30px rgba(69, 212, 131, 0.55))
+    drop-shadow(0 20px 40px rgba(0, 0, 0, 0.75)) !important;
+
+  transform: scale(1.015);
+}
+
+
+/* =========================================================
+   BATTLE — CHARACTERS ALWAYS VISIBLE
+========================================================= */
+
+.plpe-game--battle .plpe-game__battle-character {
+  position: absolute !important;
+
+  bottom: 150px !important;
+
+  display: block !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  z-index: 8 !important;
+}
+
+.plpe-game--battle .plpe-game__battle-character > img {
+  display: block !important;
+
+  width: auto !important;
+  height: auto !important;
+
+  max-height: 62vh !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  object-fit: contain !important;
+
+  background: transparent !important;
+
+  filter:
+    drop-shadow(0 20px 38px rgba(0, 0, 0, 0.75));
+}
+
+.plpe-game--battle .plpe-game__battle-character--pepe {
+  left: 4% !important;
+}
+
+.plpe-game--battle .plpe-game__battle-character--enemy {
+  right: 4% !important;
+}
+
+
+/* =========================================================
+   BOCIAN — SUPPORT ALWAYS VISIBLE IN BATTLE
+========================================================= */
+
+.plpe-game--battle .plpe-game__battle-support {
+  position: absolute !important;
+
+  left: 24% !important;
+  bottom: 150px !important;
+
+  display: block !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  z-index: 6 !important;
+}
+
+.plpe-game--battle .plpe-game__battle-support img {
+  display: block !important;
+
+  width: auto !important;
+  height: auto !important;
+
+  max-height: 43vh !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  object-fit: contain !important;
+
+  background: transparent !important;
+
+  filter:
+    drop-shadow(0 18px 35px rgba(0, 0, 0, 0.75)) !important;
+}
+
+
+/* =========================================================
+   FLOATING HP — ALWAYS VISIBLE
+========================================================= */
+
+.plpe-game--battle .plpe-game__floating-hp {
+  position: absolute !important;
+
+  top: -72px !important;
+  left: 50% !important;
+
+  z-index: 50 !important;
+
+  display: block !important;
+
+  width: 250px !important;
+
+  transform: translateX(-50%) !important;
+
+  padding: 9px 11px !important;
+
+  background: rgba(3, 9, 16, 0.94) !important;
+
+  border:
+    1px solid rgba(69, 212, 131, 0.55) !important;
+
+  border-radius: 10px !important;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.55) !important;
+}
+
+.plpe-game--battle .plpe-game__floating-hp--enemy {
+  border-color:
+    rgba(239, 83, 80, 0.65) !important;
+}
+
+.plpe-game--battle .plpe-game__floating-hp span {
+  display: block !important;
+
+  margin-bottom: 6px;
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.plpe-game--battle .plpe-game__floating-hp strong {
+  display: block !important;
+
+  margin-top: 5px;
+
+  color: #ffffff;
+
+  font-size: 12px;
+}
+
+.plpe-game--battle .plpe-game__health-bar {
+  display: block !important;
+
+  width: 100% !important;
+  height: 11px !important;
+
+  overflow: hidden !important;
+
+  background: rgba(0, 0, 0, 0.72) !important;
+
+  border-radius: 999px !important;
+}
+
+.plpe-game--battle .plpe-game__health-fill {
+  display: block !important;
+
+  height: 100% !important;
+
+  background: #45d483 !important;
+
+  transition: width 0.35s ease !important;
+}
+
+.plpe-game--battle .plpe-game__health-fill--enemy {
+  background: #ef5350 !important;
+}
+
+
+/* =========================================================
+   ATTACK GLOW
+========================================================= */
+
+.plpe-game__battle-character--player-attack > img {
+  filter:
+    drop-shadow(0 0 18px rgba(69, 212, 131, 0.95))
+    drop-shadow(0 0 40px rgba(69, 212, 131, 0.6))
+    drop-shadow(0 20px 38px rgba(0, 0, 0, 0.75)) !important;
+}
+
+.plpe-game__battle-character--enemy-attack > img {
+  filter:
+    drop-shadow(0 0 18px rgba(255, 75, 70, 0.95))
+    drop-shadow(0 0 40px rgba(255, 75, 70, 0.6))
+    drop-shadow(0 20px 38px rgba(0, 0, 0, 0.75)) !important;
+}
+
+
+/* =========================================================
+   HIT FLASH
+========================================================= */
+
+.plpe-game__battle-character--hit > img {
+  animation: plpeFinalHit 0.42s ease !important;
+}
+
+@keyframes plpeFinalHit {
+  0% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-12px);
+
+    filter:
+      brightness(2.3)
+      drop-shadow(0 0 35px rgba(255, 255, 255, 0.95));
+  }
+
+  40% {
+    transform: translateX(12px);
+  }
+
+  60% {
+    transform: translateX(-8px);
+  }
+
+  80% {
+    transform: translateX(5px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
+/* =========================================================
+   DAMAGE NUMBER
+========================================================= */
+
+.plpe-game__damage-popup {
+  position: absolute !important;
+
+  top: 20% !important;
+  left: 50% !important;
+
+  z-index: 100 !important;
+
+  color: #ff5454 !important;
+
+  font-size: 48px !important;
+  font-weight: 1000 !important;
+
+  text-shadow:
+    0 0 12px rgba(255, 30, 30, 0.85),
+    0 4px 15px rgba(0, 0, 0, 0.95) !important;
+
+  pointer-events: none;
+
+  animation:
+    plpeFinalDamage 0.9s ease forwards !important;
+}
+
+.plpe-game__damage-popup--ability {
+  color: #48f59a !important;
+
+  text-shadow:
+    0 0 15px rgba(72, 245, 154, 1),
+    0 0 35px rgba(72, 245, 154, 0.65) !important;
+}
+
+@keyframes plpeFinalDamage {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, 20px)
+      scale(0.7);
+  }
+
+  25% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, 0)
+      scale(1.25);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -70px)
+      scale(1);
+  }
+}

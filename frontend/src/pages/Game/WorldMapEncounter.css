@@ -1,0 +1,781 @@
+.world-encounter {
+  position: absolute;
+  inset: 0;
+
+  z-index: 500;
+
+  display: grid;
+  place-items: center;
+
+  padding: 25px;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(
+      2,
+      5,
+      8,
+      0.76
+    );
+
+  backdrop-filter:
+    blur(8px);
+}
+
+.world-encounter__window {
+  width:
+    min(
+      900px,
+      calc(
+        100vw -
+        40px
+      )
+    );
+
+  max-height:
+    calc(
+      100vh -
+      50px
+    );
+
+  overflow-y: auto;
+
+  padding: 22px;
+
+  box-sizing: border-box;
+
+  border-radius: 15px;
+
+  border:
+    1px solid
+    rgba(
+      222,
+      176,
+      87,
+      0.50
+    );
+
+  background:
+    rgba(
+      5,
+      9,
+      14,
+      0.98
+    );
+
+  box-shadow:
+    0 30px 100px
+    rgba(
+      0,
+      0,
+      0,
+      0.72
+    );
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.world-encounter__header {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-start;
+
+  gap: 20px;
+
+  padding-bottom: 12px;
+
+  border-bottom:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+}
+
+.world-encounter__header span {
+  color:
+    #e0b66b;
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.world-encounter__header h2 {
+  margin:
+    4px 0 0;
+
+  font-size: 26px;
+}
+
+.world-encounter__header button {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  border-radius: 7px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.04
+    );
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.world-encounter__description {
+  margin:
+    14px 0 0;
+
+  color:
+    #9cabb8;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+/* =========================================================
+   BATTLE
+========================================================= */
+
+.world-encounter__battle {
+  margin-top: 15px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    80px
+    1fr;
+
+  align-items: end;
+
+  gap: 15px;
+}
+
+.world-encounter__fighter {
+  position: relative;
+
+  min-height: 330px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+
+  border:
+    1px solid
+    rgba(
+      70,
+      224,
+      151,
+      0.12
+    );
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        53,
+        193,
+        126,
+        0.04
+      ),
+      rgba(
+        53,
+        193,
+        126,
+        0.10
+      )
+    );
+}
+
+.world-encounter__fighter--enemy {
+  border-color:
+    rgba(
+      210,
+      70,
+      57,
+      0.12
+    );
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        210,
+        70,
+        57,
+        0.04
+      ),
+      rgba(
+        210,
+        70,
+        57,
+        0.10
+      )
+    );
+}
+
+.world-encounter__fighter img {
+  max-height: 280px;
+  max-width: 90%;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 12px 15px
+      rgba(
+        0,
+        0,
+        0,
+        0.55
+      )
+    );
+}
+
+/* =========================================================
+   HP
+========================================================= */
+
+.world-encounter__hp {
+  position: absolute;
+
+  top: 10px;
+  left: 10px;
+  right: 10px;
+
+  z-index: 5;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.world-encounter__hp span {
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.world-encounter__hp > div {
+  height: 7px;
+
+  margin-top: 4px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+}
+
+.world-encounter__hp i {
+  display: block;
+
+  height: 100%;
+
+  background:
+    #4de39d;
+
+  transition:
+    width
+    250ms
+    ease;
+}
+
+.world-encounter__fighter--enemy
+.world-encounter__hp i {
+  background:
+    #dc6558;
+}
+
+.world-encounter__hp b {
+  margin-top: 4px;
+
+  color:
+    #9eacb8;
+
+  font-size: 9px;
+}
+
+.world-encounter__vs {
+  align-self: center;
+
+  text-align: center;
+
+  color:
+    #d8ae65;
+
+  font-size: 23px;
+  font-weight: 900;
+}
+
+/* =========================================================
+   BATTLE ACTIONS
+========================================================= */
+
+.world-encounter__actions {
+  margin-top: 12px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap: 8px;
+}
+
+.world-encounter__actions button,
+.world-encounter__search button,
+.world-encounter__choice button {
+  min-height: 43px;
+
+  border-radius: 8px;
+
+  border:
+    1px solid
+    rgba(
+      220,
+      175,
+      88,
+      0.34
+    );
+
+  background:
+    rgba(
+      126,
+      82,
+      29,
+      0.25
+    );
+
+  color:
+    #f0ca7e;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition:
+    filter
+    150ms
+    ease,
+    transform
+    150ms
+    ease;
+}
+
+.world-encounter__actions button:hover:not(:disabled),
+.world-encounter__search button:hover:not(:disabled),
+.world-encounter__choice button:hover:not(:disabled) {
+  filter:
+    brightness(1.15);
+
+  transform:
+    translateY(-1px);
+}
+
+.world-encounter__actions button:disabled,
+.world-encounter__search button:disabled,
+.world-encounter__choice button:disabled {
+  opacity: 0.38;
+
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   PUZZLE
+========================================================= */
+
+.world-encounter__puzzle {
+  margin-top: 16px;
+
+  padding: 17px;
+
+  border-radius: 10px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.06
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.025
+    );
+}
+
+.world-encounter__puzzle h3 {
+  margin:
+    0 0 14px;
+
+  font-size: 16px;
+
+  text-align: center;
+}
+
+.world-encounter__answers {
+  display: grid;
+
+  gap: 7px;
+}
+
+.world-encounter__answers button {
+  min-height: 45px;
+
+  padding:
+    8px 12px;
+
+  border-radius: 8px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.10
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.035
+    );
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.world-encounter__answers button:hover:not(:disabled) {
+  border-color:
+    rgba(
+      224,
+      182,
+      107,
+      0.45
+    );
+
+  background:
+    rgba(
+      224,
+      182,
+      107,
+      0.07
+    );
+}
+
+.world-encounter__puzzle small {
+  display: block;
+
+  margin-top: 10px;
+
+  text-align: center;
+
+  color:
+    #d96d5f;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.world-encounter__search {
+  margin-top: 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+
+.world-encounter__search-progress {
+  display: flex;
+
+  gap: 20px;
+
+  margin-bottom: 20px;
+}
+
+.world-encounter__search-progress span {
+  width: 45px;
+  height: 45px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+
+  color:
+    #778590;
+
+  font-weight: 900;
+
+  transition:
+    all
+    180ms
+    ease;
+}
+
+.world-encounter__search-progress span.active {
+  border-color:
+    #52dfa0;
+
+  color:
+    #65e4aa;
+
+  background:
+    rgba(
+      61,
+      220,
+      146,
+      0.08
+    );
+
+  box-shadow:
+    0 0 12px
+    rgba(
+      61,
+      220,
+      146,
+      0.18
+    );
+}
+
+.world-encounter__search button {
+  width: 320px;
+}
+
+/* =========================================================
+   CHOICE
+========================================================= */
+
+.world-encounter__choice {
+  margin-top: 20px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap: 10px;
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.world-encounter__message {
+  margin-top: 15px;
+
+  padding: 12px;
+
+  text-align: center;
+
+  border-radius: 8px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.06
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.035
+    );
+
+  color:
+    #c0cad2;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   COMPLETE / RETRY
+========================================================= */
+
+.world-encounter__complete,
+.world-encounter__retry {
+  width: 100%;
+
+  min-height: 44px;
+
+  margin-top: 15px;
+
+  border-radius: 8px;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.world-encounter__complete {
+  border:
+    1px solid
+    rgba(
+      61,
+      224,
+      148,
+      0.40
+    );
+
+  background:
+    rgba(
+      31,
+      126,
+      80,
+      0.58
+    );
+
+  color:
+    #d9ffee;
+}
+
+.world-encounter__complete:hover {
+  filter:
+    brightness(1.16);
+}
+
+.world-encounter__retry {
+  border:
+    1px solid
+    rgba(
+      215,
+      90,
+      72,
+      0.40
+    );
+
+  background:
+    rgba(
+      130,
+      46,
+      37,
+      0.40
+    );
+
+  color:
+    #ffc5bc;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 750px
+) {
+  .world-encounter {
+    padding: 10px;
+  }
+
+  .world-encounter__window {
+    width: 100%;
+
+    padding: 15px;
+  }
+
+  .world-encounter__header h2 {
+    font-size: 20px;
+  }
+
+  .world-encounter__battle {
+    grid-template-columns:
+      1fr
+      35px
+      1fr;
+
+    gap: 6px;
+  }
+
+  .world-encounter__fighter {
+    min-height: 230px;
+  }
+
+  .world-encounter__fighter img {
+    max-height: 190px;
+  }
+
+  .world-encounter__actions {
+    grid-template-columns:
+      1fr;
+  }
+
+  .world-encounter__choice {
+    grid-template-columns:
+      1fr;
+  }
+
+  .world-encounter__search button {
+    width: 100%;
+  }
+}

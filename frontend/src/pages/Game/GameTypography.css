@@ -1,0 +1,417 @@
+/* =========================================================
+   PLPE ARENA — GLOBAL TYPOGRAPHY STANDARD
+   Jeden standard dla całej gry
+========================================================= */
+
+/* =========================================================
+   MAIN HUB
+========================================================= */
+
+.plpe-hub {
+  font-size: 12px;
+}
+
+.plpe-hub__hero strong {
+  font-size: 18px !important;
+}
+
+.plpe-hub__hero span {
+  font-size: 13px !important;
+}
+
+.plpe-hub__hero small {
+  font-size: 11px !important;
+}
+
+.plpe-hub__resource small {
+  font-size: 10px !important;
+}
+
+.plpe-hub__resource strong {
+  font-size: 16px !important;
+}
+
+.plpe-hub__chapter small {
+  font-size: 11px !important;
+}
+
+.plpe-hub__chapter strong {
+  font-size: 15px !important;
+}
+
+.plpe-hub__exit-label {
+  font-size: 12px !important;
+}
+
+.plpe-hub__status,
+.plpe-hub__hint {
+  font-size: 12px !important;
+}
+
+.plpe-hub__story-button {
+  font-size: 14px !important;
+}
+
+/* =========================================================
+   MONASTERY
+========================================================= */
+
+.monastery-world {
+  font-size: 12px;
+}
+
+.monastery-world__identity span {
+  font-size: 10px !important;
+}
+
+.monastery-world__identity strong {
+  font-size: 16px !important;
+}
+
+.monastery-world__resources {
+  font-size: 12px !important;
+}
+
+.monastery-world__back {
+  font-size: 11px !important;
+}
+
+.monastery-world__location span {
+  font-size: 10px !important;
+}
+
+.monastery-world__location strong {
+  font-size: 14px !important;
+}
+
+.monastery-world__hint {
+  font-size: 11px !important;
+}
+
+.monastery-world__window-header span {
+  font-size: 10px !important;
+}
+
+.monastery-world__window-header h2 {
+  font-size: 24px !important;
+}
+
+.monastery-world__window-section h3,
+.monastery-world__upgrade-columns h3 {
+  font-size: 13px !important;
+}
+
+.monastery-world__window-section p {
+  font-size: 11px !important;
+}
+
+.monastery-world__window-section li {
+  font-size: 11px !important;
+}
+
+.monastery-world__mentor-rank span {
+  font-size: 10px !important;
+}
+
+.monastery-world__mentor-info span {
+  font-size: 10px !important;
+}
+
+.monastery-world__mentor-info small {
+  font-size: 10px !important;
+}
+
+.monastery-world__support-level span {
+  font-size: 11px !important;
+}
+
+.monastery-world__notice {
+  font-size: 11px !important;
+}
+
+.monastery-world__chapter-title span {
+  font-size: 10px !important;
+}
+
+.monastery-world__chapter-title strong {
+  font-size: 17px !important;
+}
+
+.monastery-world__section-heading span {
+  font-size: 10px !important;
+}
+
+.monastery-world__objectives strong {
+  font-size: 12px !important;
+}
+
+.monastery-world__objectives small {
+  font-size: 10px !important;
+}
+
+.monastery-world__reward-grid span {
+  font-size: 10px !important;
+}
+
+.monastery-world__reward-grid strong {
+  font-size: 15px !important;
+}
+
+.monastery-world__completed-banner {
+  font-size: 11px !important;
+}
+
+.monastery-world__building-list strong {
+  font-size: 12px !important;
+}
+
+.monastery-world__building-list small {
+  font-size: 10px !important;
+}
+
+.monastery-world__building-list b {
+  font-size: 11px !important;
+}
+
+.monastery-world__regions span {
+  font-size: 10px !important;
+}
+
+.monastery-world__current-bonus span {
+  font-size: 10px !important;
+}
+
+.monastery-world__upgrade-title span {
+  font-size: 10px !important;
+}
+
+.monastery-world__upgrade-title strong {
+  font-size: 17px !important;
+}
+
+.monastery-world__requirement {
+  font-size: 11px !important;
+}
+
+.monastery-world__level-complete > span {
+  font-size: 10px !important;
+}
+
+.monastery-world__level-complete p {
+  font-size: 11px !important;
+}
+
+.monastery-world__action {
+  font-size: 12px !important;
+}
+
+/* =========================================================
+   COMIC ARCHIVE
+========================================================= */
+
+.comic-archive {
+  font-size: 12px;
+}
+
+.comic-archive__title strong {
+  font-size: 17px !important;
+}
+
+.comic-archive__title small {
+  font-size: 10px !important;
+}
+
+.comic-archive__resources strong {
+  font-size: 14px !important;
+}
+
+.comic-archive__resources small {
+  font-size: 9px !important;
+}
+
+.comic-archive__back {
+  font-size: 11px !important;
+}
+
+.comic-archive__nav button {
+  font-size: 12px !important;
+}
+
+.comic-archive__chapter-number {
+  font-size: 10px !important;
+}
+
+.comic-archive__chapter-card > strong {
+  font-size: 17px !important;
+}
+
+.comic-archive__chapter-card p {
+  font-size: 11px !important;
+}
+
+.comic-archive__chapter-progress b {
+  font-size: 11px !important;
+}
+
+.comic-archive__locked {
+  font-size: 10px !important;
+}
+
+.comic-archive__eyebrow {
+  font-size: 10px !important;
+}
+
+.comic-archive__details h2 {
+  font-size: 25px !important;
+}
+
+.comic-archive__details > p {
+  font-size: 11px !important;
+}
+
+.comic-archive__section-heading strong,
+.comic-archive__detail-section > strong {
+  font-size: 10px !important;
+}
+
+.comic-archive__section-heading span {
+  font-size: 11px !important;
+}
+
+.comic-archive__event strong {
+  font-size: 11px !important;
+}
+
+.comic-archive__event small {
+  font-size: 10px !important;
+}
+
+.comic-archive__rewards span {
+  font-size: 10px !important;
+}
+
+.comic-archive__rewards b {
+  font-size: 15px !important;
+}
+
+.comic-archive__chapter-status {
+  font-size: 10px !important;
+}
+
+.comic-archive__collection-header h2 {
+  font-size: 23px !important;
+}
+
+.comic-archive__collection-header p {
+  font-size: 11px !important;
+}
+
+.comic-archive__entries strong {
+  font-size: 12px !important;
+}
+
+.comic-archive__entries p {
+  font-size: 10px !important;
+}
+
+.comic-archive__character-grid strong {
+  font-size: 13px !important;
+}
+
+.comic-archive__character-grid small {
+  font-size: 10px !important;
+}
+
+.comic-archive__secret-summary span {
+  font-size: 10px !important;
+}
+
+/* =========================================================
+   STORY
+========================================================= */
+
+.plpe-story__dialogue-box strong {
+  font-size: 16px !important;
+}
+
+.plpe-story__typed-text {
+  font-size: 18px !important;
+  line-height: 1.55 !important;
+}
+
+.plpe-story__action {
+  font-size: 14px !important;
+}
+
+/* =========================================================
+   BATTLE
+========================================================= */
+
+.plpe-game__battle-title h2 {
+  font-size: 27px !important;
+}
+
+.plpe-game__battle-title span {
+  font-size: 11px !important;
+}
+
+.plpe-game__floating-hp span {
+  font-size: 12px !important;
+}
+
+.plpe-game__floating-hp strong {
+  font-size: 11px !important;
+}
+
+.plpe-game__combat-card h3 {
+  font-size: 16px !important;
+}
+
+.plpe-game__combat-card p {
+  font-size: 12px !important;
+}
+
+.plpe-game__combat-card strong {
+  font-size: 12px !important;
+}
+
+.plpe-game__combat-card small {
+  font-size: 10px !important;
+}
+
+.plpe-game__battle-actions button {
+  font-size: 13px !important;
+}
+
+.plpe-game__battle-message {
+  font-size: 13px !important;
+}
+
+.plpe-game__battle-result h2 {
+  font-size: 28px !important;
+}
+
+.plpe-game__battle-result p {
+  font-size: 13px !important;
+}
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.plpe-welcome__eyebrow {
+  font-size: 11px !important;
+}
+
+.plpe-welcome__content h1 {
+  font-size: 42px !important;
+}
+
+.plpe-welcome__content p {
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+}
+
+.plpe-welcome__content button {
+  font-size: 15px !important;
+}
