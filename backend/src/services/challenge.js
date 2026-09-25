@@ -1,4 +1,4 @@
-const axios = require("axios");
+﻿const axios = require("axios");
 require("dotenv").config();
 
 const {
@@ -6,6 +6,8 @@ const {
   getLedgerHashes,
   insertLedgerTrades,
 } = require("./challengeLedger");
+
+const { getActiveRegistrations } = require("./challengeRegistration");
 
 /*
 =========================================================
@@ -88,12 +90,19 @@ const PHASE_02 = {
     "2026-09-26T00:00:00Z",
 
   displayEnd:
-    "2026-09-26T00:00:00Z",
+    "2026-09-25T23:59:59Z",
 };
 
-const PHASES = [
-  PHASE_02,
-];
+const PHASE_03 = {
+  id: "03",
+  name: "MONTHLY CHALLENGE",
+  status: "ACTIVE",
+  start: "2026-09-26T00:00:00Z",
+  end: "2026-10-26T00:00:00Z", // exclusive boundary
+  displayEnd: "2026-10-25T23:59:59Z",
+};
+
+const PHASES = [PHASE_02, PHASE_03];
 
 /*
 =========================================================
@@ -101,9 +110,14 @@ RULES
 =========================================================
 */
 
-const MINIMUM_BUY_FOR_ENTRY = 2;
-const MAXIMUM_ENTRIES = 6;
-const MINIMUM_VOLUME = 2;
+const PHASE_RULES = {
+  "02": { minimumBuyForEntry: 2, maximumEntries: 6, minimumVolume: 2, ranking: "TOTAL_VOLUME", registrationRequired: false },
+  "03": { minimumBuyForEntry: 5, maximumEntries: 8, minimumVolume: 5, ranking: "NET_BUY", registrationRequired: true, holderMinimumEntries: 4 },
+};
+
+function rulesForPhase(phase) {
+  return PHASE_RULES[String(phase?.id)] || PHASE_RULES["03"];
+}
 
 /*
 =========================================================
@@ -289,6 +303,8 @@ function getPhaseById(id) {
 }
 
 function getActivePhase() {
+  const now = Date.now();
+  if (now >= new Date(PHASE_03.start).getTime()) return PHASE_03;
   return PHASE_02;
 }
 
@@ -487,7 +503,7 @@ async function getPLPETransfers() {
           last.timeStamp
         ) >=
           phaseEndTimestamp(
-            PHASE_02
+            getActivePhase()
           )
       ) {
         break;
@@ -1224,7 +1240,7 @@ async function getGeckoTrades() {
 
   const phaseStart =
     phaseStartTimestamp(
-      PHASE_02
+      getActivePhase()
     );
 
   let pagesLoaded = 0;
@@ -2325,6 +2341,9 @@ function ledgerRowToTrade(row) {
     plpeDirection:
       row.trade_type,
 
+    plpeAmount:
+      Number(row.plpe_amount || 0),
+
     volumeUsd:
       Number(
         row.volume_usd
@@ -2339,8 +2358,13 @@ function ledgerRowToTrade(row) {
 }
 
 function buildLeaderboard(
-  trades
+  trades,
+  phase
 ) {
+  const phaseRules = rulesForPhase(phase);
+  const MINIMUM_BUY_FOR_ENTRY = phaseRules.minimumBuyForEntry;
+  const MAXIMUM_ENTRIES = phaseRules.maximumEntries;
+  const MINIMUM_VOLUME = phaseRules.minimumVolume;
   const wallets =
     new Map();
 
@@ -2383,6 +2407,10 @@ function buildLeaderboard(
           buyVolume: 0,
 
           sellVolume: 0,
+
+          buyPlpe: 0,
+
+          sellPlpe: 0,
 
           trades: 0,
 
@@ -2427,6 +2455,8 @@ function buildLeaderboard(
 
       item.buyVolume +=
         tradeVolume;
+
+      item.buyPlpe += Number(trade.plpeAmount || 0);
 
       if (
         tradeVolume >=
@@ -2484,6 +2514,8 @@ function buildLeaderboard(
 
       item.sellVolume +=
         tradeVolume;
+
+      item.sellPlpe += Number(trade.plpeAmount || 0);
     }
   }
 
@@ -2517,11 +2549,17 @@ function buildLeaderboard(
             ),
 
           sellVolume:
-            Number(
-              item.sellVolume.toFixed(
-                4
-              )
-            ),
+            Number(item.sellVolume.toFixed(4)),
+
+          netBuyVolume:
+            Number((item.buyVolume - item.sellVolume).toFixed(4)),
+
+          buyPlpe: Number(item.buyPlpe.toFixed(6)),
+          sellPlpe: Number(item.sellPlpe.toFixed(6)),
+          retainedChallengePlpe: Number(Math.max(0, item.buyPlpe - item.sellPlpe).toFixed(6)),
+          holdPercent: item.buyPlpe > 0
+            ? Number(Math.max(0, Math.min(100, ((item.buyPlpe - item.sellPlpe) / item.buyPlpe) * 100)).toFixed(2))
+            : 0,
 
           trades:
             item.trades,
@@ -2544,9 +2582,9 @@ function buildLeaderboard(
           entryDetails:
             item.entryDetails,
 
-          qualified:
-            item.volume >=
-            MINIMUM_VOLUME,
+          qualified: phaseRules.registrationRequired
+            ? item.entries >= 1
+            : item.volume >= MINIMUM_VOLUME,
         })
       )
       .filter(
@@ -2575,15 +2613,9 @@ function buildLeaderboard(
             );
           }
 
-          if (
-            b.volume !==
-            a.volume
-          ) {
-            return (
-              b.volume -
-              a.volume
-            );
-          }
+          const secondA = phaseRules.ranking === "NET_BUY" ? a.netBuyVolume : a.volume;
+          const secondB = phaseRules.ranking === "NET_BUY" ? b.netBuyVolume : b.volume;
+          if (secondB !== secondA) return secondB - secondA;
 
           if (
             b.trades !==
@@ -2623,10 +2655,13 @@ MAIN CALCULATION
 */
 
 async function calculateChallenge(
-  phase = PHASE_02
+  phase = getActivePhase()
 ) {
-  phase =
-    PHASE_02;
+  phase = phase || getActivePhase();
+  const phaseRules = rulesForPhase(phase);
+  const MINIMUM_BUY_FOR_ENTRY = phaseRules.minimumBuyForEntry;
+  const MAXIMUM_ENTRIES = phaseRules.maximumEntries;
+  const MINIMUM_VOLUME = phaseRules.minimumVolume;
 
   console.log(
     "========================================"
@@ -2637,7 +2672,7 @@ async function calculateChallenge(
   );
 
   console.log(
-    "PHASE #02"
+    `PHASE #${phase.id}`
   );
 
   console.log(
@@ -2670,7 +2705,7 @@ async function calculateChallenge(
     );
 
   console.log(
-    "[CHALLENGE] PLPE transfers in Phase #02:",
+    `[CHALLENGE] PLPE transfers in Phase #${phase.id}:`,
     phasePLPE.length
   );
 
@@ -2794,9 +2829,10 @@ async function calculateChallenge(
               trade.plpeDirection,
 
             volume_usd:
-              Number(
-                trade.volumeUsd || 0
-              ),
+              Number(trade.volumeUsd || 0),
+
+            plpe_amount:
+              Number(trade.plpeAmount || 0),
 
             entry:
               trade.plpeDirection ===
@@ -2896,6 +2932,18 @@ async function calculateChallenge(
     verifiedTrades.length
   );
 
+  // Phase #03: only registered wallets count, and only trades at/after registration.
+  let eligibleTrades = verifiedTrades;
+  let registrations = [];
+  if (phaseRules.registrationRequired) {
+    registrations = await getActiveRegistrations(phase.id);
+    const registeredAt = new Map(registrations.map((r) => [normalizeAddress(r.wallet), Math.floor(new Date(r.registered_at).getTime() / 1000)]));
+    eligibleTrades = verifiedTrades.filter((trade) => {
+      const start = registeredAt.get(normalizeAddress(trade.participant));
+      return Number.isFinite(start) && Number(trade.timestamp || 0) >= start;
+    });
+  }
+
   /*
    * =======================================================
    * 7. LEADERBOARD
@@ -2904,8 +2952,50 @@ async function calculateChallenge(
 
   const leaderboard =
     buildLeaderboard(
-      verifiedTrades
+      eligibleTrades,
+      phase
     );
+
+  // Holder Bonus: use actual PLPE token-flow balance, not only BUY/SELL volume.
+  // Existing holdings are protected: qualifying retained amount is capped by Challenge buys
+  // and by the wallet's resulting PLPE balance. Transfers out therefore reduce HOLD.
+  if (phaseRules.registrationRequired) {
+    const registrationMap = new Map(registrations.map((r) => [normalizeAddress(r.wallet), Math.floor(new Date(r.registered_at).getTime() / 1000)]));
+    const nowTs = Math.floor(Date.now() / 1000);
+
+    for (const item of leaderboard) {
+      const registeredTs = registrationMap.get(normalizeAddress(item.wallet)) || phaseStartTimestamp(phase);
+      let startingBalance = 0;
+      let endingBalance = 0;
+
+      for (const tx of allPLPE) {
+        const ts = Number(tx.timeStamp || 0);
+        if (!ts || ts > nowTs) continue;
+        const amount = tokenAmount(tx.value, Number(tx.tokenDecimal || 18));
+        if (!Number.isFinite(amount) || amount <= 0) continue;
+        const from = normalizeAddress(tx.from);
+        const to = normalizeAddress(tx.to);
+        const wallet = normalizeAddress(item.wallet);
+
+        if (ts < registeredTs) {
+          if (to === wallet) startingBalance += amount;
+          if (from === wallet) startingBalance -= amount;
+        }
+        if (to === wallet) endingBalance += amount;
+        if (from === wallet) endingBalance -= amount;
+      }
+
+      startingBalance = Math.max(0, startingBalance);
+      endingBalance = Math.max(0, endingBalance);
+      const retained = Math.min(Number(item.buyPlpe || 0), endingBalance);
+      item.startingPlpeBalance = Number(startingBalance.toFixed(6));
+      item.currentPlpeBalance = Number(endingBalance.toFixed(6));
+      item.retainedChallengePlpe = Number(Math.max(0, retained).toFixed(6));
+      item.holdPercent = item.buyPlpe > 0
+        ? Number(Math.max(0, Math.min(100, (retained / item.buyPlpe) * 100)).toFixed(2))
+        : 0;
+    }
+  }
 
   /*
    * =======================================================
@@ -2914,21 +3004,21 @@ async function calculateChallenge(
    */
 
   const verifiedBuys =
-    verifiedTrades.filter(
+    eligibleTrades.filter(
       (trade) =>
         trade.plpeDirection ===
         "BUY"
     ).length;
 
   const verifiedSells =
-    verifiedTrades.filter(
+    eligibleTrades.filter(
       (trade) =>
         trade.plpeDirection ===
         "SELL"
     ).length;
 
   const qualifyingBuys =
-    verifiedTrades.filter(
+    eligibleTrades.filter(
       (trade) =>
         trade.plpeDirection ===
           "BUY" &&
@@ -2937,7 +3027,7 @@ async function calculateChallenge(
     ).length;
 
   const smallBuys =
-    verifiedTrades.filter(
+    eligibleTrades.filter(
       (trade) =>
         trade.plpeDirection ===
           "BUY" &&
@@ -2957,7 +3047,7 @@ async function calculateChallenge(
     );
 
   const totalVolume =
-    verifiedTrades.reduce(
+    eligibleTrades.reduce(
       (
         sum,
         trade
@@ -2969,6 +3059,18 @@ async function calculateChallenge(
         ),
       0
     );
+
+  const holderLeaderboard = phaseRules.registrationRequired
+    ? leaderboard
+        .filter((item) => item.entries >= (phaseRules.holderMinimumEntries || 4) && item.buyPlpe > 0)
+        .sort((a, b) => {
+          if (b.holdPercent !== a.holdPercent) return b.holdPercent - a.holdPercent;
+          if (b.retainedChallengePlpe !== a.retainedChallengePlpe) return b.retainedChallengePlpe - a.retainedChallengePlpe;
+          if (b.netBuyVolume !== a.netBuyVolume) return b.netBuyVolume - a.netBuyVolume;
+          return a.wallet.localeCompare(b.wallet);
+        })
+        .map((item, index) => ({ ...item, holderRank: index + 1 }))
+    : [];
 
   return {
     status:
@@ -3007,11 +3109,11 @@ async function calculateChallenge(
       pair:
         "PLPE/WETH",
 
-      volume:
-        "BUY + SELL",
-
-      entries:
-        "Each individual BUY >= $2 gives exactly 1 ENTRY. BUY < $2 gives 0 ENTRY. SELL gives 0 ENTRY.",
+      volume: phaseRules.ranking === "NET_BUY" ? "NET BUY = BUY - SELL" : "BUY + SELL",
+      ranking: phaseRules.ranking === "NET_BUY" ? "ENTRY > NET BUY > TRADES > WALLET" : "ENTRY > VOLUME > TRADES > WALLET",
+      registrationRequired: phaseRules.registrationRequired,
+      holderMinimumEntries: phaseRules.holderMinimumEntries || null,
+      entries: `Each individual BUY >= $${MINIMUM_BUY_FOR_ENTRY} gives exactly 1 ENTRY. BUY below minimum gives 0 ENTRY. SELL gives 0 ENTRY.`,
     },
 
     entries: {
@@ -3025,7 +3127,7 @@ async function calculateChallenge(
         MAXIMUM_ENTRIES,
 
       rule:
-        "BUY >= $2 = 1 ENTRY",
+        `BUY >= $${MINIMUM_BUY_FOR_ENTRY} = 1 ENTRY`,
 
       sell:
         "SELL = 0 ENTRY",
@@ -3036,7 +3138,7 @@ async function calculateChallenge(
         phasePLPE.length,
 
       verifiedTrades:
-        verifiedTrades.length,
+        eligibleTrades.length,
 
       verifiedBuys,
 
@@ -3061,6 +3163,14 @@ async function calculateChallenge(
     },
 
     leaderboard,
+
+    holderLeaderboard,
+
+    rewardPool: phase.id === "03" ? {
+      total: 200, currency: "USD",
+      main: { total: 150, prizes: [{ place: 1, amount: 75 }, { place: 2, amount: 45 }, { place: 3, amount: 30 }] },
+      holder: { total: 50, prizes: [{ place: 1, amount: 25 }, { place: 2, amount: 15 }, { place: 3, amount: 10 }] },
+    } : { total: 100, currency: "USD" },
   };
 }
 
@@ -3073,19 +3183,8 @@ PUBLIC API
 async function getChallenge(
   phaseId
 ) {
-  const phase =
-    PHASE_02;
-
-  if (
-    phaseId &&
-    String(
-      phaseId
-    ) !== "02"
-  ) {
-    console.warn(
-      `[CHALLENGE] Ignoring requested phase ${phaseId}. Only Phase #02 exists.`
-    );
-  }
+  const phase = phaseId ? getPhaseById(String(phaseId)) : getActivePhase();
+  if (!phase) throw new Error(`Unknown challenge phase: ${phaseId}`);
 
   const key =
     phase.id;
@@ -3191,8 +3290,8 @@ DIAGNOSTICS
 async function getChallengeDiagnostics(
   phaseId
 ) {
-  const phase =
-    PHASE_02;
+  const phase = phaseId ? getPhaseById(String(phaseId)) : getActivePhase();
+  if (!phase) throw new Error(`Unknown challenge phase: ${phaseId}`);
 
   const data =
     await calculateChallenge(
@@ -3222,9 +3321,7 @@ function clearChallengeCache(
   if (
     phaseId
   ) {
-    challengeCache.delete(
-      "02"
-    );
+    challengeCache.delete(String(phaseId));
 
     plpeTransfersCache.data =
       null;
@@ -3247,7 +3344,7 @@ function clearChallengeCache(
       0;
 
     console.log(
-      "[CHALLENGE] Phase #02 cache cleared."
+      `[CHALLENGE] Phase #${phaseId} cache cleared.`
     );
 
     return;
@@ -3287,14 +3384,8 @@ PHASE LIST
 */
 
 function getChallengePhases() {
-  return [
-    {
-      ...PHASE_02,
-
-      active:
-        true,
-    },
-  ];
+  const active = getActivePhase();
+  return PHASES.map((phase) => ({ ...phase, active: phase.id === active.id, rules: rulesForPhase(phase) }));
 }
 
 /*

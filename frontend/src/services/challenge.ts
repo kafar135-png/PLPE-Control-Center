@@ -1,121 +1,28 @@
-const API =
-  import.meta.env.VITE_API_URL ?? "";
+const API = import.meta.env.VITE_API_URL ?? "";
 
 export interface ChallengeParticipant {
-  rank: number;
-  wallet: string;
-
-  volume: number;
-  buyVolume?: number;
-  sellVolume?: number;
-
-  trades: number;
-  buys: number;
-  sells: number;
-
-  qualifyingBuys?: number;
-  entries: number;
-
-  qualified: boolean;
-
-  entryDetails?: {
-    hash: string;
-    type: string;
-    volume: number;
-    source?: string;
-    entry: number;
-    entriesTotal: number;
-  }[];
+  rank: number; holderRank?: number; wallet: string;
+  volume: number; buyVolume?: number; sellVolume?: number; netBuyVolume?: number;
+  trades: number; buys: number; sells: number; qualifyingBuys?: number; entries: number; qualified: boolean;
+  buyPlpe?: number; sellPlpe?: number; retainedChallengePlpe?: number; holdPercent?: number;
+  startingPlpeBalance?: number; currentPlpeBalance?: number;
 }
-
 export interface ChallengeData {
   status: string;
-
-  phase: {
-    id: string;
-    name: string;
-    start: string;
-    end: string;
-  };
-
-  rules?: {
-    minimumVolume: number;
-    minimumBuyForEntry?: number;
-    pair: string;
-    maximumEntries: number;
-    qualification?: string;
-    entries?: string;
-  };
-
-  rewardPool?: {
-    total: number;
-    currency: string;
-    payoutCurrency: string;
-    prizes: {
-      place: number;
-      amount: number;
-    }[];
-  };
-
-  qualification?: {
-    minimumVolume: number;
-    pair: string;
-    currency: string;
-    maximumEntries: number;
-  };
-
-  entries?: {
-    min: number;
-    max: number | null;
-    entries: number;
-  }[];
-
-  stats: {
-    plpeTransfers: number;
-    wethTransfers?: number | string;
-
-    verifiedTrades: number;
-    verifiedBuys?: number;
-    verifiedSells?: number;
-
-    totalEntries?: number;
-    totalVolume?: number;
-
-    qualifiedWallets: number;
-  };
-
+  phase: { id: string; name: string; status?: string; start: string; end: string; displayEnd?: string };
+  rules?: { minimumVolume: number; minimumBuyForEntry?: number; pair: string; maximumEntries: number; ranking?: string; registrationRequired?: boolean; holderMinimumEntries?: number | null };
+  rewardPool?: any;
+  stats: { plpeTransfers: number; verifiedTrades: number; verifiedBuys?: number; verifiedSells?: number; totalEntries?: number; totalVolume?: number; qualifiedWallets: number };
   leaderboard: ChallengeParticipant[];
-
-  cached?: boolean;
-  generatedAt?: number;
+  holderLeaderboard?: ChallengeParticipant[];
 }
-
-export async function getChallengeLeaderboard(): Promise<ChallengeData> {
-  const response =
-    await fetch(
-      `${API}/api/challenge`,
-      {
-        cache: "no-store",
-      }
-    );
-
-  if (!response.ok) {
-    throw new Error(
-      `Challenge API error (${response.status})`
-    );
-  }
-
-  const json =
-    await response.json();
-
-  if (
-    json?.status !== "1"
-  ) {
-    throw new Error(
-      json?.error ||
-      "Challenge API error"
-    );
-  }
-
-  return json as ChallengeData;
+async function jsonFetch(path: string, init?: RequestInit) {
+  const response = await fetch(`${API}${path}`, { cache: "no-store", ...init, headers: { "Content-Type": "application/json", ...(init?.headers || {}) } });
+  const json = await response.json().catch(() => ({}));
+  if (!response.ok || json?.status === "0") throw new Error(json?.error || `Challenge API error (${response.status})`);
+  return json;
 }
+export async function getChallengeLeaderboard(): Promise<ChallengeData> { return jsonFetch("/api/challenge"); }
+export async function getChallengeRegistrationStatus(wallet: string) { return jsonFetch(`/api/challenge/registration/status/${wallet}`); }
+export async function getChallengeRegistrationMessage(wallet: string) { return jsonFetch("/api/challenge/registration/nonce", { method: "POST", body: JSON.stringify({ wallet }) }); }
+export async function submitChallengeRegistration(wallet: string, signature: string) { return jsonFetch("/api/challenge/registration/register", { method: "POST", body: JSON.stringify({ wallet, signature }) }); }
