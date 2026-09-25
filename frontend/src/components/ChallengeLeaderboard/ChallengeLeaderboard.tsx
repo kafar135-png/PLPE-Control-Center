@@ -1,4 +1,4 @@
-import {
+﻿import {
   useCallback,
   useEffect,
   useState,
@@ -6,11 +6,16 @@ import {
 
 import {
   getChallengeLeaderboard,
+  getChallengeRegistrationMessage,
+  getChallengeRegistrationStatus,
+  submitChallengeRegistration,
   type ChallengeData,
   type ChallengeParticipant,
 } from "../../services/challenge";
 
 import { useLanguage } from "../../hooks/useLanguage";
+
+import ChallengeRulesModal from "./ChallengeRulesModal";
 
 import "./ChallengeLeaderboard.css";
 
@@ -44,37 +49,17 @@ function formatVolume(volume: number) {
    ========================================================= */
 
 function getSafeEntries(
-  participant: ChallengeParticipant
+  participant: ChallengeParticipant,
+  maximumEntries = 6
 ) {
-  const entries =
-    Number(participant.entries);
-
-  if (!Number.isFinite(entries)) {
-    return 0;
-  }
-
-  return Math.max(
-    0,
-    Math.min(
-      6,
-      Math.floor(entries)
-    )
-  );
+  const entries = Number(participant.entries);
+  if (!Number.isFinite(entries)) return 0;
+  return Math.max(0, Math.min(maximumEntries, Math.floor(entries)));
 }
 
-function getEntriesLabel(entries: number) {
-  const safeEntries =
-    Math.max(
-      0,
-      Math.min(
-        6,
-        Math.floor(
-          Number(entries) || 0
-        )
-      )
-    );
-
-  return `🎟️ ${safeEntries}/6`;
+function getEntriesLabel(entries: number, maximumEntries = 6) {
+  const safeEntries = Math.max(0, Math.min(maximumEntries, Math.floor(Number(entries) || 0)));
+  return `🎟️ ${safeEntries}/${maximumEntries}`;
 }
 
 function getMedal(rank: number) {
@@ -152,6 +137,12 @@ function ChallengeLeaderboard() {
     setWalletAddress,
   ] =
     useState("");
+
+  const [registered, setRegistered] = useState(false);
+  const [excluded, setExcluded] = useState(false);
+  const [registering, setRegistering] = useState(false);
+  const [registrationError, setRegistrationError] = useState("");
+  const [rulesOpen, setRulesOpen] = useState(false);
 
   /* =======================================================
      LOAD CHALLENGE
@@ -334,6 +325,43 @@ function ChallengeLeaderboard() {
   ]);
 
   /* =======================================================
+     PHASE #03 REGISTRATION
+     ======================================================= */
+
+  useEffect(() => {
+    let cancelled = false;
+    async function checkRegistration() {
+      if (challenge?.phase.id !== "03" || !walletAddress) {
+        if (!cancelled) { setRegistered(false); setExcluded(false); setRegistrationError(""); }
+        return;
+      }
+      try {
+        const result = await getChallengeRegistrationStatus(walletAddress);
+        if (!cancelled) { setRegistered(Boolean(result.registered)); setExcluded(Boolean(result.excluded)); }
+      } catch (err) { console.error("Challenge registration status:", err); }
+    }
+    checkRegistration();
+    return () => { cancelled = true; };
+  }, [challenge?.phase.id, walletAddress]);
+
+  const registerForChallenge = useCallback(async () => {
+    if (!walletAddress) { setRegistrationError("Connect your wallet first / Najpierw połącz portfel."); return; }
+    try {
+      setRegistering(true); setRegistrationError("");
+      const ethereum = (window as any).ethereum;
+      if (!ethereum) throw new Error("Ethereum wallet not found.");
+      const nonce = await getChallengeRegistrationMessage(walletAddress);
+      if (nonce.alreadyRegistered) { setRegistered(true); return; }
+      const signature = await ethereum.request({ method: "personal_sign", params: [nonce.message, walletAddress] });
+      await submitChallengeRegistration(walletAddress, signature);
+      setRegistered(true); await loadChallenge(false);
+    } catch (err) {
+      console.error("Challenge registration:", err);
+      setRegistrationError(err instanceof Error ? err.message : "Registration failed.");
+    } finally { setRegistering(false); }
+  }, [walletAddress, loadChallenge]);
+
+  /* =======================================================
      LOADING
      ======================================================= */
 
@@ -383,6 +411,10 @@ function ChallengeLeaderboard() {
     return null;
   }
 
+  const isPhase03 = challenge.phase.id === "03";
+  const maximumEntries = Number(challenge.rules?.maximumEntries) || (isPhase03 ? 8 : 6);
+  const minimumBuy = Number(challenge.rules?.minimumBuyForEntry) || (isPhase03 ? 5 : 2);
+
   /* =======================================================
      LEADERBOARD SORT
      ======================================================= */
@@ -396,10 +428,10 @@ function ChallengeLeaderboard() {
         /* 1. ENTRIES */
 
         const entriesA =
-          getSafeEntries(a);
+          getSafeEntries(a, maximumEntries);
 
         const entriesB =
-          getSafeEntries(b);
+          getSafeEntries(b, maximumEntries);
 
         if (
           entriesA !==
@@ -494,7 +526,7 @@ function ChallengeLeaderboard() {
     challenge.phase.start;
 
   const phaseEnd =
-    challenge.phase.end;
+    challenge.phase.displayEnd || challenge.phase.end;
 
   /* =======================================================
      RENDER
@@ -544,6 +576,10 @@ function ChallengeLeaderboard() {
 
         <div className="challenge-header-actions">
 
+          <button type="button" className="challenge-trade-button" onClick={() => setRulesOpen(true)}>
+            <span>📜</span><strong>RULES / REGULAMIN</strong><small>EN / PL</small>
+          </button>
+
           <a
             href="https://app.uniswap.org/swap?chain=mainnet&inputCurrency=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2&outputCurrency=0xc34e5ef4f7f5607fbd3e060077cd6e2161ab54c7"
             target="_blank"
@@ -569,13 +605,8 @@ function ChallengeLeaderboard() {
               {t.challenge.rewardPool}
             </span>
 
-            <strong>
-              $100
-            </strong>
-
-            <small>
-              🥇 $50 · 🥈 $30 · 🥉 $20 ETH
-            </small>
+            <strong>${challenge.rewardPool?.total || (isPhase03 ? 200 : 100)}</strong>
+            <small>{isPhase03 ? "🏆 $150 + 💎 $50 HOLDER" : "🥇 $50 · 🥈 $30 · 🥉 $20 ETH"}</small>
 
           </div>
 
@@ -594,9 +625,7 @@ function ChallengeLeaderboard() {
             {t.challenge.phase.toUpperCase()}
           </span>
 
-          <strong>
-            #02
-          </strong>
+          <strong>#{challenge.phase.id}</strong>
         </div>
 
         <div>
@@ -630,12 +659,26 @@ function ChallengeLeaderboard() {
             {t.challenge.minimumVolume.toUpperCase()}
           </span>
 
-          <strong>
-            $2
-          </strong>
+          <strong>${minimumBuy}</strong>
         </div>
 
       </div>
+
+      {isPhase03 && (
+        <div className="challenge-next-phase" style={{ marginTop: "14px", marginBottom: "14px", padding: "12px 16px", borderRadius: "10px", border: "1px solid rgba(0, 255, 140, 0.20)", background: "rgba(0, 255, 140, 0.045)" }}>
+          <strong>🔐 PHASE #03 WALLET REGISTRATION</strong>
+          <div style={{ opacity: 0.82, marginTop: "6px", lineHeight: "1.6" }}>Only trades made after successful registration count. / Liczą się wyłącznie transakcje wykonane po rejestracji.</div>
+          <div style={{ marginTop: "10px", display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+            {excluded ? <strong>⛔ PLPE OPERATIONAL WALLET — NOT ELIGIBLE</strong> : registered ? <strong>✅ REGISTERED — PHASE #03</strong> : (
+              <button type="button" className="challenge-trade-button" onClick={registerForChallenge} disabled={registering || !walletAddress}>
+                <span>🔐</span><strong>{registering ? "REGISTERING..." : "REGISTER FOR PHASE #03"}</strong><small>SIGN MESSAGE · NO GAS</small>
+              </button>
+            )}
+            {walletAddress && <small>{shortenWallet(walletAddress)}</small>}
+          </div>
+          {registrationError && <div className="challenge-error" style={{ marginTop: "10px" }}>{registrationError}</div>}
+        </div>
+      )}
 
       {/* ===================================================
           RULES
@@ -668,7 +711,7 @@ function ChallengeLeaderboard() {
             marginTop: "4px",
           }}
         >
-          {t.challenge.entryRulesDescription}
+          {isPhase03 ? `BUY ≥ $${minimumBuy} = 1 ENTRY · MAX ${maximumEntries} · SELL = 0 ENTRY · Ranking: ENTRY → NET BUY → TRADES → WALLET` : t.challenge.entryRulesDescription}
         </div>
 
       </div>
@@ -743,7 +786,8 @@ function ChallengeLeaderboard() {
 
               const entries =
                 getSafeEntries(
-                  participant
+                  participant,
+                  maximumEntries
                 );
 
               return (
@@ -871,8 +915,10 @@ function ChallengeLeaderboard() {
               <strong>
                 {getEntriesLabel(
                   getSafeEntries(
-                    myParticipant
-                  )
+                    myParticipant,
+                    maximumEntries
+                  ),
+                  maximumEntries
                 )}
               </strong>
 
@@ -917,7 +963,7 @@ function ChallengeLeaderboard() {
         </span>
 
         <span>
-          {t.challenge.maxEntries.toUpperCase()}
+          {isPhase03 ? `MAX ${maximumEntries} ENTRIES` : t.challenge.maxEntries.toUpperCase()}
         </span>
 
         <span>
@@ -925,6 +971,8 @@ function ChallengeLeaderboard() {
         </span>
 
       </div>
+
+      {rulesOpen && <ChallengeRulesModal onClose={() => setRulesOpen(false)} />}
 
     </section>
   );
