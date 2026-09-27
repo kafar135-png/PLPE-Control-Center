@@ -1,4 +1,4 @@
-import type { TranslationDictionary } from "../types/language";
+﻿import type { TranslationDictionary } from "../types/language";
 
 const en: TranslationDictionary = {
   common: {
