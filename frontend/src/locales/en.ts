@@ -227,6 +227,10 @@ const en: TranslationDictionary = {
       "Reward Pool",
     minimumVolume:
       "Minimum Volume",
+    minimumBuy:
+      "Minimum BUY",
+    netBuy:
+      "NET BUY",
     trades:
       "Trades",
     qualified:
@@ -277,6 +281,20 @@ const en: TranslationDictionary = {
       "BUY ≥ $2 = 1 ENTRY · BUY < $2 = 0 ENTRY · SELL = 0 ENTRY · MAX 6 ENTRIES / WALLET",
     pairMinimumVolume:
       "Minimum volume: $2",
+    pairMinimumBuy:
+      "Minimum BUY: $5",
+    noQualifiedDescriptionPhase03:
+      "Register your wallet and make a qualifying BUY of at least $5 to enter Phase #03.",
+    portfolioNotQualifiedDescriptionPhase03:
+      "Register first, then make a BUY of at least $5 to receive your first ENTRY.",
+    holderBonus:
+      "HOLDER BONUS — $50",
+    holderBonusDescription:
+      "Minimum 4 ENTRY. Ranking: HOLD % → retained qualifying PLPE → NET BUY → wallet.",
+    noHolderQualified:
+      "No Holder Bonus qualifiers yet",
+    noHolderQualifiedDescription:
+      "Earn at least 4 ENTRY and retain qualifying PLPE to enter the Holder Bonus ranking.",
     phaseLabel:
       "PHASE",
   },

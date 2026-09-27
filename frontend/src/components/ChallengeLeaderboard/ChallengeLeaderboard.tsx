@@ -443,22 +443,18 @@ function ChallengeLeaderboard() {
           );
         }
 
-        /* 2. VOLUME */
+        /* 2. PHASE-SPECIFIC SECONDARY RANKING */
 
-        const volumeA =
-          Number(a.volume) || 0;
+        const secondA = isPhase03
+          ? Number(a.netBuyVolume) || 0
+          : Number(a.volume) || 0;
 
-        const volumeB =
-          Number(b.volume) || 0;
+        const secondB = isPhase03
+          ? Number(b.netBuyVolume) || 0
+          : Number(b.volume) || 0;
 
-        if (
-          volumeA !==
-          volumeB
-        ) {
-          return (
-            volumeB -
-            volumeA
-          );
+        if (secondA !== secondB) {
+          return secondB - secondA;
         }
 
         /* 3. TRANSACTIONS */
@@ -548,7 +544,7 @@ function ChallengeLeaderboard() {
           </h2>
 
          <p>
-  PLPE/WETH · {t.challenge.pairMinimumVolume}
+  PLPE/WETH · {isPhase03 ? t.challenge.pairMinimumBuy : t.challenge.pairMinimumVolume}
 </p>
 
           <div
@@ -656,7 +652,7 @@ function ChallengeLeaderboard() {
 
         <div>
           <span>
-            {t.challenge.minimumVolume.toUpperCase()}
+            {(isPhase03 ? t.challenge.minimumBuy : t.challenge.minimumVolume).toUpperCase()}
           </span>
 
           <strong>${minimumBuy}</strong>
@@ -711,7 +707,7 @@ function ChallengeLeaderboard() {
             marginTop: "4px",
           }}
         >
-          {isPhase03 ? `BUY ≥ $${minimumBuy} = 1 ENTRY · MAX ${maximumEntries} · SELL = 0 ENTRY · Ranking: ENTRY → NET BUY → TRADES → WALLET` : t.challenge.entryRulesDescription}
+          {isPhase03 ? `BUY ≥ $${minimumBuy} = 1 ENTRY · MAX ${maximumEntries} · SELL = 0 ENTRY · 🏆 RANKING: ① ENTRY → ② NET BUY → ③ TRADES → ④ WALLET` : t.challenge.entryRulesDescription}
         </div>
 
       </div>
@@ -722,7 +718,17 @@ function ChallengeLeaderboard() {
 
       <div className="challenge-table">
 
-        <div className="challenge-table-head">
+        <div
+          className="challenge-table-head"
+          style={
+            isPhase03
+              ? {
+                  gridTemplateColumns:
+                    "54px minmax(150px, 1.6fr) minmax(90px, .8fr) minmax(90px, .8fr) minmax(110px, .9fr) minmax(80px, .7fr) minmax(100px, .8fr)",
+                }
+              : undefined
+          }
+        >
 
           <span>
             #
@@ -732,16 +738,26 @@ function ChallengeLeaderboard() {
             {t.challenge.wallet.toUpperCase()}
           </span>
 
-          <span>
-            {t.challenge.volume.toUpperCase()}
-          </span>
+          {isPhase03 ? (
+            <>
+              <span>BUY</span>
+              <span>SELL</span>
+              <span>📈 NET BUY #2</span>
+            </>
+          ) : (
+            <span>
+              {t.challenge.volume.toUpperCase()}
+            </span>
+          )}
 
           <span>
             {t.challenge.trades.toUpperCase()}
           </span>
 
           <span>
-            {t.challenge.entries.toUpperCase()}
+            {isPhase03
+              ? "🎟️ ENTRY #1"
+              : t.challenge.entries.toUpperCase()}
           </span>
 
         </div>
@@ -759,7 +775,7 @@ function ChallengeLeaderboard() {
             </strong>
 
             <span>
-              {t.challenge.noQualifiedDescription}
+              {isPhase03 ? t.challenge.noQualifiedDescriptionPhase03 : t.challenge.noQualifiedDescription}
             </span>
 
           </div>
@@ -802,6 +818,14 @@ function ChallengeLeaderboard() {
                         : ""
                     }`
                   }
+                  style={
+                    isPhase03
+                      ? {
+                          gridTemplateColumns:
+                            "54px minmax(150px, 1.6fr) minmax(90px, .8fr) minmax(90px, .8fr) minmax(110px, .9fr) minmax(80px, .7fr) minmax(100px, .8fr)",
+                        }
+                      : undefined
+                  }
                 >
 
                   <div className="challenge-rank">
@@ -830,13 +854,34 @@ function ChallengeLeaderboard() {
 
                   </div>
 
-                  <div className="challenge-volume">
+                  {isPhase03 ? (
+                    <>
+                      <div className="challenge-volume">
+                        {formatVolume(
+                          Number(participant.buyVolume) || 0
+                        )}
+                      </div>
 
-                    {formatVolume(
-                      participant.volume
-                    )}
+                      <div className="challenge-volume">
+                        {formatVolume(
+                          Number(participant.sellVolume) || 0
+                        )}
+                      </div>
 
-                  </div>
+                      <div
+                        className="challenge-volume"
+                        style={{ fontWeight: 800 }}
+                      >
+                        {formatVolume(
+                          Number(participant.netBuyVolume) || 0
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="challenge-volume">
+                      {formatVolume(participant.volume)}
+                    </div>
+                  )}
 
                   <div className="challenge-trades">
 
@@ -849,7 +894,8 @@ function ChallengeLeaderboard() {
                   <div className="challenge-entries">
 
                     {getEntriesLabel(
-                      entries
+                      entries,
+                      maximumEntries
                     )}
 
                   </div>
@@ -862,6 +908,38 @@ function ChallengeLeaderboard() {
         )}
 
       </div>
+
+
+      {isPhase03 && (
+        <div className="challenge-holder">
+          <div className="challenge-holder-head">
+            <div>
+              <strong>💎 {t.challenge.holderBonus}</strong>
+              <span>{t.challenge.holderBonusDescription}</span>
+            </div>
+          </div>
+
+          {(challenge.holderLeaderboard || []).length === 0 ? (
+            <div className="challenge-empty" style={{ marginTop: "12px" }}>
+              <strong>{t.challenge.noHolderQualified}</strong>
+              <span>{t.challenge.noHolderQualifiedDescription}</span>
+            </div>
+          ) : (
+            <div className="challenge-holder-list">
+              {(challenge.holderLeaderboard || []).map((participant, index) => (
+                <div key={`holder-${participant.wallet}`}>
+                  <b>{getMedal(index + 1)}</b>
+                  <code>{shortenWallet(participant.wallet)}</code>
+                  <strong>{Number(participant.holdPercent || 0).toFixed(2)}%</strong>
+                  <span>
+                    {t.challenge.netBuy}: {formatVolume(Number(participant.netBuyVolume) || 0)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ===================================================
           MY RESULT
@@ -878,7 +956,17 @@ function ChallengeLeaderboard() {
 
           </div>
 
-          <div className="my-result-grid">
+          <div
+            className="my-result-grid"
+            style={
+              isPhase03
+                ? {
+                    gridTemplateColumns:
+                      "repeat(6, minmax(90px, 1fr))",
+                  }
+                : undefined
+            }
+          >
 
             <div>
 
@@ -892,37 +980,84 @@ function ChallengeLeaderboard() {
 
             </div>
 
-            <div>
+            {isPhase03 ? (
+              <>
+                <div>
+                  <span>BUY</span>
+                  <strong>
+                    {formatVolume(
+                      Number(myParticipant.buyVolume) || 0
+                    )}
+                  </strong>
+                </div>
 
-              <span>
-                {t.challenge.volume.toUpperCase()}
-              </span>
+                <div>
+                  <span>SELL</span>
+                  <strong>
+                    {formatVolume(
+                      Number(myParticipant.sellVolume) || 0
+                    )}
+                  </strong>
+                </div>
 
-              <strong>
-                {formatVolume(
-                  myParticipant.volume
-                )}
-              </strong>
+                <div>
+                  <span>📈 NET BUY #2</span>
+                  <strong>
+                    {formatVolume(
+                      Number(myParticipant.netBuyVolume) || 0
+                    )}
+                  </strong>
+                </div>
 
-            </div>
+                <div>
+                  <span>
+                    {t.challenge.trades.toUpperCase()}
+                  </span>
+                  <strong>
+                    {myParticipant.trades}
+                  </strong>
+                </div>
 
-            <div>
+                <div>
+                  <span>🎟️ ENTRY #1</span>
+                  <strong>
+                    {getEntriesLabel(
+                      getSafeEntries(
+                        myParticipant,
+                        maximumEntries
+                      ),
+                      maximumEntries
+                    )}
+                  </strong>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <span>
+                    {t.challenge.volume.toUpperCase()}
+                  </span>
+                  <strong>
+                    {formatVolume(myParticipant.volume)}
+                  </strong>
+                </div>
 
-              <span>
-                {t.challenge.entries.toUpperCase()}
-              </span>
-
-              <strong>
-                {getEntriesLabel(
-                  getSafeEntries(
-                    myParticipant,
-                    maximumEntries
-                  ),
-                  maximumEntries
-                )}
-              </strong>
-
-            </div>
+                <div>
+                  <span>
+                    {t.challenge.entries.toUpperCase()}
+                  </span>
+                  <strong>
+                    {getEntriesLabel(
+                      getSafeEntries(
+                        myParticipant,
+                        maximumEntries
+                      ),
+                      maximumEntries
+                    )}
+                  </strong>
+                </div>
+              </>
+            )}
 
           </div>
 
@@ -945,7 +1080,7 @@ function ChallengeLeaderboard() {
             </strong>
 
             <span>
-              {t.challenge.portfolioNotQualifiedDescription}
+              {isPhase03 ? t.challenge.portfolioNotQualifiedDescriptionPhase03 : t.challenge.portfolioNotQualifiedDescription}
             </span>
 
           </div>
@@ -979,3 +1114,7 @@ function ChallengeLeaderboard() {
 }
 
 export default ChallengeLeaderboard;
+
+
+
+

@@ -223,6 +223,8 @@ const pl: TranslationDictionary = {
     launchPhase: "FAZA STARTOWA",
     rewardPool: "Pula nagród",
     minimumVolume: "Minimalny wolumen",
+    minimumBuy: "Minimalny BUY",
+    netBuy: "NET BUY",
     trades: "Transakcje",
     qualified: "Zakwalifikowani",
     wallet: "Portfel",
@@ -253,6 +255,17 @@ const pl: TranslationDictionary = {
     entryRulesDescription:
       "BUY ≥ $2 = 1 LOS · BUY < $2 = 0 LOSÓW · SELL = 0 LOSÓW · MAKS. 6 LOSÓW / PORTFEL",
     pairMinimumVolume: "Minimalny wolumen: $2",
+    pairMinimumBuy: "Minimalny BUY: $5",
+    noQualifiedDescriptionPhase03:
+      "Zarejestruj portfel i wykonaj kwalifikowany BUY za minimum $5, aby wejść do Phase #03.",
+    portfolioNotQualifiedDescriptionPhase03:
+      "Najpierw zarejestruj portfel, a następnie wykonaj BUY za minimum $5, aby zdobyć pierwsze ENTRY.",
+    holderBonus: "HOLDER BONUS — $50",
+    holderBonusDescription:
+      "Minimum 4 ENTRY. Ranking: HOLD % → utrzymane kwalifikowane PLPE → NET BUY → portfel.",
+    noHolderQualified: "Brak zakwalifikowanych do Holder Bonus",
+    noHolderQualifiedDescription:
+      "Zdobądź minimum 4 ENTRY i utrzymaj kwalifikowane PLPE, aby wejść do rankingu Holder Bonus.",
     phaseLabel: "FAZA",
   },
 

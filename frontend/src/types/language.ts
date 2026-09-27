@@ -242,19 +242,23 @@ export interface TranslationDictionary {
 
     rewardPool: string;
     minimumVolume: string;
+    minimumBuy: string;
 
     trades: string;
     qualified: string;
     wallet: string;
     volume: string;
+    netBuy: string;
     entries: string;
     rank: string;
 
     noQualified: string;
     noQualifiedDescription: string;
+    noQualifiedDescriptionPhase03: string;
 
     portfolioNotQualified: string;
     portfolioNotQualifiedDescription: string;
+    portfolioNotQualifiedDescriptionPhase03: string;
 
     live: string;
     maxEntries: string;
@@ -278,6 +282,12 @@ export interface TranslationDictionary {
     entryRulesDescription: string;
 
     pairMinimumVolume: string;
+    pairMinimumBuy: string;
+
+    holderBonus: string;
+    holderBonusDescription: string;
+    noHolderQualified: string;
+    noHolderQualifiedDescription: string;
 
     phaseLabel: string;
   };
