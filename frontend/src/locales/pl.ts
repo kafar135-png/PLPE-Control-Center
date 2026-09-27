@@ -469,6 +469,9 @@ installAppIos:
     minimumVolume:
       "Minimalny wolumen",
 
+    minimumBuy:
+      "Minimalny BUY",
+
     trades:
       "Transakcje",
 
@@ -480,6 +483,9 @@ installAppIos:
 
     volume:
       "Wolumen",
+
+    netBuy:
+      "NET BUY",
 
     entries:
       "Losy",
@@ -493,11 +499,17 @@ installAppIos:
     noQualifiedDescription:
       "Wykonaj transakcję PLPE/WETH o minimalnym łącznym wolumenie $2.",
 
+    noQualifiedDescriptionPhase03:
+      "Zarejestruj portfel i wykonaj kwalifikowany BUY za minimum $5, aby wejść do Phase #03.",
+
     portfolioNotQualified:
       "Twój portfel nie jest jeszcze zakwalifikowany.",
 
     portfolioNotQualifiedDescription:
       "Wygeneruj co najmniej $2 wolumenu PLPE/WETH, aby otrzymać pierwszy los.",
+
+    portfolioNotQualifiedDescriptionPhase03:
+      "Najpierw zarejestruj portfel, a następnie wykonaj BUY za minimum $5, aby zdobyć pierwsze ENTRY.",
 
     live:
       "NA ŻYWO",
@@ -544,9 +556,25 @@ installAppIos:
     pairMinimumVolume:
       "Minimalny wolumen: $2",
 
+    pairMinimumBuy:
+      "Minimalny BUY: $5",
+
+    holderBonus:
+      "HOLDER BONUS — $50",
+
+    holderBonusDescription:
+      "Minimum 4 ENTRY. Ranking: HOLD % → utrzymane kwalifikowane PLPE → NET BUY → portfel.",
+
+    noHolderQualified:
+      "Brak zakwalifikowanych do Holder Bonus",
+
+    noHolderQualifiedDescription:
+      "Zdobądź minimum 4 ENTRY i utrzymaj kwalifikowane PLPE, aby wejść do rankingu Holder Bonus.",
+
     phaseLabel:
       "FAZA",
   },
 };
 
 export default pl;
+

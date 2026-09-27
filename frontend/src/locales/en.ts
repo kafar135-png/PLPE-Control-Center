@@ -470,6 +470,9 @@ installAppIos:
     minimumVolume:
       "Minimum Volume",
 
+    minimumBuy:
+      "Minimum BUY",
+
     trades:
       "Trades",
 
@@ -481,6 +484,9 @@ installAppIos:
 
     volume:
       "Volume",
+
+    netBuy:
+      "NET BUY",
 
     entries:
       "Entries",
@@ -494,11 +500,17 @@ installAppIos:
     noQualifiedDescription:
       "Make a PLPE/WETH transaction with a minimum total volume of $2.",
 
+    noQualifiedDescriptionPhase03:
+      "Register your wallet and make a qualifying BUY of at least $5 to enter Phase #03.",
+
     portfolioNotQualified:
       "Your portfolio is not qualified yet.",
 
     portfolioNotQualifiedDescription:
       "Generate at least $2 in PLPE/WETH volume to receive your first entry.",
+
+    portfolioNotQualifiedDescriptionPhase03:
+      "Register first, then make a BUY of at least $5 to receive your first ENTRY.",
 
     live:
       "LIVE",
@@ -545,9 +557,25 @@ installAppIos:
     pairMinimumVolume:
       "Minimum volume: $2",
 
+    pairMinimumBuy:
+      "Minimum BUY: $5",
+
+    holderBonus:
+      "HOLDER BONUS — $50",
+
+    holderBonusDescription:
+      "Minimum 4 ENTRY. Ranking: HOLD % → retained qualifying PLPE → NET BUY → wallet.",
+
+    noHolderQualified:
+      "No Holder Bonus qualifiers yet",
+
+    noHolderQualifiedDescription:
+      "Earn at least 4 ENTRY and retain qualifying PLPE to enter the Holder Bonus ranking.",
+
     phaseLabel:
       "PHASE",
   },
 };
 
 export default en;
+
