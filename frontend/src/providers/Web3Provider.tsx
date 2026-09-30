@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 
 import {
   QueryClient,
@@ -31,6 +31,10 @@ if (!walletConnectProjectId) {
 
 const config = createConfig({
   chains: [mainnet],
+
+  // MetaMask, Brave Wallet and other EIP-6963 wallets
+  // can coexist and be discovered separately.
+  multiInjectedProviderDiscovery: true,
 
   connectors: [
     injected({
@@ -81,7 +85,7 @@ export default function Web3Provider({
   return (
     <WagmiProvider
       config={config}
-      reconnectOnMount={false}
+      reconnectOnMount={true}
     >
       <QueryClientProvider
         client={queryClient}
@@ -91,3 +95,4 @@ export default function Web3Provider({
     </WagmiProvider>
   );
 }
+

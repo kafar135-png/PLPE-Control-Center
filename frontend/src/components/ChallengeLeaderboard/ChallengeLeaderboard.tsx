@@ -14,6 +14,7 @@ import {
 } from "../../services/challenge";
 
 import { useLanguage } from "../../hooks/useLanguage";
+import { useWallet } from "../../hooks/useWallet";
 
 import ChallengeRulesModal from "./ChallengeRulesModal";
 
@@ -131,12 +132,16 @@ function ChallengeLeaderboard() {
     setError,
   ] =
     useState("");
+  const {
+    address: connectedWalletAddress,
+    isConnected: walletConnected,
+    signMessageAsync,
+  } = useWallet();
 
-  const [
-    walletAddress,
-    setWalletAddress,
-  ] =
-    useState("");
+  const walletAddress =
+    walletConnected && connectedWalletAddress
+      ? connectedWalletAddress.toLowerCase()
+      : "";
 
   const [registered, setRegistered] = useState(false);
   const [excluded, setExcluded] = useState(false);
@@ -179,152 +184,36 @@ function ChallengeLeaderboard() {
       },
       [t]
     );
-
-  /* =======================================================
-     DETECT WALLET
-     ======================================================= */
-
-  const detectWallet =
-    useCallback(
-      async () => {
-        try {
-          const ethereum =
-            (window as any).ethereum;
-
-          if (!ethereum) {
-            setWalletAddress("");
-            return;
-          }
-
-          const accounts =
-            await ethereum.request({
-              method:
-                "eth_accounts",
-            });
-
-          if (
-            Array.isArray(accounts) &&
-            accounts.length > 0
-          ) {
-            setWalletAddress(
-              String(
-                accounts[0]
-              ).toLowerCase()
-            );
-          } else {
-            setWalletAddress("");
-          }
-        } catch (err) {
-          console.error(
-            "Wallet detection:",
-            err
-          );
-        }
-      },
-      []
-    );
-
   /* =======================================================
      EFFECTS
+     Wallet state is managed exclusively by wagmi.
      ======================================================= */
 
   useEffect(() => {
     loadChallenge(true);
-    detectWallet();
 
-    const interval =
-      window.setInterval(() => {
+    const interval = window.setInterval(() => {
+      loadChallenge(false);
+    }, REFRESH_INTERVAL);
+
+    const onFocus = () => loadChallenge(false);
+
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") {
         loadChallenge(false);
-        detectWallet();
-      }, REFRESH_INTERVAL);
-
-    const onFocus =
-      () => {
-        loadChallenge(false);
-        detectWallet();
-      };
-
-    const onVisibility =
-      () => {
-        if (
-          document.visibilityState ===
-          "visible"
-        ) {
-          loadChallenge(false);
-          detectWallet();
-        }
-      };
-
-    window.addEventListener(
-      "focus",
-      onFocus
-    );
-
-    document.addEventListener(
-      "visibilitychange",
-      onVisibility
-    );
-
-    const ethereum =
-      (window as any).ethereum;
-
-    const onAccountsChanged =
-      (
-        accounts: string[]
-      ) => {
-        if (
-          Array.isArray(accounts) &&
-          accounts.length > 0
-        ) {
-          setWalletAddress(
-            String(
-              accounts[0]
-            ).toLowerCase()
-          );
-        } else {
-          setWalletAddress("");
-        }
-
-        loadChallenge(false);
-      };
-
-    if (ethereum?.on) {
-      ethereum.on(
-        "accountsChanged",
-        onAccountsChanged
-      );
-    }
-
-    return () => {
-      window.clearInterval(
-        interval
-      );
-
-      window.removeEventListener(
-        "focus",
-        onFocus
-      );
-
-      document.removeEventListener(
-        "visibilitychange",
-        onVisibility
-      );
-
-      if (
-        ethereum?.removeListener
-      ) {
-        ethereum.removeListener(
-          "accountsChanged",
-          onAccountsChanged
-        );
       }
     };
-  }, [
-    loadChallenge,
-    detectWallet,
-  ]);
 
-  /* =======================================================
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [loadChallenge]);
+/* =======================================================
      PHASE #03 REGISTRATION
      ======================================================= */
 
@@ -348,18 +237,23 @@ function ChallengeLeaderboard() {
     if (!walletAddress) { setRegistrationError("Connect your wallet first / Najpierw połącz portfel."); return; }
     try {
       setRegistering(true); setRegistrationError("");
-      const ethereum = (window as any).ethereum;
-      if (!ethereum) throw new Error("Ethereum wallet not found.");
-      const nonce = await getChallengeRegistrationMessage(walletAddress);
-      if (nonce.alreadyRegistered) { setRegistered(true); return; }
-      const signature = await ethereum.request({ method: "personal_sign", params: [nonce.message, walletAddress] });
+      const nonce =
+        await getChallengeRegistrationMessage(walletAddress);
+
+      if (nonce.alreadyRegistered) {
+        setRegistered(true);
+        return;
+      }
+
+      const signature =
+        await signMessageAsync({ message: nonce.message });
       await submitChallengeRegistration(walletAddress, signature);
       setRegistered(true); await loadChallenge(false);
     } catch (err) {
       console.error("Challenge registration:", err);
       setRegistrationError(err instanceof Error ? err.message : "Registration failed.");
     } finally { setRegistering(false); }
-  }, [walletAddress, loadChallenge]);
+  }, [walletAddress, loadChallenge, signMessageAsync]);
 
   /* =======================================================
      LOADING
@@ -1114,6 +1008,7 @@ function ChallengeLeaderboard() {
 }
 
 export default ChallengeLeaderboard;
+
 
 
 
