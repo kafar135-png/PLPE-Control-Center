@@ -1,3 +1,5 @@
+﻿import { useMemo, useState } from "react";
+
 import { useWallet } from "../../hooks/useWallet";
 import { usePLPEBalance } from "../../hooks/usePLPEBalance";
 import { useMarketData } from "../../hooks/useMarketData";
@@ -7,245 +9,242 @@ import "./WalletPanel.css";
 
 const TOTAL_SUPPLY = 1_000_000_000;
 
-function isMobileDevice() {
-  if (typeof window === "undefined") {
-    return false;
+function walletDisplayName(name: string) {
+  const value = name.toLowerCase();
+
+  if (value.includes("metamask")) {
+    return "MetaMask";
   }
 
-  const userAgent =
-    navigator.userAgent ||
-    navigator.vendor ||
-    "";
+  if (value.includes("brave")) {
+    return "Brave Wallet";
+  }
 
-  const mobileUserAgent =
-    /android|iphone|ipad|ipod|mobile/i.test(
-      userAgent
-    );
+  if (value === "injected") {
+    return "Browser Wallet";
+  }
 
-  const smallScreen =
-    window.matchMedia(
-      "(max-width: 768px)"
-    ).matches;
+  if (value.includes("walletconnect")) {
+    return "WalletConnect";
+  }
 
-  return mobileUserAgent || smallScreen;
+  return name || "Browser Wallet";
+}
+
+function walletIcon(name: string) {
+  const value = walletDisplayName(name).toLowerCase();
+
+  if (value.includes("metamask")) return "🦊";
+  if (value.includes("brave")) return "🦁";
+  if (value.includes("walletconnect")) return "🔗";
+
+  return "👛";
 }
 
 export default function WalletPanel() {
   const {
     address,
     isConnected,
-    connect,
+    connector,
+    connectAsync,
     connectors,
     disconnect,
     isPending,
+    connectError,
+    resetConnect,
   } = useWallet();
 
-  const {
-    balance,
-    loading,
-  } = usePLPEBalance(address);
+  const [showWallets, setShowWallets] = useState(false);
+  const [localError, setLocalError] = useState("");
 
-  const { data } =
-    useMarketData();
+  const { balance, loading } = usePLPEBalance(address);
+  const { data } = useMarketData();
+  const { t } = useLanguage();
 
-  const { t } =
-    useLanguage();
+  const availableConnectors = useMemo(() => {
+    const seen = new Set<string>();
 
-  const injectedConnector =
-    connectors.find(
-      (connector) =>
-        connector.type === "injected"
-    );
+    const unique = connectors.filter((item) => {
+      const key = item.uid || `${item.id}:${item.name}`;
 
-  const walletConnectConnector =
-    connectors.find(
-      (connector) =>
-        connector.type ===
-          "walletConnect" ||
-        connector.id ===
-          "walletConnect"
-    );
+      if (seen.has(key)) {
+        return false;
+      }
 
-  const shortAddress =
-    address
-      ? `${address.slice(
-          0,
-          6
-        )}...${address.slice(-4)}`
-      : "";
+      seen.add(key);
+      return true;
+    });
 
-  const walletValue =
-    data && balance
-      ? balance * data.price
-      : 0;
+    const specificInjected = unique.filter((item) => {
+      const name = String(item.name || "").toLowerCase();
 
-  const share =
-    balance
-      ? (balance / TOTAL_SUPPLY) *
-        100
-      : 0;
+      return (
+        item.type === "injected" &&
+        name !== "injected"
+      );
+    });
 
-  function handleConnect() {
-    const mobile =
-      isMobileDevice();
+    return unique.filter((item) => {
+      const name = String(item.name || "").toLowerCase();
 
-    /*
-     * MOBILE / PWA
-     *
-     * Prefer WalletConnect.
-     * This allows PLPE OS to communicate
-     * with MetaMask Mobile and other
-     * WalletConnect-compatible wallets.
-     */
+      if (
+        name === "injected" &&
+        specificInjected.length > 0
+      ) {
+        return false;
+      }
 
-    if (
-      mobile &&
-      walletConnectConnector
-    ) {
-      connect({
-        connector:
-          walletConnectConnector,
-      });
+      return true;
+    });
+  }, [connectors]);
 
-      return;
+  const shortAddress = address
+    ? `${address.slice(0, 6)}...${address.slice(-4)}`
+    : "";
+
+  const walletValue = data && balance ? balance * data.price : 0;
+  const share = balance ? (balance / TOTAL_SUPPLY) * 100 : 0;
+
+  async function handleConnector(
+    selectedConnector: (typeof connectors)[number]
+  ) {
+    try {
+      setLocalError("");
+      resetConnect();
+      await connectAsync({ connector: selectedConnector });
+      setShowWallets(false);
+    } catch (err) {
+      console.error("[WALLET] Connection failed:", err);
+      setLocalError(
+        err instanceof Error ? err.message : "Wallet connection failed."
+      );
     }
+  }
 
-    /*
-     * DESKTOP
-     *
-     * Prefer injected wallet:
-     * Brave Wallet / MetaMask extension.
-     */
-
-    if (injectedConnector) {
-      connect({
-        connector:
-          injectedConnector,
-      });
-
-      return;
-    }
-
-    /*
-     * FALLBACK
-     *
-     * If no injected provider exists,
-     * use WalletConnect.
-     */
-
-    if (walletConnectConnector) {
-      connect({
-        connector:
-          walletConnectConnector,
-      });
-    }
+  function openWalletSelector() {
+    setLocalError("");
+    resetConnect();
+    setShowWallets(true);
   }
 
   return (
     <div className="wallet-panel">
-
-      <div className="wallet-title">
-        {t.common.wallet}
-      </div>
+      <div className="wallet-title">{t.common.wallet}</div>
 
       {!isConnected ? (
         <>
-
           <div className="wallet-status disconnected">
             ⚪ {t.common.disconnected}
           </div>
 
-          <button
-            className="wallet-button"
-            onClick={
-              handleConnect
-            }
-            disabled={
-              isPending
-            }
-          >
-            {isPending
-              ? t.common.connecting
-              : t.common.connectWallet}
-          </button>
+          {!showWallets ? (
+            <button
+              className="wallet-button"
+              onClick={openWalletSelector}
+              disabled={isPending}
+            >
+              {isPending ? t.common.connecting : t.common.connectWallet}
+            </button>
+          ) : (
+            <div style={{ display: "grid", gap: "8px" }}>
+              {availableConnectors.length > 0 ? (
+                availableConnectors.map((item) => (
+                  <button
+                    key={item.uid}
+                    className="wallet-button"
+                    disabled={isPending}
+                    onClick={() => handleConnector(item)}
+                  >
+                    {walletIcon(item.name)}{" "}
+                    {isPending ? t.common.connecting : walletDisplayName(item.name)}
+                  </button>
+                ))
+              ) : (
+                <div className="wallet-status disconnected">
+                  No EVM wallet detected.
+                </div>
+              )}
 
+              <button
+                type="button"
+                className="wallet-button disconnect"
+                disabled={isPending}
+                onClick={() => {
+                  resetConnect();
+                  setLocalError("");
+                  setShowWallets(false);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+
+          {(localError || connectError) && (
+            <div
+              className="wallet-status disconnected"
+              style={{ marginTop: "8px", whiteSpace: "normal" }}
+            >
+              ⚠️ {localError || connectError?.message}
+            </div>
+          )}
         </>
       ) : (
         <>
-
           <div className="wallet-status connected">
             🟢 {t.common.connected}
           </div>
 
-          <div className="wallet-address">
-            {shortAddress}
-          </div>
+          {connector?.name && (
+            <div style={{ opacity: 0.7, fontSize: "12px", marginBottom: "6px" }}>
+              {walletIcon(connector.name)} {walletDisplayName(connector.name)}
+            </div>
+          )}
+
+          <div className="wallet-address">{shortAddress}</div>
 
           <div className="wallet-balance">
-
-            <span>
-              PLPE
-            </span>
-
+            <span>PLPE</span>
             <strong>
               {loading
                 ? t.common.loading
-                : balance.toLocaleString(
-                    undefined,
-                    {
-                      maximumFractionDigits:
-                        0,
-                    }
-                  )}
+                : balance.toLocaleString(undefined, {
+                    maximumFractionDigits: 0,
+                  })}
             </strong>
-
           </div>
 
           <div className="wallet-balance">
-
-            <span>
-              {t.common.value}
-            </span>
-
+            <span>{t.common.value}</span>
             <strong>
-              $
-              {walletValue.toLocaleString(
-                undefined,
-                {
-                  minimumFractionDigits:
-                    2,
-                  maximumFractionDigits:
-                    2,
-                }
-              )}
+              ${walletValue.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </strong>
-
           </div>
 
           <div className="wallet-balance">
-
-            <span>
-              {t.common.share}
-            </span>
-
-            <strong>
-              {share.toFixed(3)}%
-            </strong>
-
+            <span>{t.common.share}</span>
+            <strong>{share.toFixed(3)}%</strong>
           </div>
 
           <button
             className="wallet-button disconnect"
-            onClick={() =>
-              disconnect()
-            }
+            onClick={() => {
+              resetConnect();
+              setShowWallets(false);
+              disconnect();
+            }}
           >
             {t.common.disconnect}
           </button>
-
         </>
       )}
-
     </div>
   );
 }
+
+
+
+
