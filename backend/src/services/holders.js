@@ -1,35 +1,197 @@
-const axios = require("axios");
+const {
+  getPLPETransfers,
+  ZERO_ADDRESS,
+} = require("./plpeTransfers");
 
-const API_KEY = process.env.ETHERSCAN_API_KEY;
-const CONTRACT = process.env.PLPE_CONTRACT;
+/*
+=========================================================
+PLPE HOLDERS
+=========================================================
+
+No Etherscan API.
+
+Holder count is reconstructed directly from
+the complete PLPE ERC20 Transfer history
+loaded through Alchemy.
+
+=========================================================
+*/
+
+const HOLDERS_CACHE_TIME =
+  30 * 1000;
+
+const holdersCache = {
+  value: null,
+  time: 0,
+};
+
+function normalizeAddress(value) {
+  if (!value) {
+    return "";
+  }
+
+  return String(value)
+    .toLowerCase();
+}
 
 async function getHolders() {
-  const response = await axios.get(
-    "https://api.etherscan.io/v2/api",
-    {
-      params: {
-        chainid: 1,
-        module: "token",
-        action: "tokenholdercount",
-        contractaddress: CONTRACT,
-        apikey: API_KEY,
-      },
+  const now =
+    Date.now();
+
+  if (
+    Number.isFinite(
+      holdersCache.value
+    ) &&
+    now -
+      holdersCache.time <
+      HOLDERS_CACHE_TIME
+  ) {
+    return {
+      holders:
+        holdersCache.value,
+    };
+  }
+
+  try {
+    const transfers =
+      await getPLPETransfers();
+
+    const balances =
+      new Map();
+
+    for (
+      const transfer of
+      transfers
+    ) {
+      const from =
+        normalizeAddress(
+          transfer.from
+        );
+
+      const to =
+        normalizeAddress(
+          transfer.to
+        );
+
+      let amount;
+
+      try {
+        amount =
+          BigInt(
+            transfer.value ||
+            "0"
+          );
+      } catch {
+        amount =
+          0n;
+      }
+
+      if (
+        amount === 0n
+      ) {
+        continue;
+      }
+
+      /*
+       * MINT:
+       * zero -> holder
+       */
+
+      if (
+        from &&
+        from !==
+          ZERO_ADDRESS
+      ) {
+        balances.set(
+          from,
+
+          (
+            balances.get(
+              from
+            ) ||
+            0n
+          ) -
+            amount
+        );
+      }
+
+      /*
+       * BURN:
+       * holder -> zero
+       *
+       * Zero address is never counted
+       * as a holder.
+       */
+
+      if (
+        to &&
+        to !==
+          ZERO_ADDRESS
+      ) {
+        balances.set(
+          to,
+
+          (
+            balances.get(
+              to
+            ) ||
+            0n
+          ) +
+            amount
+        );
+      }
     }
-  );
 
-  const data = response.data;
+    let holders =
+      0;
 
-  if (data.status !== "1") {
-    console.error("ETHERSCAN HOLDERS:", data);
+    for (
+      const balance of
+      balances.values()
+    ) {
+      if (
+        balance >
+        0n
+      ) {
+        holders++;
+      }
+    }
+
+    holdersCache.value =
+      holders;
+
+    holdersCache.time =
+      now;
+
+    console.log(
+      "[HOLDERS] Calculated from PLPE transfers:",
+      holders
+    );
+
+    return {
+      holders,
+    };
+  } catch (error) {
+    console.error(
+      "[HOLDERS] Failed:",
+      error.message
+    );
+
+    if (
+      Number.isFinite(
+        holdersCache.value
+      )
+    ) {
+      return {
+        holders:
+          holdersCache.value,
+      };
+    }
 
     return {
       holders: 0,
     };
   }
-
-  return {
-    holders: Number(data.result),
-  };
 }
 
 module.exports = {

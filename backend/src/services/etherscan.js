@@ -1,48 +1,94 @@
-const axios = require("axios");
+const {
+  getPLPETransfers,
+} = require("./plpeTransfers");
 
-const API_KEY = process.env.ETHERSCAN_API_KEY;
+/*
+=========================================================
+WALLET PLPE HISTORY
+=========================================================
 
-const CONTRACT =
-  "0xc34e5ef4f7f5607fbd3e060077cd6e2161ab54c7";
+Legacy filename:
+etherscan.js
 
-console.log("ETHERSCAN API:", API_KEY ? "configured" : "missing");
+The implementation NO LONGER uses Etherscan.
 
-async function getWalletHistory(address) {
-  try {
-    const response = await axios.get(
-      "https://api.etherscan.io/v2/api",
-      {
-        params: {
-          chainid: "1",
-          module: "account",
-          action: "tokentx",
-          address: address,
-          contractaddress: CONTRACT,
-          page: 1,
-          offset: 100,
-          sort: "asc",
-          apikey: API_KEY,
-        },
-      }
+Data source:
+Alchemy PLPE transfer index.
+
+Keeping the filename avoids breaking
+existing controller imports.
+
+=========================================================
+*/
+
+function normalizeAddress(value) {
+  if (!value) {
+    return "";
+  }
+
+  return String(value)
+    .toLowerCase();
+}
+
+async function getWalletHistory(
+  address
+) {
+  const wallet =
+    normalizeAddress(
+      address
     );
 
-    console.log("ETHERSCAN RESPONSE:");
-    console.dir(response.data, { depth: null });
+  if (
+    !/^0x[a-f0-9]{40}$/.test(
+      wallet
+    )
+  ) {
+    return {
+      status: "0",
+      message:
+        "Invalid wallet address",
+      result: [],
+    };
+  }
 
-    return response.data;
-  } catch (err) {
-    console.log("========== ETHERSCAN ERROR ==========");
+  try {
+    const allTransfers =
+      await getPLPETransfers();
 
-    if (err.response) {
-      console.log(err.response.status);
-      console.dir(err.response.data, { depth: null });
-    } else {
-      console.log(err.message);
-    }
+    const walletTransfers =
+      allTransfers.filter(
+        (transfer) =>
+          normalizeAddress(
+            transfer.from
+          ) === wallet ||
+          normalizeAddress(
+            transfer.to
+          ) === wallet
+      );
 
-    console.log("=====================================");
+    /*
+     * Preserve old endpoint behavior:
+     * maximum 100 records.
+     */
 
-    throw err;
+    const result =
+      walletTransfers.slice(
+        0,
+        100
+      );
+
+    return {
+      status: "1",
+      message: "OK",
+      result,
+    };
+  } catch (error) {
+    console.error(
+      "[WALLET HISTORY] Failed:",
+      error.message
+    );
+
+    throw error;
   }
 }
 
