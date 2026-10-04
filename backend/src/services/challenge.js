@@ -9,6 +9,11 @@ const {
 
 const { getActiveRegistrations } = require("./challengeRegistration");
 
+const {
+  getPLPETransfers:
+    getPLPETransfersFromAlchemy,
+} = require("./plpeTransfers");
+
 /*
 =========================================================
 PLPE MONTHLY TRADING CHALLENGE
@@ -665,29 +670,179 @@ async function getInternalTransactions(
   hash
 ) {
   try {
-    const data =
-      await etherscanRequest({
-        module: "account",
+    /*
+     * We first obtain the transaction
+     * block number.
+     *
+     * Alchemy Transfers API does not
+     * filter directly by transaction hash,
+     * so we load internal ETH transfers
+     * from this single block and then
+     * filter them by hash.
+     */
 
-        action:
-          "txlistinternal",
-
-        txhash:
-          hash,
-      });
+    const transaction =
+      await getTransaction(
+        hash
+      );
 
     if (
-      !Array.isArray(
-        data.result
-      )
+      !transaction ||
+      !transaction.blockNumber
     ) {
       return [];
     }
 
-    return data.result;
+    const blockNumber =
+      transaction.blockNumber;
+
+    const internalTransfers =
+      [];
+
+    let pageKey =
+      null;
+
+    do {
+      const request = {
+        fromBlock:
+          blockNumber,
+
+        toBlock:
+          blockNumber,
+
+        category: [
+          "internal",
+        ],
+
+        /*
+         * Zero-value internal calls
+         * do not transfer ETH and are
+         * irrelevant for volume detection.
+         */
+        excludeZeroValue:
+          true,
+
+        withMetadata:
+          false,
+
+        maxCount:
+          "0x3e8",
+      };
+
+      if (
+        pageKey
+      ) {
+        request.pageKey =
+          pageKey;
+      }
+
+      const result =
+        await rpc(
+          "alchemy_getAssetTransfers",
+          [
+            request,
+          ]
+        );
+
+      if (
+        !result ||
+        !Array.isArray(
+          result.transfers
+        )
+      ) {
+        return [];
+      }
+
+      for (
+        const transfer of
+        result.transfers
+      ) {
+        if (
+          normalizeHash(
+            transfer.hash
+          ) !==
+          normalizeHash(
+            hash
+          )
+        ) {
+          continue;
+        }
+
+        let value =
+          "0";
+
+        try {
+          /*
+           * Etherscan txlistinternal
+           * previously returned wei as
+           * a decimal string.
+           *
+           * Preserve the same format.
+           */
+          value =
+            BigInt(
+              transfer
+                ?.rawContract
+                ?.value ||
+              "0"
+            ).toString(10);
+        } catch {
+          value =
+            "0";
+        }
+
+        internalTransfers.push({
+          hash:
+            normalizeHash(
+              transfer.hash
+            ),
+
+          from:
+            normalizeAddress(
+              transfer.from
+            ),
+
+          to:
+            normalizeAddress(
+              transfer.to
+            ),
+
+          value,
+
+          /*
+           * Keep compatibility with
+           * the old Etherscan object
+           * shape where useful.
+           */
+          isError:
+            "0",
+
+          type:
+            "call",
+
+          blockNumber:
+            String(
+              parseInt(
+                transfer.blockNum ||
+                  "0x0",
+                16
+              )
+            ),
+        });
+      }
+
+      pageKey =
+        result.pageKey ||
+        null;
+
+    } while (
+      pageKey
+    );
+
+    return internalTransfers;
   } catch (error) {
     console.warn(
-      "[CHALLENGE] Internal TX error:",
+      "[CHALLENGE] Alchemy internal TX error:",
       hash,
       error.message
     );
@@ -2693,7 +2848,7 @@ async function calculateChallenge(
    */
 
   const allPLPE =
-    await getPLPETransfers();
+  await getPLPETransfersFromAlchemy();
 
   const phasePLPE =
     allPLPE.filter(

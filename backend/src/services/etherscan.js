@@ -1,48 +1,78 @@
-const axios = require("axios");
+const {
+  getPLPETransfers,
+} = require("./plpeTransfers");
 
-const API_KEY = process.env.ETHERSCAN_API_KEY;
+/*
+=========================================================
+WALLET PLPE HISTORY
+=========================================================
 
-const CONTRACT =
-  "0xc34e5ef4f7f5607fbd3e060077cd6e2161ab54c7";
+Legacy filename:
+etherscan.js
 
-console.log("ETHERSCAN API:", API_KEY);
+The implementation NO LONGER uses Etherscan.
+
+Data source:
+Alchemy PLPE transfer index.
+
+Keeping the filename avoids breaking
+existing controller imports.
+
+=========================================================
+*/
+
+function normalizeAddress(value) {
+  if (!value) {
+    return "";
+  }
+
+  return String(value).toLowerCase();
+}
 
 async function getWalletHistory(address) {
+  const wallet =
+    normalizeAddress(address);
+
+  if (
+    !/^0x[a-f0-9]{40}$/.test(wallet)
+  ) {
+    return {
+      status: "0",
+      message: "Invalid wallet address",
+      result: [],
+    };
+  }
+
   try {
-    const response = await axios.get(
-      "https://api.etherscan.io/v2/api",
-      {
-        params: {
-          chainid: "1",
-          module: "account",
-          action: "tokentx",
-          address: address,
-          contractaddress: CONTRACT,
-          page: 1,
-          offset: 100,
-          sort: "asc",
-          apikey: API_KEY,
-        },
-      }
+    const allTransfers =
+      await getPLPETransfers();
+
+    const walletTransfers =
+      allTransfers.filter(
+        (transfer) =>
+          normalizeAddress(
+            transfer.from
+          ) === wallet ||
+          normalizeAddress(
+            transfer.to
+          ) === wallet
+      );
+
+    const result =
+      walletTransfers.slice(0, 100);
+
+    return {
+      status: "1",
+      message: "OK",
+      result,
+    };
+  } catch (error) {
+    console.error(
+      "[WALLET HISTORY] Failed:",
+      error.message
     );
 
-    console.log("ETHERSCAN RESPONSE:");
-    console.dir(response.data, { depth: null });
-
-    return response.data;
-  } catch (err) {
-    console.log("========== ETHERSCAN ERROR ==========");
-
-    if (err.response) {
-      console.log(err.response.status);
-      console.dir(err.response.data, { depth: null });
-    } else {
-      console.log(err.message);
-    }
-
-    console.log("=====================================");
-
-    throw err;
+    throw error;
   }
 }
 
