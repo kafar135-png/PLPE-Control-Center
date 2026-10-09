@@ -29,10 +29,10 @@
 }
 
 .holders-divider {
-  height: 1px;
   width: 100%;
-  background: #2b3650;
+  height: 1px;
   margin: 26px 0;
+  background: #2b3650;
 }
 
 .holders-state {
@@ -59,9 +59,7 @@
   grid-template-columns: 42px minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
-
   padding: 13px 14px;
-
   background: #111827;
   border: 1px solid #263247;
   border-radius: 12px;
@@ -85,6 +83,7 @@
   text-decoration: none;
   font-family: monospace;
   font-size: 13px;
+  word-break: break-all;
 }
 
 .holder-wallet-link:hover {
@@ -92,21 +91,18 @@
 }
 
 .holder-progress {
-  height: 5px;
   width: 100%;
+  height: 5px;
   overflow: hidden;
-
   background: #2b3650;
   border-radius: 20px;
 }
 
 .holder-progress-fill {
-  height: 100%;
   min-width: 2px;
-
+  height: 100%;
   background: #22c55e;
   border-radius: 20px;
-
   transition: width 0.4s ease;
 }
 
@@ -115,7 +111,6 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
-
   white-space: nowrap;
 }
 
@@ -133,11 +128,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   gap: 18px;
-
   padding: 14px;
-
   background: #111827;
   border: 1px solid #263247;
   border-radius: 12px;
@@ -145,7 +137,6 @@
 
 .project-wallet-identity {
   min-width: 0;
-
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -161,6 +152,7 @@
   font-family: monospace;
   font-size: 12px;
   text-decoration: none;
+  word-break: break-all;
 }
 
 .project-wallet-identity a:hover {
@@ -172,7 +164,6 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
-
   white-space: nowrap;
 }
 
@@ -186,11 +177,56 @@
   font-size: 12px;
 }
 
-.liquidity-wallet-row {
-  border-color: rgba(34, 197, 94, 0.35);
+/* SMART CONTRACT HOLDERS */
+
+.contract-wallet-row {
+  border-color: rgba(168, 85, 247, 0.45);
+  background: rgba(88, 28, 135, 0.08);
 }
 
+.contract-wallet-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.contract-wallet-title strong {
+  color: #ffffff;
+}
+
+.contract-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: rgba(168, 85, 247, 0.16);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #c084fc;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+/* LIQUIDITY POOL */
+
+.liquidity-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.liquidity-wallet-row {
+  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.04);
+}
+
+/* MOBILE */
+
 @media (max-width: 700px) {
+  .holders-section-header {
+    flex-direction: column;
+  }
+
   .holder-table-row {
     grid-template-columns: 34px minmax(0, 1fr);
   }
@@ -207,5 +243,10 @@
 
   .project-wallet-values {
     align-items: flex-start;
+  }
+
+  .holder-wallet-link,
+  .project-wallet-identity a {
+    font-size: 11px;
   }
 }

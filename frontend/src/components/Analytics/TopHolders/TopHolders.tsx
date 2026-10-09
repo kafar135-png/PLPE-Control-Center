@@ -22,9 +22,15 @@ type NamedWalletEntry =
       | "liquidity";
   };
 
+type ContractHolderEntry =
+  HolderEntry & {
+    type?: "contract";
+  };
+
 type HoldersResponse = {
   holders?: number;
   topHolders?: HolderEntry[];
+  contractHolders?: ContractHolderEntry[];
   projectWallets?: NamedWalletEntry[];
   liquidityPool?: NamedWalletEntry;
 };
@@ -34,15 +40,15 @@ function shortenWallet(
 ) {
   if (
     !wallet ||
-    wallet.length < 12
+    wallet.length < 22
   ) {
     return wallet;
   }
 
   return `${wallet.slice(
     0,
-    6
-  )}...${wallet.slice(-4)}`;
+    10
+  )}...${wallet.slice(-8)}`;
 }
 
 function formatPlpe(
@@ -53,7 +59,9 @@ function formatPlpe(
     Number(value);
 
   if (
-    !Number.isFinite(amount)
+    !Number.isFinite(
+      amount
+    )
   ) {
     return "0 PLPE";
   }
@@ -70,7 +78,9 @@ function formatPercent(
   value: number
 ) {
   if (
-    !Number.isFinite(value)
+    !Number.isFinite(
+      value
+    )
   ) {
     return "0%";
   }
@@ -106,12 +116,6 @@ function TopHolders() {
   ] =
     useState(false);
 
-  /*
-   * We use the already translated title
-   * to determine which label set to show,
-   * so no new locale/type keys are required.
-   */
-
   const isPolish =
     t.analytics.topHoldersTitle
       .toLowerCase()
@@ -128,7 +132,13 @@ function TopHolders() {
                 "👑 Najwięksi holderzy społeczności",
 
               communityDescription:
-                "Portfele projektu i pula płynności są wykluczone z tego rankingu.",
+                "Portfele projektu, smart kontrakty i pula płynności są wykluczone z tego rankingu.",
+
+              contracts:
+                "📜 Smart Contract Holders",
+
+              contractsDescription:
+                "Adresy kontraktów wykryte on-chain przez eth_getCode. Nie są traktowane jako zwykłe portfele społeczności.",
 
               project:
                 "🏛️ Portfele projektu",
@@ -150,22 +160,19 @@ function TopHolders() {
 
               noHolders:
                 "Brak danych holderów.",
-
-              balance:
-                "Saldo",
-
-              share:
-                "Udział",
-
-              rank:
-                "Miejsce",
             }
           : {
               community:
                 "👑 Top Community Holders",
 
               communityDescription:
-                "Project wallets and the liquidity pool are excluded from this ranking.",
+                "Project wallets, smart contracts and the liquidity pool are excluded from this ranking.",
+
+              contracts:
+                "📜 Smart Contract Holders",
+
+              contractsDescription:
+                "Contract addresses detected on-chain with eth_getCode. They are not treated as normal community wallets.",
 
               project:
                 "🏛️ Project Wallets",
@@ -187,15 +194,6 @@ function TopHolders() {
 
               noHolders:
                 "No holder data available.",
-
-              balance:
-                "Balance",
-
-              share:
-                "Share",
-
-              rank:
-                "Rank",
             },
       [
         isPolish,
@@ -292,6 +290,10 @@ function TopHolders() {
     data?.topHolders ??
     [];
 
+  const contractHolders =
+    data?.contractHolders ??
+    [];
+
   const projectWallets =
     data?.projectWallets ??
     [];
@@ -302,33 +304,22 @@ function TopHolders() {
   return (
     <div className="analytics-card top-holders-card">
 
-      {/* COMMUNITY */}
-
       <section className="holders-section">
-
         <div className="holders-section-header">
-
           <div>
             <h2>
-              {
-                labels.community
-              }
+              {labels.community}
             </h2>
 
             <p>
-              {
-                labels.communityDescription
-              }
+              {labels.communityDescription}
             </p>
           </div>
-
         </div>
 
         {loading && (
           <div className="holders-state">
-            {
-              labels.loading
-            }
+            {labels.loading}
           </div>
         )}
 
@@ -336,9 +327,7 @@ function TopHolders() {
           error &&
           !data && (
             <div className="holders-state holders-error">
-              {
-                labels.error
-              }
+              {labels.error}
             </div>
           )}
 
@@ -347,9 +336,7 @@ function TopHolders() {
           topHolders.length ===
             0 && (
             <div className="holders-state">
-              {
-                labels.noHolders
-              }
+              {labels.noHolders}
             </div>
           )}
 
@@ -368,17 +355,11 @@ function TopHolders() {
                   }
                   className="holder-table-row"
                 >
-
                   <div className="holder-rank">
-                    #
-                    {
-                      index +
-                      1
-                    }
+                    #{index + 1}
                   </div>
 
                   <div className="holder-wallet-column">
-
                     <a
                       href={`https://etherscan.io/address/${holder.wallet}`}
                       target="_blank"
@@ -394,7 +375,6 @@ function TopHolders() {
                     </a>
 
                     <div className="holder-progress">
-
                       <div
                         className="holder-progress-fill"
                         style={{
@@ -404,13 +384,10 @@ function TopHolders() {
                           )}%`,
                         }}
                       />
-
                     </div>
-
                   </div>
 
                   <div className="holder-balance-column">
-
                     <strong>
                       {formatPlpe(
                         holder.balance,
@@ -423,44 +400,105 @@ function TopHolders() {
                         holder.percent
                       )}
                     </span>
-
                   </div>
-
                 </div>
               )
             )}
 
           </div>
         )}
-
       </section>
+
+      {contractHolders.length >
+        0 && (
+        <>
+          <div className="holders-divider" />
+
+          <section className="holders-section">
+            <div className="holders-section-header">
+              <div>
+                <h2>
+                  {labels.contracts}
+                </h2>
+
+                <p>
+                  {labels.contractsDescription}
+                </p>
+              </div>
+            </div>
+
+            <div className="project-wallet-table">
+              {contractHolders.map(
+                (holder) => (
+                  <div
+                    key={
+                      holder.wallet
+                    }
+                    className="project-wallet-row contract-wallet-row"
+                  >
+                    <div className="project-wallet-identity">
+                      <div className="contract-wallet-title">
+                        <strong>
+                          Smart Contract
+                        </strong>
+
+                        <span className="contract-badge">
+                          CONTRACT
+                        </span>
+                      </div>
+
+                      <a
+                        href={`https://etherscan.io/address/${holder.wallet}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        title={
+                          holder.wallet
+                        }
+                      >
+                        {shortenWallet(
+                          holder.wallet
+                        )}
+                      </a>
+                    </div>
+
+                    <div className="project-wallet-values">
+                      <strong>
+                        {formatPlpe(
+                          holder.balance,
+                          locale
+                        )}
+                      </strong>
+
+                      <span>
+                        {formatPercent(
+                          holder.percent
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+          </section>
+        </>
+      )}
 
       <div className="holders-divider" />
 
-      {/* PROJECT WALLETS */}
-
       <section className="holders-section">
-
         <div className="holders-section-header">
-
           <div>
             <h2>
-              {
-                labels.project
-              }
+              {labels.project}
             </h2>
 
             <p>
-              {
-                labels.projectDescription
-              }
+              {labels.projectDescription}
             </p>
           </div>
-
         </div>
 
         <div className="project-wallet-table">
-
           {projectWallets.map(
             (wallet) => (
               <div
@@ -469,13 +507,9 @@ function TopHolders() {
                 }
                 className="project-wallet-row"
               >
-
                 <div className="project-wallet-identity">
-
                   <strong>
-                    {
-                      wallet.name
-                    }
+                    {wallet.name}
                   </strong>
 
                   <a
@@ -490,11 +524,9 @@ function TopHolders() {
                       wallet.wallet
                     )}
                   </a>
-
                 </div>
 
                 <div className="project-wallet-values">
-
                   <strong>
                     {formatPlpe(
                       wallet.balance,
@@ -507,51 +539,34 @@ function TopHolders() {
                       wallet.percent
                     )}
                   </span>
-
                 </div>
-
               </div>
             )
           )}
-
         </div>
-
       </section>
-
-      {/* LIQUIDITY POOL */}
 
       {liquidityPool && (
         <>
           <div className="holders-divider" />
 
           <section className="holders-section liquidity-section">
-
             <div className="holders-section-header">
-
               <div>
                 <h2>
-                  {
-                    labels.liquidity
-                  }
+                  {labels.liquidity}
                 </h2>
 
                 <p>
-                  {
-                    labels.liquidityDescription
-                  }
+                  {labels.liquidityDescription}
                 </p>
               </div>
-
             </div>
 
             <div className="project-wallet-row liquidity-wallet-row">
-
               <div className="project-wallet-identity">
-
                 <strong>
-                  {
-                    liquidityPool.name
-                  }
+                  {liquidityPool.name}
                 </strong>
 
                 <a
@@ -566,11 +581,9 @@ function TopHolders() {
                     liquidityPool.wallet
                   )}
                 </a>
-
               </div>
 
               <div className="project-wallet-values">
-
                 <strong>
                   {formatPlpe(
                     liquidityPool.balance,
@@ -583,11 +596,8 @@ function TopHolders() {
                     liquidityPool.percent
                   )}
                 </span>
-
               </div>
-
             </div>
-
           </section>
         </>
       )}

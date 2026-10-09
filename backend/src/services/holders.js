@@ -8,29 +8,35 @@ const {
 PLPE HOLDERS
 =========================================================
 
-No Etherscan API.
+Data source:
+- complete PLPE ERC20 Transfer history via Alchemy
 
-Holder balances are reconstructed directly from
-the complete PLPE ERC20 Transfer history loaded
-through Alchemy.
+Address classification:
+- eth_getCode === "0x" -> regular wallet / EOA
+- eth_getCode contains bytecode -> smart contract
 
-The endpoint returns:
+The API returns:
 
-- total holder count
-- top community holders
-- official PolishPepe project wallets
-- PLPE/WETH liquidity pool
+- holders
+- topHolders
+- contractHolders
+- projectWallets
+- liquidityPool
 
-Project wallets and the liquidity pool are NOT
-included in the community holder ranking.
+Project wallets, smart contracts and liquidity pool
+are excluded from Top Community Holders.
 
 =========================================================
 */
 
+const RPC_URL =
+  process.env.ETHEREUM_RPC_URL;
+
 const HOLDERS_CACHE_TIME =
   30 * 1000;
 
-const TOKEN_DECIMALS = 18n;
+const TOKEN_DECIMALS =
+  18n;
 
 const TOKEN_DIVISOR =
   10n ** TOKEN_DECIMALS;
@@ -42,11 +48,18 @@ const TOTAL_SUPPLY_RAW =
   TOTAL_SUPPLY_TOKENS *
   TOKEN_DIVISOR;
 
-const TOP_COMMUNITY_LIMIT = 10;
+const TOP_COMMUNITY_LIMIT =
+  10;
+
+const TOP_CONTRACT_LIMIT =
+  10;
+
+const CODE_BATCH_SIZE =
+  50;
 
 /*
 =========================================================
-OFFICIAL POLISHPEPE WALLETS
+OFFICIAL PROJECT WALLETS
 =========================================================
 */
 
@@ -85,12 +98,14 @@ const PROJECT_WALLETS = [
 
 /*
 =========================================================
-PLPE/WETH UNISWAP V2 POOL
+OFFICIAL LIQUIDITY POOL
 =========================================================
 */
 
 const LIQUIDITY_POOL = {
-  name: "PLPE/WETH Liquidity Pool",
+  name:
+    "PLPE/WETH Liquidity Pool",
+
   address:
     "0xb4ffb01c89ffa24e6d01de95d3d780bc3e835390",
 };
@@ -107,21 +122,52 @@ const holdersCache = {
 };
 
 /*
+ * Contract/EOA classification is cached for the
+ * lifetime of the backend process.
+ */
+
+const addressTypeCache =
+  new Map();
+
+/*
 =========================================================
 HELPERS
 =========================================================
 */
 
-function normalizeAddress(value) {
+function normalizeAddress(
+  value
+) {
   if (!value) {
     return "";
   }
 
-  return String(value)
-    .toLowerCase();
+  return String(
+    value
+  ).toLowerCase();
 }
 
-function formatTokenAmount(rawBalance) {
+function getRpcUrl() {
+  if (!RPC_URL) {
+    throw new Error(
+      "ETHEREUM_RPC_URL is not configured"
+    );
+  }
+
+  try {
+    return new URL(
+      RPC_URL
+    ).toString();
+  } catch {
+    throw new Error(
+      "ETHEREUM_RPC_URL is invalid"
+    );
+  }
+}
+
+function formatTokenAmount(
+  rawBalance
+) {
   const balance =
     rawBalance > 0n
       ? rawBalance
@@ -135,7 +181,9 @@ function formatTokenAmount(rawBalance) {
     balance %
     TOKEN_DIVISOR;
 
-  if (fraction === 0n) {
+  if (
+    fraction === 0n
+  ) {
     return whole.toString();
   }
 
@@ -143,28 +191,30 @@ function formatTokenAmount(rawBalance) {
     fraction
       .toString()
       .padStart(
-        Number(TOKEN_DECIMALS),
+        Number(
+          TOKEN_DECIMALS
+        ),
         "0"
       )
-      .replace(/0+$/, "");
+      .replace(
+        /0+$/,
+        ""
+      );
 
   return `${whole.toString()}.${fractionString}`;
 }
 
-function calculatePercent(rawBalance) {
+function calculatePercent(
+  rawBalance
+) {
   if (
-    rawBalance <= 0n ||
-    TOTAL_SUPPLY_RAW <= 0n
+    rawBalance <= 0n
   ) {
     return 0;
   }
 
   /*
-   * 1,000,000 scaling gives
-   * percentage precision to 4 decimals.
-   *
-   * Example:
-   * 100% => 1,000,000 / 10,000 = 100
+   * Percentage with 4 decimal places.
    */
 
   const scaled =
@@ -175,7 +225,9 @@ function calculatePercent(rawBalance) {
     TOTAL_SUPPLY_RAW;
 
   return (
-    Number(scaled) /
+    Number(
+      scaled
+    ) /
     10_000
   );
 }
@@ -185,11 +237,14 @@ function createHolderEntry(
   balance
 ) {
   return {
-    wallet: address,
+    wallet:
+      address,
+
     balance:
       formatTokenAmount(
         balance
       ),
+
     percent:
       calculatePercent(
         balance
@@ -236,6 +291,178 @@ function createNamedWalletEntry(
 
 /*
 =========================================================
+ETH_GETCODE BATCH CLASSIFICATION
+=========================================================
+
+Instead of calling Alchemy once for every holder,
+addresses are checked in JSON-RPC batches.
+
+This is much faster and reduces request count.
+
+=========================================================
+*/
+
+async function classifyAddressBatch(
+  addresses
+) {
+  const unresolved =
+    addresses.filter(
+      (address) =>
+        !addressTypeCache.has(
+          normalizeAddress(
+            address
+          )
+        )
+    );
+
+  if (
+    unresolved.length ===
+    0
+  ) {
+    return;
+  }
+
+  const url =
+    getRpcUrl();
+
+  const payload =
+    unresolved.map(
+      (
+        address,
+        index
+      ) => ({
+        jsonrpc:
+          "2.0",
+
+        id:
+          index + 1,
+
+        method:
+          "eth_getCode",
+
+        params: [
+          normalizeAddress(
+            address
+          ),
+          "latest",
+        ],
+      })
+    );
+
+  const response =
+    await fetch(
+      url,
+      {
+        method:
+          "POST",
+
+        headers: {
+          "content-type":
+            "application/json",
+        },
+
+        body:
+          JSON.stringify(
+            payload
+          ),
+      }
+    );
+
+  if (
+    !response.ok
+  ) {
+    throw new Error(
+      `eth_getCode batch: HTTP ${response.status}`
+    );
+  }
+
+  const result =
+    await response.json();
+
+  if (
+    !Array.isArray(
+      result
+    )
+  ) {
+    throw new Error(
+      "eth_getCode batch returned invalid response"
+    );
+  }
+
+  const byId =
+    new Map(
+      result.map(
+        (item) => [
+          item.id,
+          item,
+        ]
+      )
+    );
+
+  unresolved.forEach(
+    (
+      address,
+      index
+    ) => {
+      const item =
+        byId.get(
+          index + 1
+        );
+
+      if (
+        !item ||
+        item.error
+      ) {
+        return;
+      }
+
+      const code =
+        item.result;
+
+      const type =
+        code &&
+        code !==
+          "0x" &&
+        code !==
+          "0x0"
+          ? "contract"
+          : "eoa";
+
+      addressTypeCache.set(
+        normalizeAddress(
+          address
+        ),
+        type
+      );
+    }
+  );
+}
+
+async function classifyAddresses(
+  addresses
+) {
+  for (
+    let i = 0;
+    i <
+    addresses.length;
+    i +=
+      CODE_BATCH_SIZE
+  ) {
+    const batch =
+      addresses.slice(
+        i,
+        i +
+          CODE_BATCH_SIZE
+      );
+
+    await classifyAddressBatch(
+      batch
+    );
+  }
+}
+
+/*
+=========================================================
 GET HOLDERS
 =========================================================
 */
@@ -262,7 +489,7 @@ async function getHolders() {
 
     /*
     =====================================================
-    RECONSTRUCT ALL TOKEN BALANCES
+    RECONSTRUCT ALL PLPE BALANCES
     =====================================================
     */
 
@@ -300,8 +527,8 @@ async function getHolders() {
       }
 
       /*
-       * MINT:
-       * zero -> holder
+       * Sender loses tokens.
+       * Zero address is ignored.
        */
 
       if (
@@ -323,8 +550,8 @@ async function getHolders() {
       }
 
       /*
-       * BURN:
-       * holder -> zero
+       * Receiver gains tokens.
+       * Zero address is ignored.
        */
 
       if (
@@ -369,7 +596,7 @@ async function getHolders() {
 
     /*
     =====================================================
-    ADDRESSES EXCLUDED FROM COMMUNITY RANKING
+    EXCLUDED ADDRESSES
     =====================================================
     */
 
@@ -391,11 +618,11 @@ async function getHolders() {
 
     /*
     =====================================================
-    TOP COMMUNITY HOLDERS
+    NON-PROJECT HOLDER CANDIDATES
     =====================================================
     */
 
-    const topHolders =
+    const candidates =
       Array.from(
         balances.entries()
       )
@@ -411,7 +638,10 @@ async function getHolders() {
             )
         )
         .sort(
-          (a, b) => {
+          (
+            a,
+            b
+          ) => {
             if (
               a[1] ===
               b[1]
@@ -424,7 +654,80 @@ async function getHolders() {
               ? -1
               : 1;
           }
-        )
+        );
+
+    /*
+    =====================================================
+    DETECT SMART CONTRACTS
+    =====================================================
+    */
+
+    await classifyAddresses(
+      candidates.map(
+        ([
+          address,
+        ]) =>
+          address
+      )
+    );
+
+    /*
+    =====================================================
+    SPLIT COMMUNITY / CONTRACTS
+    =====================================================
+    */
+
+    const communityCandidates =
+      [];
+
+    const contractCandidates =
+      [];
+
+    for (
+      const [
+        address,
+        balance,
+      ] of candidates
+    ) {
+      const type =
+        addressTypeCache.get(
+          normalizeAddress(
+            address
+          )
+        );
+
+      /*
+       * If classification failed for some reason,
+       * do NOT falsely call it a smart contract.
+       *
+       * It stays in community ranking until a
+       * successful on-chain classification occurs.
+       */
+
+      if (
+        type ===
+        "contract"
+      ) {
+        contractCandidates.push([
+          address,
+          balance,
+        ]);
+      } else {
+        communityCandidates.push([
+          address,
+          balance,
+        ]);
+      }
+    }
+
+    /*
+    =====================================================
+    TOP COMMUNITY HOLDERS
+    =====================================================
+    */
+
+    const topHolders =
+      communityCandidates
         .slice(
           0,
           TOP_COMMUNITY_LIMIT
@@ -442,7 +745,34 @@ async function getHolders() {
 
     /*
     =====================================================
-    OFFICIAL PROJECT WALLETS
+    SMART CONTRACT HOLDERS
+    =====================================================
+    */
+
+    const contractHolders =
+      contractCandidates
+        .slice(
+          0,
+          TOP_CONTRACT_LIMIT
+        )
+        .map(
+          ([
+            address,
+            balance,
+          ]) => ({
+            ...createHolderEntry(
+              address,
+              balance
+            ),
+
+            type:
+              "contract",
+          })
+        );
+
+    /*
+    =====================================================
+    PROJECT WALLETS
     =====================================================
     */
 
@@ -478,6 +808,7 @@ async function getHolders() {
     const result = {
       holders,
       topHolders,
+      contractHolders,
       projectWallets,
       liquidityPool,
     };
@@ -489,11 +820,16 @@ async function getHolders() {
       now;
 
     console.log(
-      "[HOLDERS] Calculated from PLPE transfers:",
+      "[HOLDERS] Calculated:",
       {
         holders,
-        communityTop:
+
+        community:
           topHolders.length,
+
+        contracts:
+          contractHolders.length,
+
         projectWallets:
           projectWallets.length,
       }
@@ -514,7 +850,12 @@ async function getHolders() {
 
     return {
       holders: 0,
+
       topHolders: [],
+
+      contractHolders:
+        [],
+
       projectWallets:
         PROJECT_WALLETS.map(
           (wallet) => ({
@@ -524,9 +865,14 @@ async function getHolders() {
             wallet:
               wallet.address,
 
-            balance: "0",
-            percent: 0,
-            type: "project",
+            balance:
+              "0",
+
+            percent:
+              0,
+
+            type:
+              "project",
           })
         ),
 
@@ -537,9 +883,14 @@ async function getHolders() {
         wallet:
           LIQUIDITY_POOL.address,
 
-        balance: "0",
-        percent: 0,
-        type: "liquidity",
+        balance:
+          "0",
+
+        percent:
+          0,
+
+        type:
+          "liquidity",
       },
     };
   }
